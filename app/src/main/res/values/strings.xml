@@ -6,4 +6,10 @@
     <string name="title_add_ingredient_fragment">Добавить ингредиент</string>
     <string name="item_title">Название</string>
     <string name="item_info">Информация</string>
+    <string name="app_title">Smart Bartender</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ingredients">Ингредиенты</string>
+    <string name="recipes">Рецепты</string>
 </resources>

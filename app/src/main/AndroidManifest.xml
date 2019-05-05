@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MenuActivity"
-            android:screenOrientation="landscape">
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,10 +21,13 @@
         <activity
             android:name=".IngredientsActivity"
             android:parentActivityName=".MenuActivity"
-            android:screenOrientation="landscape" />
+            android:label="Ингредиенты"
+            />
         <activity android:name=".RecipesActivity"
             android:parentActivityName=".MenuActivity"
-            android:screenOrientation="landscape"/>
+            android:label="Рецепты"/>
+
     </application>
+
 
 </manifest>

@@ -3,8 +3,8 @@ package com.example.user.alcorobot;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
@@ -13,29 +13,35 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddDialogFragment extends AppCompatDialogFragment {
+public class EditFragment extends AppCompatDialogFragment{
 
-    public interface AddDialogListener {
-         void onAddButtonClick(View view, List<Ingredient> i);
+
+    public interface InfoDialogListener {
+        void onDeleteButtonClick(View view, String item);
+        void onSaveButtonClick(View view, String item, List<Ingredient> list);
+        List<Ingredient> getItems(String item);
     }
-    AddDialogListener mListener;
+    InfoDialogListener  mListener;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final String title = getArguments().getString("title");
-        final int resource = getArguments().getInt("resource");
-        final boolean isIngredient = getArguments().getBoolean("isIngredient");
-
-
+        super.onCreate(savedInstanceState);
+        // Use the Builder class for convenient dialog construction
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final LayoutInflater inflater = getActivity().getLayoutInflater();
-        final View v = inflater.inflate(resource,null);
+        assert getArguments() != null;
+        final int res = getArguments().getInt("res");
+        final String item = getArguments().getString("item");
+        final int itemName = getArguments().getInt("itemName");
+        final boolean isIngredient = getArguments().getBoolean("isIngredient");
+
+        final View v = inflater.inflate(res,null);
         final List<Spinner> spinners = new ArrayList<>();
+
         if(!isIngredient){
             ArrayList<String> ingredients = getArguments().getStringArrayList("ingredients");
             spinners.add(setSpinner((Spinner)v.findViewById(R.id.ing1),ingredients));
@@ -44,11 +50,15 @@ public class AddDialogFragment extends AppCompatDialogFragment {
             spinners.add(setSpinner((Spinner)v.findViewById(R.id.ing4),ingredients));
             spinners.add(setSpinner((Spinner)v.findViewById(R.id.ing5),ingredients));
             spinners.add(setSpinner((Spinner)v.findViewById(R.id.ing6),ingredients));
+            setSelections(item,spinners,ingredients, v);
         }
 
-         builder.setView(v)
-                 .setTitle(title)
-                .setPositiveButton("Добавить", new DialogInterface.OnClickListener() {
+        EditText editText = v.findViewById(itemName);
+        editText.setText(item);
+
+        builder.setView(v)
+                .setTitle("Изменение")
+                .setPositiveButton ("Сохранить", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if(!isIngredient) {
                             int ingID = 0;
@@ -62,16 +72,18 @@ public class AddDialogFragment extends AppCompatDialogFragment {
                                     ingID++;
                                 }
                             }
-                            mListener.onAddButtonClick(v, ingredientsList);
+                            mListener.onSaveButtonClick(v, item, ingredientsList);
                             onDestroy();
                         }else {
-                            mListener.onAddButtonClick(v, null);
+                            mListener.onSaveButtonClick(v, item, null);
                             onDestroy();
                         }
                     }
                 })
-                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) { onDestroy();}
+                .setNegativeButton("Удалить", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        mListener.onDeleteButtonClick(v, item);
+                        onDestroy();                    }
                 });
         return builder.create();
     }
@@ -81,14 +93,31 @@ public class AddDialogFragment extends AppCompatDialogFragment {
         super.onAttach(activity);
         try {
             // Instantiate the NoticeDialogListener so we can send events to the host
-            mListener = (AddDialogListener) activity;
+            mListener = (InfoDialogListener) activity;
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(activity.toString()
                     + " must implement NoticeDialogListener");
         }
-
     }
+
+    public void setSelections(String item, List<Spinner> spinners, List<String> allIngredients, View view){
+        List<Ingredient> usingIngredients = mListener.getItems(item);
+        List<Integer> resValues = new ArrayList<>();
+        resValues.add(R.id.value1);
+        resValues.add(R.id.value2);
+        resValues.add(R.id.value3);
+        resValues.add(R.id.value4);
+        resValues.add(R.id.value5);
+        resValues.add(R.id.value6);
+
+        for(int i = 0; i<usingIngredients.size();i++){
+            spinners.get(i).setSelection(allIngredients.indexOf(usingIngredients.get(i).name));
+            EditText valueEdit = view.findViewById(resValues.get(i));
+            valueEdit.setText(String.valueOf(usingIngredients.get(i).value));
+        }
+    }
+
     public Spinner setSpinner(Spinner s, List<String> list){
         Spinner spinner = s;
 
@@ -97,7 +126,6 @@ public class AddDialogFragment extends AppCompatDialogFragment {
         adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, list);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setPrompt("Select!");
 
         AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
             @Override
@@ -111,6 +139,7 @@ public class AddDialogFragment extends AppCompatDialogFragment {
         spinner.setOnItemSelectedListener(itemSelectedListener);
         return spinner;
     }
+
     public List<Integer> getListOfValues(View v){
         List<Integer> list= new ArrayList<>();
         List<String> strings = new ArrayList<>();
@@ -130,6 +159,8 @@ public class AddDialogFragment extends AppCompatDialogFragment {
     }
 
 }
+
+
 
 
 

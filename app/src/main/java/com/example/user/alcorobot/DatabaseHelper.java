@@ -1,5 +1,6 @@
 package com.example.user.alcorobot;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -13,6 +14,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_INGREDIENTS = "ingredients";
     public static final String TABLE_RECIPES = "recipes";
     public static final String TABLE_ING_REC = "ingredients_recipes";
+    public static final String TABLE_SETTINGS = "settings";
     //Common column names
     public static final String KEY_ID = "_id";
     public static final String KEY_NAME = "name";
@@ -26,6 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_INGREDIENTS = "CREATE TABLE " + TABLE_INGREDIENTS + "(" + KEY_ID + " integer primary key," + KEY_NAME + " text" + ")";
     private static final String CREATE_TABLE_RECIPES = "CREATE TABLE " + TABLE_RECIPES + "(" + KEY_ID + " integer primary key," + KEY_NAME + " text" + ")";
     private static final String CREATE_TABLE_ING_REC = "CREATE TABLE " + TABLE_ING_REC + "(" + KEY_ID + " integer primary key," + KEY_INGREDIENTS_ID + " integer," + KEY_RECIPES_ID + " integer," + KEY_VALUE + " integer" + ")";
+    private static final String CREATE_TABLE_SETTINGS = "CREATE TABLE " + TABLE_SETTINGS + "(" + KEY_ID + " integer primary key," + KEY_INGREDIENTS_ID + " integer" + ")";
 
 
     DatabaseHelper(Context context) {
@@ -37,6 +40,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_INGREDIENTS);
         db.execSQL(CREATE_TABLE_RECIPES);
         db.execSQL(CREATE_TABLE_ING_REC);
+        db.execSQL(CREATE_TABLE_SETTINGS);
+        ContentValues values = new ContentValues();
+        values.put(KEY_INGREDIENTS_ID,-1);
+        for(int i=0;i<6;i++){
+            db.insert(TABLE_SETTINGS,null,values);
+        }
+        values.clear();
+        values.put(KEY_INGREDIENTS_ID,1);
+        db.insert(TABLE_SETTINGS,null,values);
+        values.clear();
     }
 
     @Override
@@ -44,6 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("drop table if exists " + TABLE_INGREDIENTS);
         db.execSQL("drop table if exists " + TABLE_RECIPES);
         db.execSQL("drop table if exists " + TABLE_ING_REC);
+        db.execSQL("drop table if exists " + TABLE_SETTINGS);
         onCreate(db);
     }
 }

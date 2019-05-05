@@ -16,103 +16,117 @@
         android:hint="@string/item_title" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <Spinner
             android:id="@+id/ing1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
             />
 
         <EditText
             android:id="@+id/value1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="100"
-            android:layout_weight="1"/>
+            android:textSize="14dp"
+
+            android:hint="100" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
         <Spinner
             android:id="@+id/ing2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            />
+            android:layout_width="150dp"
+            android:layout_height="match_parent" />
 
         <EditText
             android:id="@+id/value2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="100"
-            android:layout_weight="1"/>
-    </LinearLayout>
+            android:textSize="14dp"
 
+            android:hint="100" />
+
+    </LinearLayout>
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <Spinner
             android:id="@+id/ing3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            />
+            android:layout_width="150dp"
+            android:layout_height="match_parent" />
 
         <EditText
             android:id="@+id/value3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="100"
-            android:layout_weight="1"/>
+            android:layout_height="match_parent"
+            android:textSize="14dp"
+
+            android:hint="100" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
         <Spinner
             android:id="@+id/ing4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            />
+            android:layout_width="150dp"
+            android:layout_height="match_parent" />
 
         <EditText
             android:id="@+id/value4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="100"
-            android:layout_weight="1"/>
-    </LinearLayout>
+            android:textSize="14dp"
 
+            android:hint="100" />
+
+    </LinearLayout>
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <Spinner
             android:id="@+id/ing5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            />
+            android:layout_width="150dp"
+            android:layout_height="match_parent" />
 
         <EditText
             android:id="@+id/value5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="100"
-            android:layout_weight="1"/>
-        <Spinner
+            android:textSize="14dp"
+            android:hint="100" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    <Spinner
             android:id="@+id/ing6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            />
+            android:layout_width="150dp"
+            android:layout_height="wrap_content" />
 
         <EditText
             android:id="@+id/value6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="100"
-            android:layout_weight="1"/>
+            android:textSize="14dp"
+
+            android:hint="100" />
+
     </LinearLayout>
 
 
-    </LinearLayout>
+
+
+
+</LinearLayout>

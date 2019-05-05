@@ -9,7 +9,8 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android" />
 
-    <android.support.design.widget.FloatingActionButton xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.design.widget.FloatingActionButton
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ing_add_button"
         android:layout_width="140dp"
@@ -17,6 +18,6 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
         android:src="@drawable/add"
-        app:backgroundTint="@color/colorAccent"
+        app:backgroundTint="@color/colorPrimary"
         app:fabSize="normal" />
 </android.support.design.widget.CoordinatorLayout>
