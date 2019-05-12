@@ -7,26 +7,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
-import static com.example.user.alcorobot.IngredientsActivity.newInstance;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
+    private List<String> data = new ArrayList<>();
+    private OnItemClickListener listener;
+
 
     public interface OnItemClickListener {
         void onItemClick(String item);
     }
 
-    private final OnItemClickListener listener;
-
-    @NonNull
-    private final List<String> items;
     private final boolean isIngredient;
-    ItemAdapter(@NonNull List<String> items, OnItemClickListener listener, boolean isIngredient){
-        this.isIngredient = isIngredient;
-        this.items = items;
+    ItemAdapter( boolean isIngredient, OnItemClickListener listener){
         this.listener = listener;
+        this.isIngredient = isIngredient;
+    }
+
+    void setData(List<String> items) {
+        data.clear();
+        data.addAll(items);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -39,12 +44,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ItemAdapter.ItemHolder holder, int position) {
-        holder.bind(items.get(position), listener, isIngredient);
+        holder.bind(data.get(position), listener, isIngredient);
     }
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return data.size();
     }
 
     static class ItemHolder extends RecyclerView.ViewHolder{
@@ -56,7 +61,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
 
             itemName = itemView.findViewById(R.id.item_name);
         }
-        public void bind(final String item, final OnItemClickListener listener,boolean isIngredient) {
+        void bind(final String item, final OnItemClickListener listener, boolean isIngredient) {
                 itemName.setText(item);
                 if(isIngredient)
                 b.setVisibility(Button.GONE);

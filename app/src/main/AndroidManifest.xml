@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ItemActivity"></activity>
         <activity
             android:name=".MenuActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -18,16 +19,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".IngredientsActivity"
-            android:parentActivityName=".MenuActivity"
-            android:label="Ингредиенты"
-            />
-        <activity android:name=".RecipesActivity"
-            android:parentActivityName=".MenuActivity"
-            android:label="Рецепты"/>
-
-    </application>
-
+</application>
 
 </manifest>

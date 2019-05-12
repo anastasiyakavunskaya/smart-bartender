@@ -3,11 +3,15 @@ package com.example.user.alcorobot;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+
 
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener, SettingsFragment.OnFragmentInteractionListener {
 
@@ -39,11 +43,13 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ingredients_button:
-                Intent ingIntent = new Intent(this, IngredientsActivity.class);
+                Intent ingIntent = new Intent(this, ItemActivity.class);
+                ingIntent.putExtra("isIngredient", true);
                 startActivity(ingIntent);
                 break;
             case R.id.recipes_button:
-                Intent recIntent = new Intent(this, RecipesActivity.class);
+                Intent recIntent = new Intent(this, ItemActivity.class);
+                recIntent.putExtra("isIngredient", false);
                 startActivity(recIntent);
                 break;
             case R.id.info_button:
@@ -51,14 +57,17 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.settings_button:
-                callSettingsFragment();
+                /*ArrayList<String> ingredients = readDatabase(TABLE_INGREDIENTS,"Нет ингредиентов");
+                ArrayList<Integer> settings = readSettings();
+                int coefficient = settings.get(6);
+                settings.remove(6);
+                SettingsFragment settingsFragment = newInstance(ingredients, settings, coefficient);
+                FragmentManager fm = getSupportFragmentManager();
+                settingsFragment.show(fm,"settings");*/
                 break;
                 default:
                     break;        }
 
-    }
-    @Override
-    public void onBackPressed() {
     }
 
     @Override

@@ -1,23 +1,19 @@
 package com.example.user.alcorobot;
 
-import android.app.Application;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -28,7 +24,6 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.example.user.alcorobot.DatabaseHelper.KEY_INGREDIENTS_ID;
-import static com.example.user.alcorobot.DatabaseHelper.KEY_NAME;
 import static com.example.user.alcorobot.DatabaseHelper.TABLE_SETTINGS;
 
 public class SettingsFragment extends AppCompatDialogFragment {
@@ -64,6 +59,7 @@ public class SettingsFragment extends AppCompatDialogFragment {
             spinners.add(setSpinner((Spinner)v.findViewById(R.id.setting_6),ingredientsList));
 
             for(int i = 0;i<6;i++){
+                assert settings != null;
                 int s = settings.get(i);
                 if(s != -1) spinners.get(i).setSelection(settings.get(i));
             }
