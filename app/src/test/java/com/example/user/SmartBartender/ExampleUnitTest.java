@@ -1,4 +1,4 @@
-package com.example.user.alcorobot;
+package com.example.user.SmartBartender;
 
 import org.junit.Test;
 

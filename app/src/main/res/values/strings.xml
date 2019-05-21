@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SmartBartender</string>
+    <string name="app_name">Smart Bartender</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_main">MainActivity</string>
@@ -8,8 +8,9 @@
     <string name="item_info">Информация</string>
     <string name="app_title">Smart Bartender</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ingredients">Ингредиенты</string>
     <string name="recipes">Рецепты</string>
+    <string name="title_coefficient">Коэффициент для конвертации</string>
+    <string name="_100">100</string>
+    <string name="info"> Это приложение позвоялет готовить коктейли!</string>
 </resources>

@@ -6,12 +6,13 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/item_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="@color/colorBackground"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_button"
-        android:layout_width="140dp"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/button_size2"
+        android:layout_height="@dimen/button_size2"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
         android:src="@drawable/add"

@@ -1,4 +1,4 @@
-package com.example.user.alcorobot;
+package com.example.user.SmartBartender;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,26 +8,30 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
 
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "recipesDatabase";
+    private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "recipesDatabase";
     //Table Names
-    public static final String TABLE_INGREDIENTS = "ingredients";
-    public static final String TABLE_RECIPES = "recipes";
-    public static final String TABLE_ING_REC = "ingredients_recipes";
-    public static final String TABLE_SETTINGS = "settings";
+    static final String TABLE_INGREDIENTS = "ingredients";
+    static final String TABLE_RECIPES = "recipes";
+    static final String TABLE_ING_REC = "ingredients_recipes";
+    static final String TABLE_SETTINGS = "settings";
     //Common column names
-    public static final String KEY_ID = "_id";
-    public static final String KEY_NAME = "name";
+    static final String KEY_ID = "_id";
+    static final String KEY_NAME = "name";
 
     //Ingredients_recipes - column names
-    public static final String KEY_INGREDIENTS_ID = "ing_id";
-    public static final String KEY_RECIPES_ID = "rec_id";
-    public static final String KEY_VALUE = "value";
+    static final String KEY_INGREDIENTS_ID = "ing_id";
+    static final String KEY_RECIPES_ID = "rec_id";
+    static final String KEY_VOLUME = "volume";
+
+    //Recipes - column name
+    static final String KEY_LAYER = "layer";
+
 
     //Table Create Statements
     private static final String CREATE_TABLE_INGREDIENTS = "CREATE TABLE " + TABLE_INGREDIENTS + "(" + KEY_ID + " integer primary key," + KEY_NAME + " text" + ")";
     private static final String CREATE_TABLE_RECIPES = "CREATE TABLE " + TABLE_RECIPES + "(" + KEY_ID + " integer primary key," + KEY_NAME + " text" + ")";
-    private static final String CREATE_TABLE_ING_REC = "CREATE TABLE " + TABLE_ING_REC + "(" + KEY_ID + " integer primary key," + KEY_INGREDIENTS_ID + " integer," + KEY_RECIPES_ID + " integer," + KEY_VALUE + " integer" + ")";
+    private static final String CREATE_TABLE_ING_REC = "CREATE TABLE " + TABLE_ING_REC + "(" + KEY_ID + " integer primary key," + KEY_INGREDIENTS_ID + " integer," + KEY_RECIPES_ID + " integer," + KEY_VOLUME + " integer" + ")";
     private static final String CREATE_TABLE_SETTINGS = "CREATE TABLE " + TABLE_SETTINGS + "(" + KEY_ID + " integer primary key," + KEY_INGREDIENTS_ID + " integer" + ")";
 
 

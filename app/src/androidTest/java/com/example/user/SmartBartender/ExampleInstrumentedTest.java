@@ -1,4 +1,4 @@
-package com.example.user.alcorobot;
+package com.example.user.SmartBartender;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

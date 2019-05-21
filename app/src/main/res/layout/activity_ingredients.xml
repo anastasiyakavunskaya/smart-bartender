@@ -6,12 +6,9 @@
 <android.support.v7.widget.RecyclerView
     android:id="@+id/ing_recycler_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android" />
+    android:layout_height="match_parent" />
 
     <android.support.design.widget.FloatingActionButton
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ing_add_button"
         android:layout_width="140dp"
         android:layout_height="wrap_content"

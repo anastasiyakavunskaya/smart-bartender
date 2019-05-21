@@ -1,14 +1,16 @@
-package com.example.user.alcorobot;
+package com.example.user.SmartBartender;
 
+import android.content.Intent;
 
 import java.util.ArrayList;
 
 class EditPresenter {
 
     private EditModel model;
+    private EditFragment fragment;
 
-    EditPresenter(DatabaseHelper dbHelper) {
-        model = new EditModel(dbHelper);
+    EditPresenter(EditModel model) {
+        this.model = model;
     }
 
     ArrayList<String> getIngredients(){
@@ -16,6 +18,7 @@ class EditPresenter {
     }
 
     void onSaveRecipePressed( String recipeName, String oldName, ArrayList<Ingredient> list){
+        //TODO isSpinnersCorrect
         model.onSavePressed(false, recipeName, oldName, list);
     }
 
@@ -24,6 +27,7 @@ class EditPresenter {
     }
 
     void onAddRecipePressed(String recipe, ArrayList<Ingredient> ingredients){
+        //TODO isSpinnersCorrect
         model.onAddPressed(false, recipe,ingredients);
     }
 
@@ -39,5 +43,8 @@ class EditPresenter {
         model.onDeletePressed(false, oldName);
     }
 
+    boolean isSpinnersCorrect(ArrayList<Ingredient> list){
+        return true;
+    }
 
 }

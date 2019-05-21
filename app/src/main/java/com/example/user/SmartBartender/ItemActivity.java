@@ -1,6 +1,5 @@
-package com.example.user.alcorobot;
+package com.example.user.SmartBartender;
 
-import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -8,7 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
+
 
 import java.util.ArrayList;
 
@@ -16,6 +15,7 @@ public class ItemActivity extends AppCompatActivity {
 
     private ItemPresenter presenter;
     private ItemAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +26,8 @@ public class ItemActivity extends AppCompatActivity {
     public void init(){
         //получаем информацию - какое из активити запущено (ингредиенты или рецепты)
         final boolean isIngredient = getIntent().getBooleanExtra("isIngredient",true);
+        if(isIngredient) setTitle("Ингредиенты");
+        else setTitle("Рецепты");
         //инициализация RecycleView
         RecyclerView recycler = findViewById(R.id.item_recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -40,6 +42,11 @@ public class ItemActivity extends AppCompatActivity {
                 EditFragment mFragment = presenter.newInstance(isIngredient,"Изменить", item);
                 mFragment.show(manager, "dialog");
             }
+
+            @Override
+            public void onButtonClick(String item) {
+                presenter.onCookClick(item);
+            }
         });
         recycler.setAdapter(adapter);
         //создание модели
@@ -49,6 +56,7 @@ public class ItemActivity extends AppCompatActivity {
         presenter = new ItemPresenter(itemModel, isIngredient);
         presenter.attachView(this);
         presenter.viewIsReady();
+
         //инициализация кнопки добавления
         FloatingActionButton addBtn = findViewById(R.id.add_button);
         addBtn.setOnClickListener(new View.OnClickListener() {
@@ -68,16 +76,10 @@ public class ItemActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(this, MenuActivity.class));
         finish();
+        super.onBackPressed();
     }
 
-    void restartActivity(){
-        finish();
-        startActivity(getIntent());
-    }
 
-    void showNameError(){
-        Toast.makeText(this,"Ошибка в названии",Toast.LENGTH_LONG).show();
-    }
+
 }

@@ -8,48 +8,55 @@
     <Spinner
         android:id="@+id/setting_1"
         android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        />
+        android:layout_height="32dp"
+        android:layout_gravity="center" />
 
     <Spinner
         android:id="@+id/setting_2"
         android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        android:layout_height="32dp"
         android:layout_gravity="center"/>
 
     <Spinner
         android:id="@+id/setting_3"
         android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        android:layout_height="32dp"
         android:layout_gravity="center"/>
 
     <Spinner
         android:id="@+id/setting_4"
         android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        android:layout_height="32dp"
         android:layout_gravity="center"/>
 
     <Spinner
         android:id="@+id/setting_5"
         android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        android:layout_height="32dp"
         android:layout_gravity="center"/>
 
 
     <Spinner
         android:id="@+id/setting_6"
         android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        android:layout_height="32dp"
         android:layout_gravity="center"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Коэффициент для конвертации"/>
+        android:text="@string/title_coefficient"
+        android:textSize="@dimen/settings_text_size"
+        android:layout_margin="@dimen/margin"
+
+        />
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/edit_coef"/>
+        android:id="@+id/edit_coef"
+        android:autofillHints="100"
+        android:layout_margin="@dimen/margin"
+        android:textSize="@dimen/settings_text_size"
+        android:inputType="numberDecimal"/>
 
 </LinearLayout>

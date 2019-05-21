@@ -2,9 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="58sp"
     android:id="@+id/item_layout"
     android:orientation="horizontal"
+
     >
 
     <Button
@@ -12,10 +13,9 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_margin="5dp"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorAccent"
         android:ellipsize="none"
         android:padding="10dp"
-        android:password="false"
         android:text="ПРИГОТОВИТЬ"
         android:visibility="visible" />
 

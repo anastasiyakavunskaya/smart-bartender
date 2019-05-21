@@ -1,4 +1,4 @@
-package com.example.user.alcorobot;
+package com.example.user.SmartBartender;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -7,22 +7,24 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.user.alcorobot.DatabaseHelper.KEY_ID;
-import static com.example.user.alcorobot.DatabaseHelper.KEY_INGREDIENTS_ID;
-import static com.example.user.alcorobot.DatabaseHelper.KEY_NAME;
-import static com.example.user.alcorobot.DatabaseHelper.KEY_RECIPES_ID;
-import static com.example.user.alcorobot.DatabaseHelper.KEY_VALUE;
-import static com.example.user.alcorobot.DatabaseHelper.TABLE_INGREDIENTS;
-import static com.example.user.alcorobot.DatabaseHelper.TABLE_ING_REC;
-import static com.example.user.alcorobot.DatabaseHelper.TABLE_RECIPES;
+import static com.example.user.SmartBartender.DatabaseHelper.KEY_ID;
+import static com.example.user.SmartBartender.DatabaseHelper.KEY_INGREDIENTS_ID;
+import static com.example.user.SmartBartender.DatabaseHelper.KEY_NAME;
+import static com.example.user.SmartBartender.DatabaseHelper.KEY_RECIPES_ID;
+import static com.example.user.SmartBartender.DatabaseHelper.KEY_VOLUME;
+import static com.example.user.SmartBartender.DatabaseHelper.TABLE_INGREDIENTS;
+import static com.example.user.SmartBartender.DatabaseHelper.TABLE_ING_REC;
+import static com.example.user.SmartBartender.DatabaseHelper.TABLE_RECIPES;
+import static com.example.user.SmartBartender.DatabaseHelper.TABLE_SETTINGS;
 
 class EditModel {
 
     private DatabaseHelper dbHelper;
-    private EditPresenter presenter;
+    private String selectIngId = "SELECT  * FROM " + TABLE_INGREDIENTS + " WHERE " + KEY_NAME + " = ";
+    private String selectIngById = "SELECT  * FROM " + TABLE_INGREDIENTS + " WHERE " + KEY_ID + " = ";
+
 
     EditModel(DatabaseHelper dbHelper) {
-        //presenter = new EditPresenter(dbHelper);
         this.dbHelper = dbHelper;
     }
 
@@ -41,7 +43,6 @@ class EditModel {
     }
     void onAddPressed(boolean isIngredient, String name, ArrayList<Ingredient> list) {
         String selectRecId = "SELECT  * FROM " + TABLE_RECIPES + " WHERE " + KEY_NAME + " = ";
-        String selectIngId = "SELECT  * FROM " + TABLE_INGREDIENTS + " WHERE " + KEY_NAME + " = ";
 
         if (isIngredient) {
             if ((!(name.equals(" "))) && (isUnique(name, dbHelper.getReadableDatabase(), TABLE_INGREDIENTS))) {
@@ -51,7 +52,7 @@ class EditModel {
                 dbHelper.close();
             }
             //presenter.showNameError();
-            //presenter.restartActivity();
+
         } else {
             SQLiteDatabase db = dbHelper.getReadableDatabase();
             if ((!name.equals(" ")) && (isUnique(name, db, TABLE_RECIPES))) {
@@ -59,20 +60,22 @@ class EditModel {
                 contentValues.put(KEY_NAME, name);
                 db.insert(TABLE_RECIPES, null, contentValues);
                 contentValues.clear();
-                int recID = getID(selectRecId, name, db);
-                if (!getListOfIngredients().isEmpty()) {
-                    for (int i = 0; i < getListOfIngredients().size(); i++) {
+                int recID = getID(selectRecId, name);
+                if (!list.isEmpty()) {
+                    for (int i = 0; i <list.size(); i++) {
                         String ingName = list.get(i).name;
-                        int ingValue = list.get(i).value;
-                        int ingID = getID(selectIngId, ingName, db);
-                        contentValues.put(KEY_RECIPES_ID, recID);
-                        contentValues.put(KEY_INGREDIENTS_ID, ingID);
-                        contentValues.put(KEY_VALUE, ingValue);
-                        db.insert(TABLE_ING_REC, null, contentValues);
-                        contentValues.clear();
+                        if(!ingName.equals("Пусто")){
+                            int ingValue = list.get(i).value;
+                            int ingID = getID(selectIngId, ingName);
+                            contentValues.put(KEY_RECIPES_ID, recID);
+                            contentValues.put(KEY_INGREDIENTS_ID, ingID);
+                            contentValues.put(KEY_VOLUME, ingValue);
+                            db.insert(TABLE_ING_REC, null, contentValues);
+                            contentValues.clear();
+                        }
                     }
                     dbHelper.close();
-                    //presenter.restartActivity();
+                    //restart();
                 }
                 //presenter.showNameError();
             }
@@ -80,9 +83,12 @@ class EditModel {
     }
     void onDeletePressed(boolean isIngredient, String item){
         if(isIngredient){
+            int id = getID(selectIngId,item);
             dbHelper.getReadableDatabase().delete(TABLE_INGREDIENTS,"name = ?", new String[] {item});
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(KEY_INGREDIENTS_ID,-1);
+            dbHelper.getReadableDatabase().update(TABLE_SETTINGS,contentValues,"ing_id = ?", new String [] {String.valueOf(id)});
             dbHelper.close();
-            //presenter.restartActivity();
         }
         else
         {
@@ -135,13 +141,13 @@ class EditModel {
         return ids.isEmpty();
     }
 
-    private int getID(String query, String name, SQLiteDatabase db) {
+    private int getID(String query, String name) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
         query += "\"" + name + "\"";
         Cursor c = db.rawQuery(query, null);
         if (c != null)
             c.moveToFirst();
         assert c != null;
-        c.close();
         return c.getInt(c.getColumnIndex(KEY_ID));
     }
 
@@ -162,7 +168,7 @@ class EditModel {
             if ((c1 != null)&&(c1.moveToFirst())) {
                 do {
                     int id = c1.getInt((c1.getColumnIndex(KEY_INGREDIENTS_ID)));
-                    int value = c1.getInt((c1.getColumnIndex(KEY_VALUE)));
+                    int value = c1.getInt((c1.getColumnIndex(KEY_VOLUME)));
                     String selectName = "SELECT  * FROM " + TABLE_INGREDIENTS + " WHERE " + KEY_ID + " = " + "\""+ id + "\"";
                     Cursor c2 = db.rawQuery(selectName, null);
                     if((c2!=null)&&(c2.moveToFirst())) {
@@ -181,4 +187,79 @@ class EditModel {
         return ingredients;
     }
 
+    ArrayList<Integer> getSettingsDbIds(){
+        ArrayList<Integer> list = new ArrayList<>();
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
+        Cursor cursor = database.query(DatabaseHelper.TABLE_SETTINGS, null, null, null, null, null, null);
+        if (cursor.moveToFirst()) {
+            int nameIndex = cursor.getColumnIndex(KEY_INGREDIENTS_ID);
+            do {
+                list.add(cursor.getInt(nameIndex));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return list;
+    }
+
+    ArrayList<Integer> getSettingsIds(){
+        ArrayList<String> ingredientsList = getListOfIngredients();
+        ArrayList<Integer> list = new ArrayList<>();
+        ArrayList<Integer> settingsList = getSettingsDbIds();
+        for(int i=0;i<settingsList.size()-1;i++){
+            if(settingsList.get(i)!=-1){
+                int id = ingredientsList.indexOf(getItemById(getSettingsDbIds().get(i)))+1;
+                list.add(id);
+            }
+            else list.add(i,0);
+        }
+        return list;
+    }
+
+    String getItemById(int id){
+        String query = "SELECT  * FROM " + TABLE_INGREDIENTS + " WHERE " + KEY_ID + " = " + "\"" + id + "\"";
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
+        Cursor c = database.rawQuery(query,null);
+        if (c != null)
+            c.moveToFirst();
+        assert c != null;
+        return c.getString(c.getColumnIndex(KEY_NAME));
+    }
+
+    void setIngredientsSettings(int i, String set){
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        if(set.equals("Пусто"))
+            contentValues.put(KEY_INGREDIENTS_ID,-1);
+        else{
+            int id = getID(selectIngId,set);
+            contentValues.put(KEY_INGREDIENTS_ID,id);
+        }
+
+        database.update(TABLE_SETTINGS,contentValues,"_id = ?", new String [] {String.valueOf(i+1)});
+        contentValues.clear();
+
+    }
+    void setCoefficientSetting(String coefficient){
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_INGREDIENTS_ID,coefficient);
+        database.update(TABLE_SETTINGS,contentValues,"_id = ?", new String [] {String.valueOf(7)});
+        contentValues.clear();
+    }
+    int getCoefficient(){
+        return getSettingsDbIds().get(6);
+    }
+    void deleteSettings(){
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_INGREDIENTS_ID,-1);
+        for (int i=1;i<7;i++){
+            database.update(TABLE_SETTINGS,contentValues,"_id = ?", new String [] {String.valueOf(i)});
+        }
+        contentValues.clear();
+        contentValues.put(KEY_INGREDIENTS_ID,1);
+        database.update(TABLE_SETTINGS,contentValues,"_id = ?", new String [] {String.valueOf(7)});
+        contentValues.clear();
+    }
 }

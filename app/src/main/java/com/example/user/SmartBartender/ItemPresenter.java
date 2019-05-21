@@ -1,4 +1,4 @@
-package com.example.user.alcorobot;
+package com.example.user.SmartBartender;
 
 
 import android.os.Bundle;
@@ -19,7 +19,8 @@ class ItemPresenter {
     }
 
     void viewIsReady() {
-        view.showItems(model.loadItems(isIngredient));
+        if(isIngredient) view.showItems(model.loadItems());
+        else view.showItems(model.loadItemsReadyToCook());
     }
 
     EditFragment newInstance(boolean isIngredient, String title, String item){
@@ -36,4 +37,14 @@ class ItemPresenter {
         fragment.setArguments(args);
         return fragment;
     }
+
+    void onCookClick(String item){
+        model.onCookClick(item);
+    }
+
+
+
+
+
+
 }

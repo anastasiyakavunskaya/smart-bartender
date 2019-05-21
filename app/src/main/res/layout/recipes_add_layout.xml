@@ -30,9 +30,9 @@
             android:id="@+id/value1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14dp"
-
-            android:hint="100" />
+            android:textSize="14sp"
+            android:hint="@string/_100"
+            android:inputType="number"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14dp"
-
+            android:inputType="number"
             android:hint="100" />
 
     </LinearLayout>
@@ -67,7 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textSize="14dp"
-
+            android:inputType="number"
             android:hint="100" />
     </LinearLayout>
     <LinearLayout
@@ -84,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14dp"
-
+            android:inputType="number"
             android:hint="100" />
 
     </LinearLayout>
@@ -103,6 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14dp"
+            android:inputType="number"
             android:hint="100" />
     </LinearLayout>
     <LinearLayout
@@ -120,7 +121,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14dp"
-
+            android:inputType="number"
             android:hint="100" />
 
     </LinearLayout>

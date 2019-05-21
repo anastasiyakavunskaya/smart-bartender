@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@drawable/menu"
+    android:background="@color/colorBackground"
     >
 
     <LinearLayout
@@ -38,7 +37,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/ingredients"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:textColor="@color/colorPrimaryDark"/>
 
             </LinearLayout>
             <LinearLayout
@@ -55,7 +55,8 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="30dp"
                     android:layout_marginBottom="5dp"
-                    android:background="@drawable/cocktails" />
+                    android:background="@drawable/cocktails"
+                    android:textColor="@color/colorPrimaryDark"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -82,18 +83,20 @@
         <Button
             android:id="@+id/info_button"
             style="@style/Widget.AppCompat.Button"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/button_size2"
+            android:layout_height="@dimen/button_size2"
             android:layout_margin="15dp"
             android:background="@drawable/information"
             android:src="@android:drawable/ic_menu_info_details" />
 
         <Button
             android:id="@+id/settings_button"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="@dimen/button_size2"
+            android:layout_height="@dimen/button_size2"
             android:layout_margin="15dp"
-            android:background="@drawable/settings" />
+            android:background="@drawable/settings"
+             />
 
     </LinearLayout>
 
@@ -108,11 +111,13 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:text="@string/app_title"
-        android:textSize="30sp"
+        android:textSize="70sp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintVertical_bias="0.5"
+        android:textColor="@color/colorAccent"
+        />
 
 </android.support.constraint.ConstraintLayout>

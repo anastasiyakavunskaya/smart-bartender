@@ -1,5 +1,7 @@
-package com.example.user.alcorobot;
+package com.example.user.SmartBartender;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,9 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 
 
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener, SettingsFragment.OnFragmentInteractionListener {
@@ -53,17 +52,14 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(recIntent);
                 break;
             case R.id.info_button:
-                Toast.makeText(this,"Info", Toast.LENGTH_LONG).show();
-
+                InfoFragment infoFragment = new InfoFragment();
+                FragmentManager fm1 = getSupportFragmentManager();
+                infoFragment.show(fm1,"information");
                 break;
             case R.id.settings_button:
-                /*ArrayList<String> ingredients = readDatabase(TABLE_INGREDIENTS,"Нет ингредиентов");
-                ArrayList<Integer> settings = readSettings();
-                int coefficient = settings.get(6);
-                settings.remove(6);
-                SettingsFragment settingsFragment = newInstance(ingredients, settings, coefficient);
-                FragmentManager fm = getSupportFragmentManager();
-                settingsFragment.show(fm,"settings");*/
+                SettingsFragment settingsFragment = new SettingsFragment();
+                FragmentManager fm2 = getSupportFragmentManager();
+                settingsFragment.show(fm2,"settings");
                 break;
                 default:
                     break;        }
@@ -73,5 +69,10 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

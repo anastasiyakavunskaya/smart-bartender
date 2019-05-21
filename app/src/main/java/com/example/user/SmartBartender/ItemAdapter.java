@@ -1,4 +1,4 @@
-package com.example.user.alcorobot;
+package com.example.user.SmartBartender;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +20,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
 
     public interface OnItemClickListener {
         void onItemClick(String item);
+        void onButtonClick(String item);
     }
 
     private final boolean isIngredient;
@@ -55,21 +56,26 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
     static class ItemHolder extends RecyclerView.ViewHolder{
         private final TextView itemName;
         Button b = itemView.findViewById(R.id.cook_btn);
+
         private ItemHolder(View itemView){
             super(itemView);
-
-
             itemName = itemView.findViewById(R.id.item_name);
         }
-        void bind(final String item, final OnItemClickListener listener, boolean isIngredient) {
+
+        void bind(final String item, final OnItemClickListener listener, boolean isAll) {
                 itemName.setText(item);
-                if(isIngredient)
-                b.setVisibility(Button.GONE);
+                if(isAll) b.setVisibility(Button.GONE);
                 itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    listener.onItemClick(item);
+                    }
+                });
+                b.setOnClickListener(new View.OnClickListener(){
                     @Override public void onClick(View v) {
-                        listener.onItemClick(item);
+                        listener.onButtonClick(item);
                     }
                 });
             }
         }
+
 }
