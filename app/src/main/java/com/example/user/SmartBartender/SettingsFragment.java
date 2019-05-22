@@ -1,11 +1,13 @@
 package com.example.user.SmartBartender;
 
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
@@ -17,15 +19,17 @@ import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SettingsFragment extends AppCompatDialogFragment {
 
-    int NUMBER_OF_INGREDIENTS = 6;
+    private final int NUMBER_OF_INGREDIENTS = 6;
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
         final LayoutInflater inflater = getActivity().getLayoutInflater();
         final View v = inflater.inflate(R.layout.fragment_settings,null);
 
@@ -37,7 +41,7 @@ public class SettingsFragment extends AppCompatDialogFragment {
 
         final ArrayList<String> ingredientsList = presenter.getAllIngredients();
         final ArrayList<Integer> settings = presenter.getSettingIngredientsId();
-        final EditText editCoefficient = v.findViewById(R.id.edit_coef);
+        final EditText editCoefficient = v.findViewById(R.id.edit_coefficient);
         editCoefficient.setText(presenter.getCoefficient());
         ingredientsList.add(0,"Пусто");
 
@@ -75,23 +79,17 @@ public class SettingsFragment extends AppCompatDialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            //mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
     }
 
     public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
     }
 
-    public Spinner setSpinner(Spinner s, List<String> list){
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private Spinner setSpinner(Spinner s, List<String> list){
 
         // Создаем адаптер ArrayAdapter с помощью массива строк и стандартной разметки элемета spinner
         ArrayAdapter<String> adapter;
-        adapter = new ArrayAdapter<>((getContext()), android.R.layout.simple_spinner_item, list);
+        adapter = new ArrayAdapter<>((Objects.requireNonNull(getContext())), android.R.layout.simple_spinner_item, list);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s.setAdapter(adapter);
 

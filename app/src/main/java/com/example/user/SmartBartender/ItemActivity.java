@@ -23,7 +23,7 @@ public class ItemActivity extends AppCompatActivity {
         init();
     }
 
-    public void init(){
+    private void init(){
         //получаем информацию - какое из активити запущено (ингредиенты или рецепты)
         final boolean isIngredient = getIntent().getBooleanExtra("isIngredient",true);
         if(isIngredient) setTitle("Ингредиенты");

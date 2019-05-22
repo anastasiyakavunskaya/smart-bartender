@@ -1,8 +1,9 @@
 package com.example.user.SmartBartender;
 
-public class Ingredient {
-    int id, value;
-    String name;
+class Ingredient {
+    final int id;
+    final int value;
+    final String name;
 
     public Ingredient(int value, String name, int id) {
         this.id = id;

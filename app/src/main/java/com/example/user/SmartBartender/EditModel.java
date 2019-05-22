@@ -9,6 +9,7 @@ import java.util.List;
 
 import static com.example.user.SmartBartender.DatabaseHelper.KEY_ID;
 import static com.example.user.SmartBartender.DatabaseHelper.KEY_INGREDIENTS_ID;
+import static com.example.user.SmartBartender.DatabaseHelper.KEY_LAYER;
 import static com.example.user.SmartBartender.DatabaseHelper.KEY_NAME;
 import static com.example.user.SmartBartender.DatabaseHelper.KEY_RECIPES_ID;
 import static com.example.user.SmartBartender.DatabaseHelper.KEY_VOLUME;
@@ -19,16 +20,15 @@ import static com.example.user.SmartBartender.DatabaseHelper.TABLE_SETTINGS;
 
 class EditModel {
 
-    private DatabaseHelper dbHelper;
-    private String selectIngId = "SELECT  * FROM " + TABLE_INGREDIENTS + " WHERE " + KEY_NAME + " = ";
-    private String selectIngById = "SELECT  * FROM " + TABLE_INGREDIENTS + " WHERE " + KEY_ID + " = ";
+    private final DatabaseHelper dbHelper;
+    private final String selectIngId = "SELECT  * FROM " + TABLE_INGREDIENTS + " WHERE " + KEY_NAME + " = ";
 
 
     EditModel(DatabaseHelper dbHelper) {
         this.dbHelper = dbHelper;
     }
 
-    void onSavePressed(boolean isIngredient, String name, String oldName, ArrayList<Ingredient> list){
+    void onSavePressed(boolean isIngredient, String name, String oldName, ArrayList<Ingredient> list, boolean isLayer){
         if(isIngredient){
             ContentValues contentValues = new ContentValues();
             contentValues.put(KEY_NAME,name);
@@ -38,10 +38,10 @@ class EditModel {
         }
         else{
             onDeletePressed(false,oldName);
-            onAddPressed(false, name, list);
+            onAddPressed(false, name, list, isLayer);
         }
     }
-    void onAddPressed(boolean isIngredient, String name, ArrayList<Ingredient> list) {
+    void onAddPressed(boolean isIngredient, String name, ArrayList<Ingredient> list, boolean isLayer) {
         String selectRecId = "SELECT  * FROM " + TABLE_RECIPES + " WHERE " + KEY_NAME + " = ";
 
         if (isIngredient) {
@@ -58,6 +58,8 @@ class EditModel {
             if ((!name.equals(" ")) && (isUnique(name, db, TABLE_RECIPES))) {
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(KEY_NAME, name);
+                if(isLayer)contentValues.put(KEY_LAYER, 1);
+                else contentValues.put(KEY_LAYER,0);
                 db.insert(TABLE_RECIPES, null, contentValues);
                 contentValues.clear();
                 int recID = getID(selectRecId, name);
@@ -114,7 +116,7 @@ class EditModel {
         //получаем актуальную версию базы данных
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         ArrayList<String> list = new ArrayList<>();
-        Cursor cursor = database.query(TABLE_INGREDIENTS, null, null, null, null, null, null);
+        Cursor cursor = database.query(TABLE_INGREDIENTS, null, null, null, null, null, KEY_NAME);
         if (cursor.moveToFirst()) {
             int nameIndex = cursor.getColumnIndex(KEY_NAME);
             do {
@@ -215,7 +217,7 @@ class EditModel {
         return list;
     }
 
-    String getItemById(int id){
+    private String getItemById(int id){
         String query = "SELECT  * FROM " + TABLE_INGREDIENTS + " WHERE " + KEY_ID + " = " + "\"" + id + "\"";
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         Cursor c = database.rawQuery(query,null);
@@ -262,4 +264,14 @@ class EditModel {
         database.update(TABLE_SETTINGS,contentValues,"_id = ?", new String [] {String.valueOf(7)});
         contentValues.clear();
     }
+
+    boolean isChecked(String item){
+        String query = "SELECT  * FROM " + TABLE_RECIPES + " WHERE " + KEY_NAME + " = " + "\"" + item + "\"";
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
+        Cursor c = database.rawQuery(query,null);
+        if (c != null)
+            c.moveToFirst();
+        assert c != null;
+        return (c.getInt(c.getColumnIndex(KEY_LAYER))==1);
+        }
 }

@@ -24,7 +24,7 @@ class ItemModel {
         String warning = "Пусто, добавьте первый ингредиент";
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         ArrayList<String> list = new ArrayList<>();
-        Cursor cursor = database.query(TABLE_INGREDIENTS, null, null, null, null, null, null);
+        Cursor cursor = database.query(TABLE_INGREDIENTS, null, null, null, null, null, KEY_NAME);
 
         if (cursor.moveToFirst()) {
             int nameIndex = cursor.getColumnIndex(KEY_NAME);
@@ -91,7 +91,7 @@ class ItemModel {
     private ArrayList<String> allRecipes(){
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         ArrayList<String> list = new ArrayList<>();
-        Cursor cursor = database.query(TABLE_RECIPES, null, null, null, null, null, null);
+        Cursor cursor = database.query(TABLE_RECIPES, null, null, null, null, null, KEY_NAME);
         if (cursor.moveToFirst()) {
             int nameIndex = cursor.getColumnIndex(KEY_NAME);
             do {

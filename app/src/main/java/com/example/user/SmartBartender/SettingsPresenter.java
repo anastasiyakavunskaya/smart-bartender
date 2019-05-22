@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 
 class SettingsPresenter {
-    private EditModel model;
+    private final EditModel model;
 
     SettingsPresenter(EditModel model) {
         this.model = model;

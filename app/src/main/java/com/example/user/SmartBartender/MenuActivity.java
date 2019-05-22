@@ -1,9 +1,6 @@
 package com.example.user.SmartBartender;
 
-import android.app.Activity;
-import android.app.Application;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -14,8 +11,6 @@ import android.widget.Button;
 
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener, SettingsFragment.OnFragmentInteractionListener {
 
-    Button ingredientsBtn, recipesBtn, settingsBtn, infoBtn;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,16 +19,16 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_menu);
 
-        ingredientsBtn = findViewById(R.id.ingredients_button);
+        Button ingredientsBtn = findViewById(R.id.ingredients_button);
         ingredientsBtn.setOnClickListener(this);
 
-        recipesBtn = findViewById(R.id.recipes_button);
+        Button recipesBtn = findViewById(R.id.recipes_button);
         recipesBtn.setOnClickListener(this);
 
-        settingsBtn = findViewById(R.id.settings_button);
+        Button settingsBtn = findViewById(R.id.settings_button);
         settingsBtn.setOnClickListener(this);
 
-        infoBtn = findViewById(R.id.info_button);
+        Button infoBtn = findViewById(R.id.info_button);
         infoBtn.setOnClickListener(this);
 
     }
@@ -66,13 +61,4 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
 }

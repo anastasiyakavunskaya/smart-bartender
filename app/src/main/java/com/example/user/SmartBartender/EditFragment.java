@@ -1,8 +1,10 @@
 package com.example.user.SmartBartender;
 
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -11,28 +13,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class EditFragment extends AppCompatDialogFragment {
 
-    EditPresenter presenter;
-    String positiveBtn, negativeBtn, title;
-    View view;
-    EditText editText;
-    EditModel model;
+    private EditPresenter presenter;
+    private String positiveBtn, negativeBtn, title;
+    private View view;
+    private EditText editText;
+    private EditModel model;
+    CheckBox checkBox;
 
-    int resource;
-    boolean isIngredient, addition;
+    private boolean isIngredient;
+    private boolean addition;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
         final LayoutInflater inflater = getActivity().getLayoutInflater();
         init(inflater);
         if (title.equals("Добавить")) addConfigs();
@@ -42,25 +47,31 @@ public class EditFragment extends AppCompatDialogFragment {
         return builder.create();
     }
 
-    void buildRecipes(AlertDialog.Builder builder) {
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private void buildRecipes(AlertDialog.Builder builder) {
         editText = view.findViewById(R.id.recipe_name);
+        checkBox = view.findViewById(R.id.checkbox);
         final ArrayList<Spinner> spinners;
         if (!addition) {
             assert getArguments() != null;
-            editText.setText(getArguments().getString("item"));
-            spinners = spinnersSettings(getArguments().getString("item"), presenter.getIngredients(), view);
+            String item = getArguments().getString("item");
+            editText.setText(item);
+            assert item != null;
+            spinners = spinnersSettings(item, presenter.getIngredients(), view);
+            checkBox.setChecked(presenter.isChecked(item));
         } else spinners = spinnersSettings("Пусто", presenter.getIngredients(), view);
         builder.setView(view)
                 .setTitle(title)
                 .setPositiveButton(positiveBtn, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        boolean isLayer = checkBox.isChecked();
                         ArrayList<Integer> values = getListOfValues(view);
                         String recipe = ((EditText) view.findViewById(R.id.recipe_name)).getText().toString();
                         if (addition)
-                            presenter.onAddRecipePressed(recipe, getData(values, spinners));
+                            presenter.onAddRecipePressed(recipe, getData(values, spinners), isLayer);
                         else {
                             assert getArguments() != null;
-                            presenter.onSaveRecipePressed(recipe, getArguments().getString("item"), getData(values, spinners));
+                            presenter.onSaveRecipePressed(recipe, getArguments().getString("item"), getData(values, spinners), isLayer);
                         }
                         onDestroy();
                         restart(false);
@@ -79,7 +90,7 @@ public class EditFragment extends AppCompatDialogFragment {
                 });
     }
 
-    void buildIngredients(AlertDialog.Builder builder) {
+    private void buildIngredients(AlertDialog.Builder builder) {
         editText = view.findViewById(R.id.ingredient_name);
         if (!addition) {
             assert getArguments() != null;
@@ -117,7 +128,7 @@ public class EditFragment extends AppCompatDialogFragment {
 
     private void init(LayoutInflater inflater) {
         assert getArguments() != null;
-        resource = getArguments().getInt("resource");
+        int resource = getArguments().getInt("resource");
         isIngredient = getArguments().getBoolean("isIngredient");
         title = getArguments().getString("title");
         view = inflater.inflate(resource, null);
@@ -137,7 +148,7 @@ public class EditFragment extends AppCompatDialogFragment {
         addition = false;
     }
 
-    ArrayList<Spinner> spinnersSettings(String item, ArrayList<String> ingredients, View view) {
+    private ArrayList<Spinner> spinnersSettings(String item, ArrayList<String> ingredients, View view) {
         ArrayList<Spinner> spinners = new ArrayList<>();
         ingredients.add(0, "Пусто");
         spinners.add(setSpinner((Spinner) view.findViewById(R.id.ing1), ingredients));
@@ -150,10 +161,11 @@ public class EditFragment extends AppCompatDialogFragment {
         return spinners;
     }
 
-    public Spinner setSpinner(Spinner s, List<String> list) {
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private Spinner setSpinner(Spinner s, List<String> list) {
         // Создаем адаптер ArrayAdapter с помощью массива строк и стандартной разметки элемета spinner
         ArrayAdapter<String> adapter;
-        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, list);
+        adapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), android.R.layout.simple_spinner_item, list);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s.setAdapter(adapter);
 
@@ -186,7 +198,7 @@ public class EditFragment extends AppCompatDialogFragment {
         return list;
     }
 
-    ArrayList<Ingredient> getData(ArrayList<Integer> values, List<Spinner> spinners) {
+    private ArrayList<Ingredient> getData(ArrayList<Integer> values, List<Spinner> spinners) {
         int ingID = 0;
         ArrayList<Ingredient> ingredientsList = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
@@ -200,7 +212,7 @@ public class EditFragment extends AppCompatDialogFragment {
         return ingredientsList;
     }
 
-    public void setSelections(String item, List<Spinner> spinners, List<String> allIngredients, View view) {
+    private void setSelections(String item, List<Spinner> spinners, List<String> allIngredients, View view) {
         List<Ingredient> usingIngredients = model.getItems(item);
         List<Integer> resValues = new ArrayList<>();
         resValues.add(R.id.value1);
@@ -217,10 +229,11 @@ public class EditFragment extends AppCompatDialogFragment {
         }
     }
 
-    void restart(boolean isIngredient) {
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private void restart(boolean isIngredient) {
         Intent intent = new Intent(getContext(), ItemActivity.class);
         intent.putExtra("isIngredient", isIngredient);
-        getActivity().startActivity(intent);
+        Objects.requireNonNull(getActivity()).startActivity(intent);
         getActivity().finish();
     }
 

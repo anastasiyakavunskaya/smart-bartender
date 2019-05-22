@@ -14,8 +14,8 @@ import java.util.List;
 
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
-    private List<String> data = new ArrayList<>();
-    private OnItemClickListener listener;
+    private final List<String> data = new ArrayList<>();
+    private final OnItemClickListener listener;
 
 
     public interface OnItemClickListener {
@@ -55,7 +55,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
 
     static class ItemHolder extends RecyclerView.ViewHolder{
         private final TextView itemName;
-        Button b = itemView.findViewById(R.id.cook_btn);
+        final Button b = itemView.findViewById(R.id.cook_btn);
 
         private ItemHolder(View itemView){
             super(itemView);
