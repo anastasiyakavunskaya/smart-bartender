@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ public class EditFragment extends AppCompatDialogFragment {
     private boolean isIngredient;
     private boolean addition;
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -67,14 +69,17 @@ public class EditFragment extends AppCompatDialogFragment {
                         boolean isLayer = checkBox.isChecked();
                         ArrayList<Integer> values = getListOfValues(view);
                         String recipe = ((EditText) view.findViewById(R.id.recipe_name)).getText().toString();
-                        if (addition)
-                            presenter.onAddRecipePressed(recipe, getData(values, spinners), isLayer);
-                        else {
-                            assert getArguments() != null;
-                            presenter.onSaveRecipePressed(recipe, getArguments().getString("item"), getData(values, spinners), isLayer);
+                        if(presenter.isSpinnersCorrect(getData(values, spinners))){
+                            if (addition)
+                                presenter.onAddRecipePressed(recipe, getData(values, spinners), isLayer);
+                            else {
+                                assert getArguments() != null;
+                                presenter.onSaveRecipePressed(recipe, getArguments().getString("item"), getData(values, spinners), isLayer);
+                            }
+                            onDestroy();
+                            restart(false);
                         }
-                        onDestroy();
-                        restart(false);
+                        Toast.makeText(getActivity(),"Введены одинаковые ингредиенты! Попробуйте снова!",Toast.LENGTH_LONG).show();
                     }
                 })
                 .setNegativeButton(negativeBtn, new DialogInterface.OnClickListener() {
@@ -134,6 +139,7 @@ public class EditFragment extends AppCompatDialogFragment {
         view = inflater.inflate(resource, null);
         model = new EditModel(new DatabaseHelper(getContext()));
         presenter = new EditPresenter(model);
+        presenter.attach(this);
     }
 
     private void addConfigs() {
@@ -235,6 +241,10 @@ public class EditFragment extends AppCompatDialogFragment {
         intent.putExtra("isIngredient", isIngredient);
         Objects.requireNonNull(getActivity()).startActivity(intent);
         getActivity().finish();
+    }
+
+    void makeToast(String toast){
+        Toast.makeText(getActivity(),toast,Toast.LENGTH_LONG).show();
     }
 
 }

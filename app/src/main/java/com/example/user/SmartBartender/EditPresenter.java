@@ -6,18 +6,22 @@ import java.util.ArrayList;
 class EditPresenter {
 
     private final EditModel model;
+    private EditFragment fragment;
 
     EditPresenter(EditModel model) {
         this.model = model;
     }
 
+    void attach(EditFragment editFragment){
+        fragment = editFragment;
+    }
     ArrayList<String> getIngredients(){
         return model.getListOfIngredients();
     }
 
     void onSaveRecipePressed( String recipeName, String oldName, ArrayList<Ingredient> list, boolean isLayer){
-        //TODO isSpinnersCorrect
-        model.onSavePressed(false, recipeName, oldName, list, isLayer);
+         model.onSavePressed(false, recipeName, oldName, list, isLayer);
+
     }
 
     void onSaveIngredientPressed(String ingredientName, String oldName){
@@ -25,8 +29,8 @@ class EditPresenter {
     }
 
     void onAddRecipePressed(String recipe, ArrayList<Ingredient> ingredients, boolean isLayer){
-        //TODO isSpinnersCorrect
         model.onAddPressed(false, recipe,ingredients, isLayer);
+
     }
 
     void onAddIngredientPressed(String name){
@@ -42,6 +46,11 @@ class EditPresenter {
     }
 
     boolean isSpinnersCorrect(ArrayList<Ingredient> list){
+        for(int i=0;i<list.size();i++){
+            for(int j=0;j<list.size();j++){
+                if((i!=j)&&(list.get(i).name.equals(list.get(j).name)))return false;
+            }
+        }
         return true;
     }
 
