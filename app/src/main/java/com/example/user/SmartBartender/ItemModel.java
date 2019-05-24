@@ -1,10 +1,23 @@
 package com.example.user.SmartBartender;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Handler;
+import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.Toast;
+
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import static android.content.ContentValues.TAG;
 import static com.example.user.SmartBartender.DatabaseHelper.KEY_ID;
 import static com.example.user.SmartBartender.DatabaseHelper.KEY_INGREDIENTS_ID;
 import static com.example.user.SmartBartender.DatabaseHelper.KEY_NAME;
@@ -15,6 +28,24 @@ import static com.example.user.SmartBartender.DatabaseHelper.TABLE_RECIPES;
 
 class ItemModel {
     private final DatabaseHelper dbHelper;
+    private ItemPresenter presenter;
+    private ConnectedThread mConnectedThread;
+
+
+
+    private static String address = "00:15:FF:F2:19:4C";
+    private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+
+
+    private BluetoothAdapter mBluetoothAdapter = null;
+
+    private static final int REQUEST_ENABLE_BT = 1;
+
+    /**
+     * Member object for the chat services
+     */
+    private BluetoothSocket mSocket = null;
+
 
     ItemModel(DatabaseHelper dbHelper) {
         this.dbHelper = dbHelper;
@@ -103,8 +134,13 @@ class ItemModel {
     }
 
     void onCookClick(String item){
-        int[] recipe = getRecipe(item);
-        String output = generateOutputString(recipe);
+        presenter.showError("Запрос отправлен");
+        presenter.showError("Приготовление "+item+" началось");
+
+        //int[] recipe = getRecipe(item);
+        //String output = generateOutputString(recipe);
+        //sendData("200;100;0;0;0;0;");
+        //mConnectedThread.write("200;100;0;0;0;0");
 
     }
 
@@ -113,7 +149,7 @@ class ItemModel {
          List<Ingredient> ingredients = model.getItems(item);
          ArrayList<Integer> settings = model.getSettingsDbIds();
          //Список для последовательноой записи ингредиентов с их объемом
-         int[] recipe = new int[6];
+         int[] recipe = new int[10];
          for(int i =0; i<ingredients.size();i++){
              for (int j=0; j<settings.size();j++){
                  if(ingredients.get(i).id == settings.get(j))recipe[j]=ingredients.get(i).value*model.getCoefficient();
@@ -124,19 +160,108 @@ class ItemModel {
 
      private String generateOutputString(int[] recipe){
         String str=" ";
-        for(int i=0;i<recipe.length;i++){
-            //str=+recipe[i];
-        }
+         for (int i1 : recipe) {
+             str = +i1 + ";";
+         }
         return str;
      }
 
-     /*boolean isSettingsEmpty(){
-         EditModel model = new EditModel(dbHelper);
-         ArrayList<Integer> settings = model.getSettingsDbIds();
-         for(int i=0;i<settings.size();i++){
-             if (settings.get(i)!=-1) return false;
-         }
-         return true;
-     }*/
+     void attach(ItemPresenter presenter){
+        this.presenter = presenter;
+     }
 
+    void bluetoothOnResume(){
+
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        Log.d(TAG, "...onResume - попытка соединения...");
+
+        // Set up a pointer to the remote node using it's address.
+        BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
+
+        // Two things are needed to make a connection:
+        //   A MAC address, which we got above.
+        //   A Service ID or UUID.  In this case we are using the
+        //     UUID for SPP.
+        try {
+            mSocket = device.createRfcommSocketToServiceRecord(MY_UUID);
+        } catch (IOException e) {
+            presenter.showError( "In onResume() and socket create failed: " + e.getMessage() + ".");
+        }
+
+        // Discovery is resource intensive.  Make sure it isn't going on
+        // when you attempt to connect and pass your message.
+        mBluetoothAdapter.cancelDiscovery();
+
+        // Establish the connection.  This will block until it connects.
+        Log.d(TAG, "...Соединяемся...");
+        try {
+            mSocket.connect();
+            Log.d(TAG, "...Соединение установлено и готово к передачи данных...");
+        } catch (IOException e) {
+            try {
+                mSocket.close();
+            } catch (IOException e2) {
+                presenter.showError("In onResume() and unable to close socket during connection failure" + e2.getMessage() + ".");
+            }
+        }
+
+        // Create a data stream so we can talk to server.
+        Log.d(TAG, "...Создание Socket...");
+
+        mConnectedThread = new ConnectedThread(mSocket);
+        mConnectedThread.start();
+    }
+
+   /*void checkBluetooth(){
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        // Check for Bluetooth support and then check to make sure it is turned on
+        // Emulator doesn't support Bluetooth and will return null
+        if(mBluetoothAdapter==null) {
+            presenter.showError( "Bluetooth не поддерживается");
+        } else {
+            if (mBluetoothAdapter.isEnabled()) {
+                Log.d(TAG, "...Bluetooth включен...");
+            } else {
+                //Prompt user to turn on Bluetooth
+                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                presenter.startActivity(enableBtIntent, REQUEST_ENABLE_BT);
+            }
+        }
+    }*/
+
+    private class ConnectedThread extends Thread {
+        private final BluetoothSocket mmSocket;
+        private final OutputStream mmOutStream;
+
+        ConnectedThread(BluetoothSocket socket) {
+            mmSocket = socket;
+            OutputStream tmpOut = null;
+
+            // Get the input and output streams, using temp objects because
+            // member streams are final
+            try {
+                tmpOut = socket.getOutputStream();
+            } catch (IOException ignored) { }
+            mmOutStream = tmpOut;
+        }
+
+        /* Call this from the main activity to send data to the remote device */
+        void write(String message) {
+            Log.d(TAG, "...Данные для отправки: " + message + "  ");
+            byte[] msgBuffer = message.getBytes();
+            try {
+                mmOutStream.write(msgBuffer);
+            } catch (IOException e) {
+                Log.d(TAG, "...Ошибка отправки данных: " + e.getMessage() + "  ");
+            }
+        }
+
+        /* Call this from the main activity to shutdown the connection */
+        public void cancel() {
+            try {
+                mmSocket.close();
+            } catch (IOException e) { }
+        }
+    }
 }
+

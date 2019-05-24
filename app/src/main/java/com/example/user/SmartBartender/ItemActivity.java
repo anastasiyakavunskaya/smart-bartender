@@ -21,6 +21,7 @@ public class ItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
         init();
+        //presenter.checkBluetooth();
     }
 
     private void init(){
@@ -80,6 +81,9 @@ public class ItemActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-
-
+    /*@Override
+    protected void onResume() {
+        super.onResume();
+        presenter.onResume();
+    }*/
 }

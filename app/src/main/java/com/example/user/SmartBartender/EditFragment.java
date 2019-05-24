@@ -79,7 +79,7 @@ public class EditFragment extends AppCompatDialogFragment {
                             onDestroy();
                             restart(false);
                         }
-                        Toast.makeText(getActivity(),"Введены одинаковые ингредиенты! Попробуйте снова!",Toast.LENGTH_LONG).show();
+                        else Toast.makeText(getContext(),"Введены одинаковые ингредиенты! Попробуйте снова!",Toast.LENGTH_LONG).show();
                     }
                 })
                 .setNegativeButton(negativeBtn, new DialogInterface.OnClickListener() {

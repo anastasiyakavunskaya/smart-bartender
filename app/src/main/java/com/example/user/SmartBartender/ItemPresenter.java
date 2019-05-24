@@ -1,7 +1,9 @@
 package com.example.user.SmartBartender;
 
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 class ItemPresenter {
 
@@ -12,6 +14,7 @@ class ItemPresenter {
     ItemPresenter(ItemModel model, boolean isIngredient) {
         this.model = model;
         this.isIngredient = isIngredient;
+        model.attach(this);
     }
 
     void attachView(ItemActivity itemActivity) {
@@ -41,10 +44,14 @@ class ItemPresenter {
     void onCookClick(String item){
         model.onCookClick(item);
     }
+    void showError(String str){
+        Toast.makeText(view,str,Toast.LENGTH_LONG).show();
+    }
+    void startActivity(Intent intent, int i){
+        view.startActivityForResult(intent, i);
+    }
 
-
-
-
-
-
+    void onResume(){
+        model.bluetoothOnResume();
+    }
 }

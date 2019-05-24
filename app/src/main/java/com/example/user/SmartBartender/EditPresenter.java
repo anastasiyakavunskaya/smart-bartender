@@ -30,7 +30,6 @@ class EditPresenter {
 
     void onAddRecipePressed(String recipe, ArrayList<Ingredient> ingredients, boolean isLayer){
         model.onAddPressed(false, recipe,ingredients, isLayer);
-
     }
 
     void onAddIngredientPressed(String name){

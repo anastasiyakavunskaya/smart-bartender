@@ -242,6 +242,7 @@ class EditModel {
         contentValues.clear();
 
     }
+
     void setCoefficientSetting(String coefficient){
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -249,9 +250,11 @@ class EditModel {
         database.update(TABLE_SETTINGS,contentValues,"_id = ?", new String [] {String.valueOf(7)});
         contentValues.clear();
     }
+
     int getCoefficient(){
         return getSettingsDbIds().get(6);
     }
+
     void deleteSettings(){
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
