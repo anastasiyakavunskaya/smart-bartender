@@ -43,30 +43,23 @@ class EditModel {
     }
     void onAddPressed(boolean isIngredient, String name, ArrayList<Ingredient> list, boolean isLayer) {
         String selectRecId = "SELECT  * FROM " + TABLE_RECIPES + " WHERE " + KEY_NAME + " = ";
-
         if (isIngredient) {
-            if ((!(name.equals(" "))) && (isUnique(name, dbHelper.getReadableDatabase(), TABLE_INGREDIENTS))) {
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(KEY_NAME, name);
                 dbHelper.getReadableDatabase().insert(TABLE_INGREDIENTS, null, contentValues);
                 dbHelper.close();
-            }
-            //presenter.showNameError();
-
         } else {
             SQLiteDatabase db = dbHelper.getReadableDatabase();
-            if ((!name.equals(" ")) && (isUnique(name, db, TABLE_RECIPES))) {
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(KEY_NAME, name);
-                if(isLayer)contentValues.put(KEY_LAYER, 1);
-                else contentValues.put(KEY_LAYER,0);
-                db.insert(TABLE_RECIPES, null, contentValues);
-                contentValues.clear();
-                int recID = getID(selectRecId, name);
-                if (!list.isEmpty()) {
-                    for (int i = 0; i <list.size(); i++) {
-                        String ingName = list.get(i).name;
-                        if(!ingName.equals("Пусто")){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(KEY_NAME, name);
+            if(isLayer)contentValues.put(KEY_LAYER, 1);
+            else contentValues.put(KEY_LAYER,0);
+            db.insert(TABLE_RECIPES, null, contentValues);
+            contentValues.clear();
+            int recID = getID(selectRecId, name);
+                for (int i = 0; i <list.size(); i++) {
+                    String ingName = list.get(i).name;
+                    if(!ingName.equals("Пусто")){
                             int ingValue = list.get(i).value;
                             int ingID = getID(selectIngId, ingName);
                             contentValues.put(KEY_RECIPES_ID, recID);
@@ -74,13 +67,9 @@ class EditModel {
                             contentValues.put(KEY_VOLUME, ingValue);
                             db.insert(TABLE_ING_REC, null, contentValues);
                             contentValues.clear();
-                        }
                     }
-                    dbHelper.close();
-                    //restart();
                 }
-                //presenter.showNameError();
-            }
+                dbHelper.close();
         }
     }
     void onDeletePressed(boolean isIngredient, String item){
@@ -127,21 +116,23 @@ class EditModel {
         cursor.close();
         return list;
     }
-
-    private boolean isUnique(String item, SQLiteDatabase database, String tableName) {
-        List<Integer> ids = new ArrayList<>();
-        String query = "SELECT  * FROM " + tableName + " WHERE " + KEY_NAME + " = " + "\"" + item + "\"";
-        Cursor c = database.rawQuery(query, null);
-        if ((c != null) && (c.moveToFirst())) {
+    ArrayList <String> getListOfRecipes(){
+        String warning = "Список рецептов пуст";
+        //получаем актуальную версию базы данных
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
+        ArrayList<String> list = new ArrayList<>();
+        Cursor cursor = database.query(TABLE_RECIPES, null, null, null, null, null, KEY_NAME);
+        if (cursor.moveToFirst()) {
+            int nameIndex = cursor.getColumnIndex(KEY_NAME);
             do {
-                int index = (c.getColumnIndex(KEY_NAME));
-                int id = c.getInt(index);
-                ids.add(id);
-            } while (c.moveToNext());
-            c.close();
-        }
-        return ids.isEmpty();
+                list.add(cursor.getString(nameIndex));
+            } while (cursor.moveToNext());
+        } else
+            list.add(warning);
+        cursor.close();
+        return list;
     }
+
 
     private int getID(String query, String name) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -276,5 +267,6 @@ class EditModel {
             c.moveToFirst();
         assert c != null;
         return (c.getInt(c.getColumnIndex(KEY_LAYER))==1);
-        }
+    }
+
 }

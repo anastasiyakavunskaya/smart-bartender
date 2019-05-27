@@ -243,8 +243,8 @@ public class EditFragment extends AppCompatDialogFragment {
         getActivity().finish();
     }
 
-    void makeToast(String toast){
-        Toast.makeText(getActivity(),toast,Toast.LENGTH_LONG).show();
+    void showToast(String toast){
+        Toast.makeText(getContext(),toast,Toast.LENGTH_SHORT).show();
     }
 
 }

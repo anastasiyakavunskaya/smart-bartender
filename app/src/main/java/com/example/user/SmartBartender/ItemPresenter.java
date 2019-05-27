@@ -47,11 +47,4 @@ class ItemPresenter {
     void showError(String str){
         Toast.makeText(view,str,Toast.LENGTH_LONG).show();
     }
-    void startActivity(Intent intent, int i){
-        view.startActivityForResult(intent, i);
-    }
-
-    void onResume(){
-        model.bluetoothOnResume();
-    }
 }

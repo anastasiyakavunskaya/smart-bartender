@@ -58,6 +58,7 @@ public class ItemActivity extends AppCompatActivity {
         presenter.attachView(this);
         presenter.viewIsReady();
 
+
         //инициализация кнопки добавления
         FloatingActionButton addBtn = findViewById(R.id.add_button);
         addBtn.setOnClickListener(new View.OnClickListener() {

@@ -39,7 +39,8 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         Button infoBtn = findViewById(R.id.info_button);
         infoBtn.setOnClickListener(this);
 
-        //checkBluetooth();
+        while(ItemModel.mSocket==null){
+        checkBluetooth();}
     }
 
     @Override
@@ -66,7 +67,8 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 settingsFragment.show(fm2,"settings");
                 break;
                 default:
-                    break;        }
+                    break;
+        }
 
     }
     void checkBluetooth(){
@@ -74,7 +76,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         // Check for Bluetooth support and then check to make sure it is turned on
         // Emulator doesn't support Bluetooth and will return null
         if(mBluetoothAdapter==null) {
-            showError( "Bluetooth не поддерживается");
+            Toast.makeText( this,"Bluetooth не поддерживается",Toast.LENGTH_LONG).show();
         } else {
             if (mBluetoothAdapter.isEnabled()) {
                 Log.d(TAG, "...Bluetooth включен...");
@@ -84,8 +86,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             }
         }
-    }
-    void showError(String str){
-        Toast.makeText(this,str,Toast.LENGTH_LONG).show();
+        ItemModel.ConnectBluetooth bluetoothConnection = new ItemModel.ConnectBluetooth();
+        bluetoothConnection.execute();
     }
 }
