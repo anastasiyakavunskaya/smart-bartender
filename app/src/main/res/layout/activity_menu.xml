@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="403dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -20,16 +20,19 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_weight="1"
+                >
                 <Button
                     android:id="@+id/ingredients_button"
                     style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="@dimen/button_size"
-                    android:layout_height="@dimen/button_size"
+                    android:layout_width="70sp"
+                    android:layout_height="70sp"
                     android:layout_marginRight="30dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="30dp"
                     android:layout_marginBottom="5dp"
+                    android:layout_gravity="center"
                     android:background="@drawable/ingredients" />
 
                 <TextView
@@ -41,29 +44,34 @@
                     android:textColor="@color/colorPrimaryDark"/>
 
             </LinearLayout>
-            <LinearLayout
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="156dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/recipes_button"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="70sp"
+                android:layout_height="70sp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="5dp"
+                android:layout_gravity="center"
+                android:background="@drawable/cocktails"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <Button
-                    android:id="@+id/recipes_button"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="@dimen/button_size"
-                    android:layout_height="@dimen/button_size"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginBottom="5dp"
-                    android:background="@drawable/cocktails"
-                    android:textColor="@color/colorPrimaryDark"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/recipes"
-                    android:textSize="20sp" />
+                android:layout_gravity="center"
+                android:text="@string/recipes"
+                android:textSize="20sp" />
         </LinearLayout>
+
 
 
     </LinearLayout>
@@ -111,6 +119,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:text="@string/app_title"
+        android:textAlignment="center"
         android:textSize="70sp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"

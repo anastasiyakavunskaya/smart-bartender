@@ -10,6 +10,7 @@
 
     <string name="ingredients">Ингредиенты</string>
     <string name="recipes">Рецепты</string>
+    <string name="layer_recipes">Слоёныe \n рецепты</string>
     <string name="title_coefficient">Коэффициент для конвертации</string>
     <string name="_100">100</string>
     <string name="info"> Это приложение позволяет готовить коктейли!</string>

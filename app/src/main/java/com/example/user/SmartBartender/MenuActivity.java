@@ -38,9 +38,11 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
         Button infoBtn = findViewById(R.id.info_button);
         infoBtn.setOnClickListener(this);
-
+        checkBluetooth();
         while(ItemModel.mSocket==null){
-        checkBluetooth();}
+            ItemModel.ConnectBluetooth bluetoothConnection = new ItemModel.ConnectBluetooth();
+            bluetoothConnection.execute();
+        }
     }
 
     @Override
@@ -86,7 +88,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             }
         }
-        ItemModel.ConnectBluetooth bluetoothConnection = new ItemModel.ConnectBluetooth();
-        bluetoothConnection.execute();
+
     }
 }

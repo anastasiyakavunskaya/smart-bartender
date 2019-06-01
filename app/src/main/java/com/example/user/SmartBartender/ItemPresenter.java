@@ -44,7 +44,7 @@ class ItemPresenter {
     void onCookClick(String item){
         model.onCookClick(item);
     }
-    void showError(String str){
+    void showToast(String str){
         Toast.makeText(view,str,Toast.LENGTH_LONG).show();
     }
 }

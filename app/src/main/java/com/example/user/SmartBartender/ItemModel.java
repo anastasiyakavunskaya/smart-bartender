@@ -130,11 +130,11 @@ class ItemModel {
         else output = generateSimpleOutputString(recipe);
         if(mSocket!=null){
             mConnectedThread.write(output);
-            presenter.showError("Приготовление напитка началось");
+            presenter.showToast("Приготовление напитка началось");
         }
         else  {
             Log.d(TAG, "...Не удалось отправить...");
-            presenter.showError("Что-то пошло не так!");
+            presenter.showToast("Что-то пошло не так!");
         }
     }
 

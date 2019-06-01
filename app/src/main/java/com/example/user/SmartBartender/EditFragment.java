@@ -66,7 +66,7 @@ public class EditFragment extends AppCompatDialogFragment {
                 .setTitle(title)
                 .setPositiveButton(positiveBtn, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        boolean isLayer = checkBox.isChecked();
+                        boolean isLayer = false;//checkBox.isChecked();
                         ArrayList<Integer> values = getListOfValues(view);
                         String recipe = ((EditText) view.findViewById(R.id.recipe_name)).getText().toString();
                         if(presenter.isSpinnersCorrect(getData(values, spinners))){
