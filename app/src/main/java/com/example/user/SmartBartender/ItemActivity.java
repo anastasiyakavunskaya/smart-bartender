@@ -82,9 +82,4 @@ public class ItemActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    /*@Override
-    protected void onResume() {
-        super.onResume();
-        presenter.onResume();
-    }*/
 }

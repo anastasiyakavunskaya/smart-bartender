@@ -6,106 +6,33 @@
     android:orientation="vertical"
     android:background="@color/colorBackground"
     >
-
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="597dp"
+        android:layout_height="354dp"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_weight="1"
-                >
-                <Button
-                    android:id="@+id/ingredients_button"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="70sp"
-                    android:layout_height="70sp"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/ingredients" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/ingredients"
-                    android:textSize="20sp"
-                    android:textColor="@color/colorPrimaryDark"/>
-
-            </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="156dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
+        app:layout_constraintVertical_bias="0.5"
+        android:orientation="vertical">
 
             <Button
                 android:id="@+id/recipes_button"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="70sp"
-                android:layout_height="70sp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginBottom="5dp"
-                android:layout_gravity="center"
-                android:background="@drawable/cocktails"
-                android:textColor="@color/colorPrimaryDark" />
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/recipes"
-                android:textSize="20sp" />
-        </LinearLayout>
+                android:background="@color/colorPrimary"
+                android:textColor="@color/colorPrimaryDark" />
 
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
-
-        <Button
-            android:id="@+id/info_button"
-            style="@style/Widget.AppCompat.Button"
-            android:layout_width="@dimen/button_size2"
-            android:layout_height="@dimen/button_size2"
-            android:layout_margin="15dp"
-            android:background="@drawable/information"
-            android:src="@android:drawable/ic_menu_info_details" />
-
-        <Button
-            android:id="@+id/settings_button"
-            style="@style/Widget.AppCompat.Button"
-            android:layout_width="@dimen/button_size2"
-            android:layout_height="@dimen/button_size2"
-            android:layout_margin="15dp"
-            android:background="@drawable/settings"
-             />
-
+            <Button
+                android:id="@+id/settings_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:text="@string/information" />
     </LinearLayout>
 
     <TextView

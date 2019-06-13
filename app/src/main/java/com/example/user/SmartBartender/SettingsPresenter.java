@@ -29,4 +29,5 @@ class SettingsPresenter {
     String getCoefficient(){
         return String.valueOf(model.getCoefficient());
     }
+    //TODO check if list of ingredients is empty-> block settings
 }

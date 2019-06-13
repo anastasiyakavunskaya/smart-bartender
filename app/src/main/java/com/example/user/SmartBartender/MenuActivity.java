@@ -27,17 +27,13 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_menu);
 
-        Button ingredientsBtn = findViewById(R.id.ingredients_button);
-        ingredientsBtn.setOnClickListener(this);
-
         Button recipesBtn = findViewById(R.id.recipes_button);
         recipesBtn.setOnClickListener(this);
 
         Button settingsBtn = findViewById(R.id.settings_button);
         settingsBtn.setOnClickListener(this);
 
-        Button infoBtn = findViewById(R.id.info_button);
-        infoBtn.setOnClickListener(this);
+
         checkBluetooth();
         while(ItemModel.mSocket==null){
             ItemModel.ConnectBluetooth bluetoothConnection = new ItemModel.ConnectBluetooth();
@@ -48,25 +44,18 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.ingredients_button:
-                Intent ingIntent = new Intent(this, ItemActivity.class);
-                ingIntent.putExtra("isIngredient", true);
-                startActivity(ingIntent);
-                break;
             case R.id.recipes_button:
-                Intent recIntent = new Intent(this, ItemActivity.class);
+              /*  Intent recIntent = new Intent(this, ItemActivity.class);
                 recIntent.putExtra("isIngredient", false);
-                startActivity(recIntent);
-                break;
-            case R.id.info_button:
-                InfoFragment infoFragment = new InfoFragment();
-                FragmentManager fm1 = getSupportFragmentManager();
-                infoFragment.show(fm1,"information");
+                startActivity(recIntent);*/
+                IngredientsFragment ingredientsFragment = new IngredientsFragment();
+                FragmentManager fm = getSupportFragmentManager();
+                //ingredientsFragment.onCreate();
                 break;
             case R.id.settings_button:
-                SettingsFragment settingsFragment = new SettingsFragment();
-                FragmentManager fm2 = getSupportFragmentManager();
-                settingsFragment.show(fm2,"settings");
+                Intent setIntent = new Intent(this, SettingsActivity.class);
+                setIntent.putExtra("isIngredient", false);
+                startActivity(setIntent);
                 break;
                 default:
                     break;

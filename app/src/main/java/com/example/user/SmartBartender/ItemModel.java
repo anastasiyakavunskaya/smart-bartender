@@ -167,6 +167,7 @@ class ItemModel {
     }
 
     static class ConnectBluetooth extends AsyncTask<Void,Void,Void>{
+        boolean ConnectSuccess = true;
 
         @Override
         protected Void doInBackground(Void... devices) //while the progress dialog is shown, the connection is done in background
@@ -194,9 +195,10 @@ class ItemModel {
             }
             catch (IOException e)
             {
-                //ConnectSuccess = false;//if the try failed, you can check the exception here
+                ConnectSuccess = false;//if the try failed, you can check the exception here
                 Log.d(TAG, "...Не удалось ничего.....  ");
             }
+
             mConnectedThread = new ConnectedThread(mSocket);
             mConnectedThread.start();
             return null;

@@ -51,8 +51,8 @@ public class EditFragment extends AppCompatDialogFragment {
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private void buildRecipes(AlertDialog.Builder builder) {
-        editText = view.findViewById(R.id.recipe_name);
         checkBox = view.findViewById(R.id.checkbox);
+        editText = view.findViewById(R.id.recipe_name);
         final ArrayList<Spinner> spinners;
         if (!addition) {
             assert getArguments() != null;
