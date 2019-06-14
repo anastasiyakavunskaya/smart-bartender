@@ -3,7 +3,6 @@ package com.example.user.SmartBartender;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -11,10 +10,12 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.user.SmartBartender.SettingsFragments.MotorsSettingsFragment;
+
 import static android.content.ContentValues.TAG;
 
 
-public class MenuActivity extends AppCompatActivity implements View.OnClickListener, SettingsFragment.OnFragmentInteractionListener {
+public class MenuActivity extends AppCompatActivity implements View.OnClickListener, MotorsSettingsFragment.OnFragmentInteractionListener {
 
     private BluetoothAdapter mBluetoothAdapter = null;
     private static final int REQUEST_ENABLE_BT = 1;
@@ -48,8 +49,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
               /*  Intent recIntent = new Intent(this, ItemActivity.class);
                 recIntent.putExtra("isIngredient", false);
                 startActivity(recIntent);*/
-                IngredientsFragment ingredientsFragment = new IngredientsFragment();
-                FragmentManager fm = getSupportFragmentManager();
+
                 //ingredientsFragment.onCreate();
                 break;
             case R.id.settings_button:
@@ -57,6 +57,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 setIntent.putExtra("isIngredient", false);
                 startActivity(setIntent);
                 break;
+
                 default:
                     break;
         }

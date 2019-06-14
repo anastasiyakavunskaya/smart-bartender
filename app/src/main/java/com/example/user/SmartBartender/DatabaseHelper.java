@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-class DatabaseHelper extends SQLiteOpenHelper {
+public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     private static final int DATABASE_VERSION = 1;
@@ -35,7 +35,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_SETTINGS = "CREATE TABLE " + TABLE_SETTINGS + "(" + KEY_ID + " integer primary key," + KEY_INGREDIENTS_ID + " integer" + ")";
 
 
-    DatabaseHelper(Context context) {
+    public DatabaseHelper(Context context) {
         super(context,DATABASE_NAME, null, DATABASE_VERSION);
     }
 

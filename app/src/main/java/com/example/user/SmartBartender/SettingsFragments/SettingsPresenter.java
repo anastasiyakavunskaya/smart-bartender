@@ -1,5 +1,7 @@
-package com.example.user.SmartBartender;
+package com.example.user.SmartBartender.SettingsFragments;
 
+
+import com.example.user.SmartBartender.EditModel;
 
 import java.util.ArrayList;
 

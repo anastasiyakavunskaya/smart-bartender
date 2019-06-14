@@ -18,17 +18,17 @@ import static com.example.user.SmartBartender.DatabaseHelper.TABLE_ING_REC;
 import static com.example.user.SmartBartender.DatabaseHelper.TABLE_RECIPES;
 import static com.example.user.SmartBartender.DatabaseHelper.TABLE_SETTINGS;
 
-class EditModel {
+public class EditModel {
 
     private final DatabaseHelper dbHelper;
     private final String selectIngId = "SELECT  * FROM " + TABLE_INGREDIENTS + " WHERE " + KEY_NAME + " = ";
 
 
-    EditModel(DatabaseHelper dbHelper) {
+    public EditModel(DatabaseHelper dbHelper) {
         this.dbHelper = dbHelper;
     }
 
-    void onSavePressed(boolean isIngredient, String name, String oldName, ArrayList<Ingredient> list, boolean isLayer){
+    public void onSavePressed(boolean isIngredient, String name, String oldName, ArrayList<Ingredient> list, boolean isLayer){
         if(isIngredient){
             ContentValues contentValues = new ContentValues();
             contentValues.put(KEY_NAME,name);
@@ -72,7 +72,7 @@ class EditModel {
                 dbHelper.close();
         }
     }
-    void onDeletePressed(boolean isIngredient, String item){
+    public void onDeletePressed(boolean isIngredient, String item){
         if(isIngredient){
             int id = getID(selectIngId,item);
             dbHelper.getReadableDatabase().delete(TABLE_INGREDIENTS,"name = ?", new String[] {item});
@@ -100,7 +100,7 @@ class EditModel {
 
     }
 
-    ArrayList <String> getListOfIngredients(){
+    public ArrayList <String> getListOfIngredients(){
         String warning = "Список ингредиентов пуст";
         //получаем актуальную версию базы данных
         SQLiteDatabase database = dbHelper.getReadableDatabase();
@@ -116,7 +116,7 @@ class EditModel {
         cursor.close();
         return list;
     }
-    ArrayList <String> getListOfRecipes(){
+    public ArrayList <String> getListOfRecipes(){
         String warning = "Список рецептов пуст";
         //получаем актуальную версию базы данных
         SQLiteDatabase database = dbHelper.getReadableDatabase();
@@ -134,7 +134,7 @@ class EditModel {
     }
 
 
-    private int getID(String query, String name) {
+    public int getID(String query, String name) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         query += "\"" + name + "\"";
         Cursor c = db.rawQuery(query, null);
@@ -144,7 +144,7 @@ class EditModel {
         return c.getInt(c.getColumnIndex(KEY_ID));
     }
 
-    List<Ingredient> getItems(String item) {
+    public List<Ingredient> getItems(String item) {
 
         List<Ingredient> ingredients = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -180,7 +180,7 @@ class EditModel {
         return ingredients;
     }
 
-    ArrayList<Integer> getSettingsDbIds(){
+    public ArrayList<Integer> getSettingsDbIds(){
         ArrayList<Integer> list = new ArrayList<>();
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         Cursor cursor = database.query(DatabaseHelper.TABLE_SETTINGS, null, null, null, null, null, null);
@@ -194,7 +194,7 @@ class EditModel {
         return list;
     }
 
-    ArrayList<Integer> getSettingsIds(){
+    public ArrayList<Integer> getSettingsIds(){
         ArrayList<String> ingredientsList = getListOfIngredients();
         ArrayList<Integer> list = new ArrayList<>();
         ArrayList<Integer> settingsList = getSettingsDbIds();
@@ -208,7 +208,7 @@ class EditModel {
         return list;
     }
 
-    private String getItemById(int id){
+    public String getItemById(int id){
         String query = "SELECT  * FROM " + TABLE_INGREDIENTS + " WHERE " + KEY_ID + " = " + "\"" + id + "\"";
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         Cursor c = database.rawQuery(query,null);
@@ -218,7 +218,7 @@ class EditModel {
         return c.getString(c.getColumnIndex(KEY_NAME));
     }
 
-    void setIngredientsSettings(int i, String set){
+    public void setIngredientsSettings(int i, String set){
         SQLiteDatabase database = dbHelper.getReadableDatabase();
 
         ContentValues contentValues = new ContentValues();
@@ -234,7 +234,7 @@ class EditModel {
 
     }
 
-    void setCoefficientSetting(String coefficient){
+    public void setCoefficientSetting(String coefficient){
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_INGREDIENTS_ID,coefficient);
@@ -242,11 +242,11 @@ class EditModel {
         contentValues.clear();
     }
 
-    int getCoefficient(){
+    public int getCoefficient(){
         return getSettingsDbIds().get(6);
     }
 
-    void deleteSettings(){
+    public void deleteSettings(){
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_INGREDIENTS_ID,-1);
@@ -259,7 +259,7 @@ class EditModel {
         contentValues.clear();
     }
 
-    boolean isChecked(String item){
+    public boolean isChecked(String item){
         String query = "SELECT  * FROM " + TABLE_RECIPES + " WHERE " + KEY_NAME + " = " + "\"" + item + "\"";
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         Cursor c = database.rawQuery(query,null);

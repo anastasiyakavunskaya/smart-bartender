@@ -20,6 +20,10 @@
             android:id="@+id/nav_coefficient"
             android:icon="@drawable/ic_menu_manage"
             android:title="Изменение коэффициента" />
+        <item
+            android:id="@+id/nav_admin"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Ручной ввод команды" />
     </group>
 
     <item android:title="Есть проблемы?">
