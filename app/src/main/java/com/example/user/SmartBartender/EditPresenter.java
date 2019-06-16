@@ -1,6 +1,13 @@
 package com.example.user.SmartBartender;
 
 
+
+import android.support.v4.app.Fragment;
+import android.content.Context;
+import android.support.v4.app.FragmentManager;
+
+import com.example.user.SmartBartender.SettingsFragments.IngredientsFragment;
+
 import java.util.ArrayList;
 
 class EditPresenter {
@@ -15,6 +22,7 @@ class EditPresenter {
     void attach(EditFragment editFragment){
         fragment = editFragment;
     }
+
 
     ArrayList<String> getIngredients(){
         return model.getListOfIngredients();

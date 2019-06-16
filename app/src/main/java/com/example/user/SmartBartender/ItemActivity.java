@@ -51,8 +51,8 @@ public class ItemActivity extends AppCompatActivity {
         });
         recycler.setAdapter(adapter);
         //создание модели
-        final DatabaseHelper dbHelper = new DatabaseHelper(this);
-        ItemModel itemModel = new ItemModel(dbHelper);
+        //final DatabaseHelper dbHelper = new DatabaseHelper(this);
+        ItemModel itemModel = new ItemModel(this);
         //создание презентера
         presenter = new ItemPresenter(itemModel, isIngredient);
         presenter.attachView(this);

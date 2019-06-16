@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/colorBackground"
     >
 
     <LinearLayout
@@ -26,14 +25,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="TEST"
-                android:background="@color/colorPrimary"
-                android:textColor="@color/colorPrimaryDark" />
+                android:background="@color/colorAccent" />
 
             <Button
                 android:id="@+id/settings_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
+                android:background="@color/colorAccent"
                 android:text="@string/information" />
 
     </LinearLayout>

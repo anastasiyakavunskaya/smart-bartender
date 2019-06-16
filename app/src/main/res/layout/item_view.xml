@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="58sp"
+    android:layout_height="wrap_content"
     android:id="@+id/item_layout"
     android:orientation="horizontal"
 
@@ -12,20 +12,27 @@
         android:id="@+id/cook_btn"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
         android:background="@color/colorAccent"
         android:ellipsize="none"
         android:padding="10dp"
-        android:text="ПРИГОТОВИТЬ"
-        android:visibility="visible" />
+        android:text="cook"
+        android:visibility="visible"
+        android:layout_weight="1"/>
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/item_text_size"
         tools:text="item"
-        android:layout_weight="4"
+        android:layout_weight="8"
         android:id="@+id/item_name"
-        android:padding="8dp"
+        android:textSize="@dimen/item_text_size"
+        android:paddingLeft="@dimen/padding"
+        android:paddingStart="@dimen/padding" />
+    <Button
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/delete_btn"
+        android:background="@android:drawable/ic_menu_delete"
         />
 </LinearLayout>

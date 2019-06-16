@@ -6,22 +6,45 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center">
-
+        android:orientation="vertical">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Коэффициент для конверации"/>
+            android:text="@string/coefficient_intro"
+            android:gravity="center"
+            android:layout_margin="@dimen/margin"/>
 
-        <EditText
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/item_text_size"
+                android:text="Коэффициент для конверации:"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_coefficient"
+                android:textSize="@dimen/settings_text_size"
+                android:inputType="numberDecimal"
+                android:hint="@string/const_100"
+                />
+        </LinearLayout>
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/edit_coefficient"
-            android:textSize="@dimen/settings_text_size"
-            android:inputType="numberDecimal"
-            android:hint="@string/const_100"
-            />
+            android:text="@string/set_btn"
+            android:layout_gravity="center"/>
+
+
     </LinearLayout>
+
+
 
 
 </FrameLayout>

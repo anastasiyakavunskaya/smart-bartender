@@ -10,5 +10,4 @@ class Ingredient {
         this.value = value;
         this.name = name;
     }
-
 }

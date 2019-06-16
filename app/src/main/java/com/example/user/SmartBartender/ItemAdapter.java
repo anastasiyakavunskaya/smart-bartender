@@ -24,12 +24,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
     }
 
     private final boolean isIngredient;
-    ItemAdapter( boolean isIngredient, OnItemClickListener listener){
+    public ItemAdapter(boolean isIngredient, OnItemClickListener listener){
         this.listener = listener;
         this.isIngredient = isIngredient;
     }
 
-    void setData(List<String> items) {
+    public void setData(List<String> items) {
         data.clear();
         data.addAll(items);
         notifyDataSetChanged();
@@ -56,6 +56,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
     static class ItemHolder extends RecyclerView.ViewHolder{
         private final TextView itemName;
         final Button b = itemView.findViewById(R.id.cook_btn);
+        final Button d = itemView.findViewById(R.id.delete_btn);
 
         private ItemHolder(View itemView){
             super(itemView);
@@ -65,6 +66,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
         void bind(final String item, final OnItemClickListener listener, boolean isAll) {
                 itemName.setText(item);
                 if(isAll) b.setVisibility(Button.GONE);
+                else d.setVisibility(Button.GONE);
                 itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     listener.onItemClick(item);
@@ -75,6 +77,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
                         listener.onButtonClick(item);
                     }
                 });
+                d.setOnClickListener(new View.OnClickListener(){
+                @Override public void onClick(View v) {
+                    listener.onButtonClick(item);
+                }
+            });
             }
         }
 

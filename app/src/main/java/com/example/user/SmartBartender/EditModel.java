@@ -1,6 +1,7 @@
 package com.example.user.SmartBartender;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -24,8 +25,8 @@ public class EditModel {
     private final String selectIngId = "SELECT  * FROM " + TABLE_INGREDIENTS + " WHERE " + KEY_NAME + " = ";
 
 
-    public EditModel(DatabaseHelper dbHelper) {
-        this.dbHelper = dbHelper;
+    public EditModel(Context context) {
+        this.dbHelper = new DatabaseHelper(context);
     }
 
     public void onSavePressed(boolean isIngredient, String name, String oldName, ArrayList<Ingredient> list, boolean isLayer){
@@ -101,7 +102,6 @@ public class EditModel {
     }
 
     public ArrayList <String> getListOfIngredients(){
-        String warning = "Список ингредиентов пуст";
         //получаем актуальную версию базы данных
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         ArrayList<String> list = new ArrayList<>();
@@ -111,8 +111,7 @@ public class EditModel {
             do {
                 list.add(cursor.getString(nameIndex));
             } while (cursor.moveToNext());
-        } else
-            list.add(warning);
+        }
         cursor.close();
         return list;
     }
@@ -133,6 +132,21 @@ public class EditModel {
         return list;
     }
 
+    public ArrayList<String> loadItems() {
+        //String warning = "Пусто, добавьте первый ингредиент";
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
+        ArrayList<String> list = new ArrayList<>();
+        Cursor cursor = database.query(TABLE_INGREDIENTS, null, null, null, null, null, KEY_NAME);
+
+        if (cursor.moveToFirst()) {
+            int nameIndex = cursor.getColumnIndex(KEY_NAME);
+            do {
+                list.add(cursor.getString(nameIndex));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return list;
+    }
 
     public int getID(String query, String name) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -267,6 +281,27 @@ public class EditModel {
             c.moveToFirst();
         assert c != null;
         return (c.getInt(c.getColumnIndex(KEY_LAYER))==1);
+    }
+    public void saveItem(String oldName, String name){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_NAME,name);
+        if(oldName==null){
+            dbHelper.getReadableDatabase().insert(TABLE_INGREDIENTS, null, contentValues);
+        }
+        else{
+            dbHelper.getWritableDatabase().update(TABLE_INGREDIENTS, contentValues,"name = ?", new String[] {oldName});
+        }
+
+        dbHelper.close();
+    }
+
+    public void deleteItem(String item){
+        int id = getID(selectIngId,item);
+        dbHelper.getReadableDatabase().delete(TABLE_INGREDIENTS,"name = ?", new String[] {item});
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_INGREDIENTS_ID,-1);
+        dbHelper.getReadableDatabase().update(TABLE_SETTINGS,contentValues,"ing_id = ?", new String [] {String.valueOf(id)});
+        dbHelper.close();
     }
 
 }

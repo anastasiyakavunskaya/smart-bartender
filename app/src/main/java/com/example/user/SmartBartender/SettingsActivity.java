@@ -13,15 +13,17 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.example.user.SmartBartender.SettingsFragments.AdminFragment;
 import com.example.user.SmartBartender.SettingsFragments.CoefficientFragment;
 import com.example.user.SmartBartender.SettingsFragments.InfoFragment;
+import com.example.user.SmartBartender.SettingsFragments.IngredientsFragment;
 import com.example.user.SmartBartender.SettingsFragments.MotorsSettingsFragment;
 
 public class SettingsActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, InfoFragment.OnFragmentInteractionListener, CoefficientFragment.OnFragmentInteractionListener {
+        implements  NavigationView.OnNavigationItemSelectedListener, AdminFragment.OnFragmentInteractionListener, IngredientsFragment.OnFragmentInteractionListener, InfoFragment.OnFragmentInteractionListener, CoefficientFragment.OnFragmentInteractionListener {
 
     Fragment fragment = null;
-    Class fragmentClass;
+    Class fragmentClass = IngredientsFragment.class;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,15 +39,6 @@ public class SettingsActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-
-        try {
-            fragmentManager.beginTransaction().replace(R.id.flContent, InfoFragment.class.newInstance()).commit();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -68,7 +61,7 @@ public class SettingsActivity extends AppCompatActivity
                 break;
             }
             case R.id.nav_ingredients:{
-                //fragmentClass = IngredientsFragment.class;
+               fragmentClass = IngredientsFragment.class;
                 break;
             }
             case R.id.nav_settings:{
@@ -84,6 +77,7 @@ public class SettingsActivity extends AppCompatActivity
                 break;
             }
             case R.id.nav_admin:{
+                fragmentClass = AdminFragment.class;
                 break;
             }
             default:
@@ -97,18 +91,15 @@ public class SettingsActivity extends AppCompatActivity
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
-        // Выделение существующего элемента выполнено с помощью
-        // NavigationView
+
         item.setChecked(true);
-        // Установить заголовок для action bar'а
         setTitle(item.getTitle());
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
     @Override
     public void onFragmentInteraction(Uri uri) {
     }
+
 }

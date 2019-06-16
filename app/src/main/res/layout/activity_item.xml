@@ -15,7 +15,5 @@
         android:layout_height="@dimen/button_size2"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
-        android:src="@drawable/add"
-        app:backgroundTint="@color/colorPrimary"
-        app:fabSize="normal" />
+        />
 </android.support.design.widget.CoordinatorLayout>

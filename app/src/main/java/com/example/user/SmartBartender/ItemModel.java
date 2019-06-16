@@ -3,6 +3,8 @@ package com.example.user.SmartBartender;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -22,8 +24,9 @@ import static com.example.user.SmartBartender.DatabaseHelper.KEY_RECIPES_ID;
 import static com.example.user.SmartBartender.DatabaseHelper.TABLE_INGREDIENTS;
 import static com.example.user.SmartBartender.DatabaseHelper.TABLE_ING_REC;
 import static com.example.user.SmartBartender.DatabaseHelper.TABLE_RECIPES;
+import static com.example.user.SmartBartender.DatabaseHelper.TABLE_SETTINGS;
 
-class ItemModel {
+public class ItemModel {
     private final DatabaseHelper dbHelper;
     private ItemPresenter presenter;
     private static ConnectedThread mConnectedThread;
@@ -33,14 +36,15 @@ class ItemModel {
 
     private static BluetoothAdapter mBluetoothAdapter = null;
     static BluetoothSocket mSocket = null;
+    private final String selectIngId = "SELECT  * FROM " + TABLE_INGREDIENTS + " WHERE " + KEY_NAME + " = ";
 
 
-    ItemModel(DatabaseHelper dbHelper) {
-        this.dbHelper = dbHelper;
+    public ItemModel(Context context) {
+        this.dbHelper = new DatabaseHelper(context);
     }
 
-    ArrayList<String> loadItems() {
-        String warning = "Пусто, добавьте первый ингредиент";
+    public ArrayList<String> loadItems() {
+        //String warning = "Пусто, добавьте первый ингредиент";
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         ArrayList<String> list = new ArrayList<>();
         Cursor cursor = database.query(TABLE_INGREDIENTS, null, null, null, null, null, KEY_NAME);
@@ -50,13 +54,43 @@ class ItemModel {
             do {
                 list.add(cursor.getString(nameIndex));
             } while (cursor.moveToNext());
-        } else
-            list.add(warning);
+        }
         cursor.close();
         return list;
     }
 
-    private boolean isReadyToCook(String recipeName) {
+    public void saveItem(String oldName, String name){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_NAME,name);
+        if(oldName==null){
+            dbHelper.getReadableDatabase().insert(TABLE_INGREDIENTS, null, contentValues);
+        }
+        else{
+            dbHelper.getWritableDatabase().update(TABLE_INGREDIENTS, contentValues,"name = ?", new String[] {oldName});
+        }
+
+        dbHelper.close();
+    }
+
+    public void deleteItem(String item){
+        int id = getID(selectIngId,item);
+        dbHelper.getReadableDatabase().delete(TABLE_INGREDIENTS,"name = ?", new String[] {item});
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_INGREDIENTS_ID,-1);
+        dbHelper.getReadableDatabase().update(TABLE_SETTINGS,contentValues,"ing_id = ?", new String [] {String.valueOf(id)});
+        dbHelper.close();
+    }
+    public int getID(String query, String name) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        query += "\"" + name + "\"";
+        Cursor c = db.rawQuery(query, null);
+        if (c != null)
+            c.moveToFirst();
+        assert c != null;
+        return c.getInt(c.getColumnIndex(KEY_ID));
+    }
+
+    /*private boolean isReadyToCook(String recipeName) {
         EditModel model = new EditModel(dbHelper);
         ArrayList<Integer> settings = model.getSettingsDbIds();
         ArrayList<Integer> recipe = getRecipesIds(recipeName);
@@ -71,7 +105,7 @@ class ItemModel {
             ingredientInList = false;
         }
         return  true;
-    }
+    }*/
 
     private ArrayList<Integer> getRecipesIds(String item) {
         SQLiteDatabase database = dbHelper.getReadableDatabase();
@@ -96,7 +130,7 @@ class ItemModel {
         return list;
     }
 
-    ArrayList<String> loadItemsReadyToCook(){
+    /*ArrayList<String> loadItemsReadyToCook(){
         String warning = "Пусто, добавьте первый ингредиент";
         ArrayList<String> readyToCookRecipes = new ArrayList<>();
         for(int i=0;i<allRecipes().size();i++){
@@ -105,7 +139,7 @@ class ItemModel {
         if(readyToCookRecipes.isEmpty())readyToCookRecipes.add(warning);
 
         return readyToCookRecipes;
-    }
+    }*/
 
     private ArrayList<String> allRecipes(){
         SQLiteDatabase database = dbHelper.getReadableDatabase();
@@ -121,7 +155,7 @@ class ItemModel {
         return list;
     }
 
-    void onCookClick(String item){
+   /* void onCookClick(String item){
         String output;
         int[] recipe = getRecipe(item);
         boolean isLayer = isLayer(item);
@@ -136,9 +170,9 @@ class ItemModel {
             Log.d(TAG, "...Не удалось отправить...");
             presenter.showToast("Что-то пошло не так!");
         }
-    }
+    }*/
 
-    private int[] getRecipe(String item){
+    /*private int[] getRecipe(String item){
          EditModel model = new EditModel(dbHelper);
          List<Ingredient> ingredients = model.getItems(item);
          ArrayList<Integer> settings = model.getSettingsDbIds();
@@ -150,7 +184,7 @@ class ItemModel {
              }
          }
          return recipe;
-    }
+    }*/
 
     private String generateSimpleOutputString(int[] recipe){
         String output;

@@ -2,6 +2,7 @@ package com.example.user.SmartBartender;
 
 import android.annotation.TargetApi;
 import android.app.Dialog;
+import android.support.v4.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -22,7 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+
 public class EditFragment extends AppCompatDialogFragment {
+
 
     private EditPresenter presenter;
     private String positiveBtn, negativeBtn, title;
@@ -44,8 +47,8 @@ public class EditFragment extends AppCompatDialogFragment {
         init(inflater);
         if (title.equals("Добавить")) addConfigs();
         else editConfigs();
-        if (isIngredient) buildIngredients(builder);
-        else buildRecipes(builder);
+
+        buildRecipes(builder);
         return builder.create();
     }
 
@@ -95,41 +98,6 @@ public class EditFragment extends AppCompatDialogFragment {
                 });
     }
 
-    private void buildIngredients(AlertDialog.Builder builder) {
-        editText = view.findViewById(R.id.ingredient_name);
-        if (!addition) {
-            assert getArguments() != null;
-            editText.setText(getArguments().getString("item"));
-        }
-
-        builder.setView(view)
-                .setTitle(title)
-                .setPositiveButton(positiveBtn, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        String newIngredient = ((EditText) view.findViewById(R.id.ingredient_name)).getText().toString();
-                        if (addition) presenter.onAddIngredientPressed(newIngredient);
-                        else {
-                            assert getArguments() != null;
-                            presenter.onSaveIngredientPressed(newIngredient, getArguments().getString("item"));
-                        }
-                        onDestroyView();
-                        restart(true);
-
-                    }
-                })
-                .setNegativeButton(negativeBtn, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        if (addition) onDestroy();
-                        else {
-                            assert getArguments() != null;
-                            presenter.onDeleteIngredientPressed(getArguments().getString("item"));
-                        }
-                        onDestroyView();
-                        restart(true);
-
-                    }
-                });
-    }
 
     private void init(LayoutInflater inflater) {
         assert getArguments() != null;
@@ -137,7 +105,7 @@ public class EditFragment extends AppCompatDialogFragment {
         isIngredient = getArguments().getBoolean("isIngredient");
         title = getArguments().getString("title");
         view = inflater.inflate(resource, null);
-        model = new EditModel(new DatabaseHelper(getContext()));
+        model = new EditModel(getContext());
         presenter = new EditPresenter(model);
         presenter.attach(this);
     }
@@ -235,12 +203,12 @@ public class EditFragment extends AppCompatDialogFragment {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
+
     private void restart(boolean isIngredient) {
-        Intent intent = new Intent(getContext(), ItemActivity.class);
+        /*Intent intent = new Intent(getContext(), ItemActivity.class);
         intent.putExtra("isIngredient", isIngredient);
         Objects.requireNonNull(getActivity()).startActivity(intent);
-        getActivity().finish();
+        getActivity().finish();*/
     }
 
     void showToast(String toast){

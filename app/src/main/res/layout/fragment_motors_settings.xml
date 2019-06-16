@@ -1,63 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
+
+<ScrollView android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:padding="@dimen/fab_margin">
-
-    <Spinner
-        android:id="@+id/setting_1"
-        android:layout_width="@dimen/spinner_wight"
-        android:layout_height="@dimen/spinner_height"
-        android:layout_gravity="center"
-        />
-
-    <Spinner
-        android:id="@+id/setting_2"
-        android:layout_width="@dimen/spinner_wight"
-        android:layout_height="@dimen/spinner_height"
-        android:layout_gravity="center"/>
-
-    <Spinner
-        android:id="@+id/setting_3"
-        android:layout_width="@dimen/spinner_wight"
-        android:layout_height="@dimen/spinner_height"
-        android:layout_gravity="center"/>
-
-    <Spinner
-        android:id="@+id/setting_4"
-        android:layout_width="@dimen/spinner_wight"
-        android:layout_height="@dimen/spinner_height"
-        android:layout_gravity="center"/>
-
-    <Spinner
-        android:id="@+id/setting_5"
-        android:layout_width="@dimen/spinner_wight"
-        android:layout_height="@dimen/spinner_height"
-        android:layout_gravity="center"/>
-
-
-    <Spinner
-        android:id="@+id/setting_6"
-        android:layout_width="@dimen/spinner_wight"
-        android:layout_height="@dimen/spinner_height"
-        android:layout_gravity="center"/>
-
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:padding="@dimen/padding">
+
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/title_coefficient"
-            android:textSize="@dimen/settings_text_size"
-            android:layout_margin="@dimen/margin"
+            android:text="@string/motor_settings_intro"
+            android:gravity="center"
             />
 
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+
+            <TextView
+                android:textSize="@dimen/item_text_size"
+                android:text="@string/motor1"
+                android:layout_margin="@dimen/margin"/>
+
+            <Spinner
+                android:id="@+id/setting_1"
+                android:layout_width="@dimen/spinner_wight"
+                android:layout_height="@dimen/spinner_height"
+                android:layout_margin="@dimen/margin" />
+
+            <TextView
+                android:textSize="@dimen/item_text_size"
+                android:text="@string/motor2"
+                android:layout_margin="@dimen/margin"/>
+
+            <Spinner
+                android:id="@+id/setting_2"
+                android:layout_width="@dimen/spinner_wight"
+                android:layout_height="@dimen/spinner_height"
+                android:layout_margin="@dimen/margin" />
+
+            <TextView
+                android:textSize="@dimen/item_text_size"
+                android:layout_margin="@dimen/margin"
+                android:text="@string/motor3"/>
+
+            <Spinner
+                android:id="@+id/setting_3"
+                android:layout_width="@dimen/spinner_wight"
+                android:layout_height="@dimen/spinner_height"
+                android:layout_margin="@dimen/margin" />
+
+            <TextView
+                android:textSize="@dimen/item_text_size"
+                android:text="@string/motor4"
+                android:layout_margin="@dimen/margin"/>
+
+            <Spinner
+                android:id="@+id/setting_4"
+                android:layout_width="@dimen/spinner_wight"
+                android:layout_height="@dimen/spinner_height"
+                android:layout_margin="@dimen/margin" />
+
+            <TextView
+                android:textSize="@dimen/item_text_size"
+                android:text="@string/motor5"
+                android:layout_margin="@dimen/margin"/>
+
+            <Spinner
+                android:id="@+id/setting_5"
+                android:layout_width="@dimen/spinner_wight"
+                android:layout_height="@dimen/spinner_height"
+                android:layout_margin="@dimen/margin" />
+            <TextView
+                android:textSize="@dimen/item_text_size"
+                android:text="@string/motor6"
+                android:layout_margin="@dimen/margin"/>
+
+            <Spinner
+                android:id="@+id/setting_6"
+                android:layout_width="@dimen/spinner_wight"
+                android:layout_height="@dimen/spinner_height"
+                android:layout_margin="@dimen/margin"/>
+
+            <Button
+                android:id="@+id/clear_motors_btn"
+                android:text="@string/clear_btn"
+                android:padding="@dimen/padding"/>
+
+            <Button
+                android:id="@+id/set_motors_btn"
+                android:padding="@dimen/padding"
+                android:text="@string/set_btn" />
+        </GridLayout>
 
     </LinearLayout>
-
-
-</LinearLayout>
+</ScrollView>

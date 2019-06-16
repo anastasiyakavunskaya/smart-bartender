@@ -12,12 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.user.SmartBartender.DatabaseHelper;
 import com.example.user.SmartBartender.EditModel;
 import com.example.user.SmartBartender.R;
+import com.example.user.SmartBartender.Settings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,24 +34,6 @@ public class MotorsSettingsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-              /*  .setTitle(title)
-                .setPositiveButton("Установить", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        for (int i = 0; i < NUMBER_OF_INGREDIENTS; i++) {
-                            Object ing = spinners.get(i).getSelectedItem();
-                            presenter.setSettings(ing.toString(), false, i);
-                        }
-                        presenter.setSettings(editCoefficient.getText().toString(), true, 0);
-                    }
-                })
-                .setNegativeButton("Очистить", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        presenter.deleteSettings();
-                        onDestroy();
-                    }
-                });*/
     }
 
     @Override
@@ -85,19 +69,25 @@ public class MotorsSettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.fragment_motors_settings, null);
-        init(view);
+        EditModel model = new EditModel(getContext());
+        final SettingsPresenter presenter = new SettingsPresenter(model);
+        View view;
+        if(presenter.getAllIngredients().isEmpty()){
+            view = inflater.inflate(R.layout.blocked_fragment, null);
+        }
+        else {
+            view = inflater.inflate(R.layout.fragment_motors_settings, null);
+            init(view, presenter);
+        }
+
+
+
         return view;
     }
-    void init(View v){
-        EditModel model = new EditModel(new DatabaseHelper(getContext()));
-        final SettingsPresenter presenter = new SettingsPresenter(model);
-
+    void init(View v, final SettingsPresenter presenter){
         final List<Spinner> spinners = new ArrayList<>();
-
         final ArrayList<String> ingredientsList = presenter.getAllIngredients();
         final ArrayList<Integer> settings = presenter.getSettingIngredientsId();
-
         ingredientsList.add(0, "Пусто");
 
         spinners.add(setSpinner((Spinner) v.findViewById(R.id.setting_1), ingredientsList));
@@ -110,6 +100,26 @@ public class MotorsSettingsFragment extends Fragment {
         for (int i = 0; i < NUMBER_OF_INGREDIENTS; i++) {
             if ((settings.get(i)) != -1) spinners.get(i).setSelection(settings.get(i));
         }
+
+        Button clearButton, setButton;
+        clearButton = v.findViewById(R.id.clear_motors_btn);
+        setButton = v.findViewById(R.id.set_motors_btn);
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.deleteSettings();
+                onDestroy();
+            }
+        });
+        setButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (int i = 0; i < NUMBER_OF_INGREDIENTS; i++) {
+                    Object ing = spinners.get(i).getSelectedItem();
+                    presenter.setSettings(ing.toString(), false, i);
+                }
+            }
+        });
     }
 
 }
