@@ -13,38 +13,51 @@
             android:text="@string/coefficient_intro"
             android:gravity="center"
             android:layout_margin="@dimen/margin"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/item_text_size"
+            android:text="Коэффициент для конвертации:"
+            android:padding="@dimen/padding"/>
+
+        <SeekBar
+                android:id="@+id/seekBar_c"
+                android:layout_width="match_parent"
+                android:padding="@dimen/padding"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:min="1"
+                android:max="3000"/>
+
+        <TextView
+                android:id="@+id/text_c"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="@dimen/item_text_size"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/padding">
+            android:gravity="center">
 
-            <TextView
+            <Button
+                    android:id="@+id/c_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/set_с_btn"
+                    android:layout_gravity="center"/>
+            <Button
+                android:id="@+id/save_c_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/item_text_size"
-                android:text="Коэффициент для конверации:"/>
+                android:text="@string/save_c_btn"
+                android:layout_gravity="center"/>
 
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/edit_coefficient"
-                android:textSize="@dimen/settings_text_size"
-                android:inputType="numberDecimal"
-                android:hint="@string/const_100"
-                />
         </LinearLayout>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/set_btn"
-            android:layout_gravity="center"/>
-
 
     </LinearLayout>
-
-
-
-
 </FrameLayout>
+
+

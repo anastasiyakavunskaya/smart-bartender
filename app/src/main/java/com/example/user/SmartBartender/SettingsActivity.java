@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
@@ -23,21 +24,33 @@ public class SettingsActivity extends AppCompatActivity
         implements  NavigationView.OnNavigationItemSelectedListener, AdminFragment.OnFragmentInteractionListener, IngredientsFragment.OnFragmentInteractionListener, InfoFragment.OnFragmentInteractionListener, CoefficientFragment.OnFragmentInteractionListener {
 
     Fragment fragment = null;
-    Class fragmentClass = IngredientsFragment.class;
+    Class fragmentClass = InfoFragment.class;
+    ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_settings);
         setTitle(getResources().getString(R.string.information));
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+        if (savedInstanceState == null) {
+            fragmentClass = InfoFragment.class;
+            try {
+                fragment = (Fragment) fragmentClass.newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+        }
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -50,7 +63,6 @@ public class SettingsActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -98,8 +110,10 @@ public class SettingsActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
     @Override
     public void onFragmentInteraction(Uri uri) {
     }
+
 
 }

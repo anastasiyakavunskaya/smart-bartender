@@ -96,7 +96,7 @@
             <Button
                 android:id="@+id/set_motors_btn"
                 android:padding="@dimen/padding"
-                android:text="@string/set_btn" />
+                android:text="@string/save_c_btn" />
         </GridLayout>
 
     </LinearLayout>

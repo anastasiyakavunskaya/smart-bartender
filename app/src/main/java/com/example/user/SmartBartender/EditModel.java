@@ -17,7 +17,6 @@ import static com.example.user.SmartBartender.DatabaseHelper.KEY_VOLUME;
 import static com.example.user.SmartBartender.DatabaseHelper.TABLE_INGREDIENTS;
 import static com.example.user.SmartBartender.DatabaseHelper.TABLE_ING_REC;
 import static com.example.user.SmartBartender.DatabaseHelper.TABLE_RECIPES;
-import static com.example.user.SmartBartender.DatabaseHelper.TABLE_SETTINGS;
 
 public class EditModel {
 
@@ -79,7 +78,7 @@ public class EditModel {
             dbHelper.getReadableDatabase().delete(TABLE_INGREDIENTS,"name = ?", new String[] {item});
             ContentValues contentValues = new ContentValues();
             contentValues.put(KEY_INGREDIENTS_ID,-1);
-            dbHelper.getReadableDatabase().update(TABLE_SETTINGS,contentValues,"ing_id = ?", new String [] {String.valueOf(id)});
+            //dbHelper.getReadableDatabase().update(TABLE_SETTINGS,contentValues,"ing_id = ?", new String [] {String.valueOf(id)});
             dbHelper.close();
         }
         else
@@ -197,14 +196,14 @@ public class EditModel {
     public ArrayList<Integer> getSettingsDbIds(){
         ArrayList<Integer> list = new ArrayList<>();
         SQLiteDatabase database = dbHelper.getReadableDatabase();
-        Cursor cursor = database.query(DatabaseHelper.TABLE_SETTINGS, null, null, null, null, null, null);
+       /* //Cursor cursor = database.query(DatabaseHelper.TABLE_SETTINGS, null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             int nameIndex = cursor.getColumnIndex(KEY_INGREDIENTS_ID);
             do {
                 list.add(cursor.getInt(nameIndex));
             } while (cursor.moveToNext());
         }
-        cursor.close();
+        cursor.close();*/
         return list;
     }
 
@@ -243,7 +242,7 @@ public class EditModel {
             contentValues.put(KEY_INGREDIENTS_ID,id);
         }
 
-        database.update(TABLE_SETTINGS,contentValues,"_id = ?", new String [] {String.valueOf(i+1)});
+        //database.update(TABLE_SETTINGS,contentValues,"_id = ?", new String [] {String.valueOf(i+1)});
         contentValues.clear();
 
     }
@@ -252,7 +251,7 @@ public class EditModel {
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_INGREDIENTS_ID,coefficient);
-        database.update(TABLE_SETTINGS,contentValues,"_id = ?", new String [] {String.valueOf(7)});
+        //database.update(TABLE_SETTINGS,contentValues,"_id = ?", new String [] {String.valueOf(7)});
         contentValues.clear();
     }
 
@@ -265,11 +264,11 @@ public class EditModel {
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_INGREDIENTS_ID,-1);
         for (int i=1;i<7;i++){
-            database.update(TABLE_SETTINGS,contentValues,"_id = ?", new String [] {String.valueOf(i)});
+           // database.update(TABLE_SETTINGS,contentValues,"_id = ?", new String [] {String.valueOf(i)});
         }
         contentValues.clear();
         contentValues.put(KEY_INGREDIENTS_ID,1);
-        database.update(TABLE_SETTINGS,contentValues,"_id = ?", new String [] {String.valueOf(7)});
+        //database.update(TABLE_SETTINGS,contentValues,"_id = ?", new String [] {String.valueOf(7)});
         contentValues.clear();
     }
 
@@ -300,7 +299,7 @@ public class EditModel {
         dbHelper.getReadableDatabase().delete(TABLE_INGREDIENTS,"name = ?", new String[] {item});
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_INGREDIENTS_ID,-1);
-        dbHelper.getReadableDatabase().update(TABLE_SETTINGS,contentValues,"ing_id = ?", new String [] {String.valueOf(id)});
+        //dbHelper.getReadableDatabase().update(TABLE_SETTINGS,contentValues,"ing_id = ?", new String [] {String.valueOf(id)});
         dbHelper.close();
     }
 

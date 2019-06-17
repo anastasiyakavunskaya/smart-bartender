@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.example.user.SmartBartender.SettingsFragments.MotorsSettingsFragment;
 
+import java.util.ArrayList;
+
 import static android.content.ContentValues.TAG;
 
 
@@ -33,7 +35,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
         Button settingsBtn = findViewById(R.id.settings_button);
         settingsBtn.setOnClickListener(this);
-
 
         checkBluetooth();
         while(ItemModel.mSocket==null){

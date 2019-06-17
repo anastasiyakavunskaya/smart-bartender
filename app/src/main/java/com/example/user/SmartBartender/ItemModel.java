@@ -24,7 +24,6 @@ import static com.example.user.SmartBartender.DatabaseHelper.KEY_RECIPES_ID;
 import static com.example.user.SmartBartender.DatabaseHelper.TABLE_INGREDIENTS;
 import static com.example.user.SmartBartender.DatabaseHelper.TABLE_ING_REC;
 import static com.example.user.SmartBartender.DatabaseHelper.TABLE_RECIPES;
-import static com.example.user.SmartBartender.DatabaseHelper.TABLE_SETTINGS;
 
 public class ItemModel {
     private final DatabaseHelper dbHelper;
@@ -72,14 +71,14 @@ public class ItemModel {
         dbHelper.close();
     }
 
-    public void deleteItem(String item){
+   /* public void deleteItem(String item){
         int id = getID(selectIngId,item);
         dbHelper.getReadableDatabase().delete(TABLE_INGREDIENTS,"name = ?", new String[] {item});
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_INGREDIENTS_ID,-1);
         dbHelper.getReadableDatabase().update(TABLE_SETTINGS,contentValues,"ing_id = ?", new String [] {String.valueOf(id)});
         dbHelper.close();
-    }
+    }*/
     public int getID(String query, String name) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         query += "\"" + name + "\"";

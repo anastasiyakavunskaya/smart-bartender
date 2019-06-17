@@ -37,7 +37,8 @@
     <string name="motor6">Мотор 6</string>
     <string name="motor_settings_intro">Установите название жидкостей так, как вы поставили их в систему</string>
     <string name="clear_btn">Очистить</string>
-    <string name="set_btn">Установить</string>
+    <string name="save_c_btn">Сохранить</string>
+    <string name="set_с_btn">По умолчанию</string>
     <string name="warning_empty_list_of_ingredients">Список ингредиентов пока пуст. Добавьте ингредиенты в вкладке /"Список ингредиентов/"</string>
     <string name="coefficient_intro">Коэффициент конвертации необходимо установить для корректного наливания жидкости</string>
 </resources>

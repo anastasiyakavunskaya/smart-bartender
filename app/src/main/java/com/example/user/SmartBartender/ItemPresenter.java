@@ -27,42 +27,19 @@ public class ItemPresenter {
         //view.showItems(model.loadItemsReadyToCook());
     }
 
-    public void attachFragment(IngredientsFragment fg) {
-        fragment = fg;
-    }
-    public void fragmentIsReady() {
-        String str = "Список ингредиентов пока пуст";
-        if((model.loadItems()).isEmpty()) {
-            fragment.showItems(model.loadItems());
-            fragment.showText(str);
-        }
-        else {
-            fragment.showText("");
-            fragment.showItems(model.loadItems());
-        }
-    }
 
-    public EditFragment newInstance(boolean isIngredient, String title, String item){
+    public EditFragment newInstance(boolean isIngredient, String title, String item) {
         EditFragment fragment = new EditFragment();
         Bundle args = new Bundle();
         args.putBoolean("isIngredient", isIngredient);
         args.putString("title", title);
         args.putString("item", item);
-            args.putInt("resource", R.layout.recipes_add_layout);
+        args.putInt("resource", R.layout.recipes_add_layout);
         fragment.setArguments(args);
         return fragment;
     }
 
-    void onCookClick(String item){
+    void onCookClick(String item) {
         //model.onCookClick(item);
-    }
-    void showToast(String str){
-        Toast.makeText(view,str,Toast.LENGTH_LONG).show();
-    }
-    public void deleteItemFromList(String item){
-        model.deleteItem(item);
-    }
-    public void saveItemToList(String oldName, String item){
-        model.saveItem(oldName, item);
     }
 }

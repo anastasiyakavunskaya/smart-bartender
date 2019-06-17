@@ -15,48 +15,26 @@ import android.widget.TextView;
 
 import com.example.user.SmartBartender.EditModel;
 import com.example.user.SmartBartender.ItemAdapter;
-import com.example.user.SmartBartender.ItemModel;
-import com.example.user.SmartBartender.ItemPresenter;
 import com.example.user.SmartBartender.R;
-import com.example.user.SmartBartender.Settings;
+import com.example.user.SmartBartender.SmartBartender;
 
 import java.util.ArrayList;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link IngredientsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link IngredientsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-
 public class IngredientsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+
     private ItemAdapter adapter;
     private OnFragmentInteractionListener mListener;
     String editName;
     View view;
+    SmartBartender settings;
     public IngredientsFragment() {}
 
-
-    // TODO: Rename and change types and number of parameters
-    public static IngredientsFragment newInstance(String param1, String param2) {
-        IngredientsFragment fragment = new IngredientsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
@@ -67,7 +45,7 @@ public class IngredientsFragment extends Fragment {
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
         final EditText editText = view.findViewById(R.id.edit_ingredient);
         final SettingsPresenter presenter = new SettingsPresenter(new EditModel(getContext()));
-
+        settings = (SmartBartender)getActivity().getApplication();
         adapter = new ItemAdapter(true, new ItemAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(String item) {
@@ -76,6 +54,7 @@ public class IngredientsFragment extends Fragment {
             }
             @Override
             public void onButtonClick(String item) {
+                settings.deleteItemFromSettings(presenter.getIngredientId(item));
                 presenter.deleteItemFromList(item);
                 presenter.fragmentIsReady();
                 editName = null;

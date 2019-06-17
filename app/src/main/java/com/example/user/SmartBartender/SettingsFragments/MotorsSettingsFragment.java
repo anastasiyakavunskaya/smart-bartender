@@ -1,11 +1,8 @@
 package com.example.user.SmartBartender.SettingsFragments;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,29 +10,49 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.example.user.SmartBartender.DatabaseHelper;
 import com.example.user.SmartBartender.EditModel;
 import com.example.user.SmartBartender.R;
-import com.example.user.SmartBartender.Settings;
+import com.example.user.SmartBartender.SmartBartender;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 
 public class MotorsSettingsFragment extends Fragment {
 
-    private final int NUMBER_OF_INGREDIENTS = 6;
+    ArrayList<Integer> motors;
+    int coefficient, numberOfMotors;
+    SmartBartender settings;
+    View view;
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @NonNull
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState){
+        EditModel model = new EditModel(getContext());
+        final SettingsPresenter presenter = new SettingsPresenter(model);
+        settings = (SmartBartender) getActivity().getApplication();
+        motors = settings.getMotors();
+        coefficient = settings.getCoefficient();
+        numberOfMotors = settings.getNumberOfMotors();
+        if(presenter.getAllIngredients().isEmpty()){
+            view = inflater.inflate(R.layout.blocked_fragment, null);
+        }
+        else {
+            final List<Spinner> spinners = new ArrayList<>();
+            view = inflater.inflate(R.layout.fragment_motors_settings, null);
+            initView(presenter, spinners);
+        }
+        return view;
+    }
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -44,12 +61,52 @@ public class MotorsSettingsFragment extends Fragment {
     public interface OnFragmentInteractionListener {
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
+
+    void initView(final SettingsPresenter presenter, final List<Spinner> spinners){
+        final ArrayList<String> ingredientsList = presenter.getAllIngredients();
+        ingredientsList.add(0, "Пусто");
+
+        initSpinners(ingredientsList, spinners);
+        updateSpinners(ingredientsList,spinners,presenter);
+        Button clearButton, setButton;
+        clearButton = view.findViewById(R.id.clear_motors_btn);
+        setButton = view.findViewById(R.id.set_motors_btn);
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                settings.deleteSettings();
+                updateSpinners(ingredientsList,spinners,presenter);
+            }
+        });
+        setButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<Integer> update = new ArrayList<>();
+                for (int j = 0; j < numberOfMotors; j++) {
+                    int id = presenter.getIngredientId((spinners.get(j).getSelectedItem().toString()));
+                    if(id!=0) update.add(j,id);
+                    else update.add(j,0);
+                }
+                settings.setMotors(update);
+                updateSpinners(ingredientsList,spinners,presenter);
+            }
+        });
+    }
+
+    public void initSpinners(ArrayList<String> ingredientsList, List<Spinner> spinners){
+        spinners.add(setSpinner((Spinner) view.findViewById(R.id.setting_1), ingredientsList));
+        spinners.add(setSpinner((Spinner) view.findViewById(R.id.setting_2), ingredientsList));
+        spinners.add(setSpinner((Spinner) view.findViewById(R.id.setting_3), ingredientsList));
+        spinners.add(setSpinner((Spinner) view.findViewById(R.id.setting_4), ingredientsList));
+        spinners.add(setSpinner((Spinner) view.findViewById(R.id.setting_5), ingredientsList));
+        spinners.add(setSpinner((Spinner) view.findViewById(R.id.setting_6), ingredientsList));
+    }
+
     private Spinner setSpinner(Spinner s, List<String> list){
 
         // Создаем адаптер ArrayAdapter с помощью массива строк и стандартной разметки элемета spinner
         ArrayAdapter<String> adapter;
-        adapter = new ArrayAdapter<>((Objects.requireNonNull(getContext())), android.R.layout.simple_spinner_item, list);
+        adapter = new ArrayAdapter<>((getContext()), android.R.layout.simple_spinner_item, list);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s.setAdapter(adapter);
 
@@ -66,60 +123,11 @@ public class MotorsSettingsFragment extends Fragment {
         return s;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState){
-        EditModel model = new EditModel(getContext());
-        final SettingsPresenter presenter = new SettingsPresenter(model);
-        View view;
-        if(presenter.getAllIngredients().isEmpty()){
-            view = inflater.inflate(R.layout.blocked_fragment, null);
+    public void updateSpinners(ArrayList<String> ingredientsList, List<Spinner> spinners, SettingsPresenter presenter){
+        for (int i = 0; i < numberOfMotors ; i++) {
+            motors = settings.getMotors();
+            spinners.get(i).setSelection(ingredientsList.indexOf(presenter.getIngredientById(motors.get(i))));
         }
-        else {
-            view = inflater.inflate(R.layout.fragment_motors_settings, null);
-            init(view, presenter);
-        }
-
-
-
-        return view;
-    }
-    void init(View v, final SettingsPresenter presenter){
-        final List<Spinner> spinners = new ArrayList<>();
-        final ArrayList<String> ingredientsList = presenter.getAllIngredients();
-        final ArrayList<Integer> settings = presenter.getSettingIngredientsId();
-        ingredientsList.add(0, "Пусто");
-
-        spinners.add(setSpinner((Spinner) v.findViewById(R.id.setting_1), ingredientsList));
-        spinners.add(setSpinner((Spinner) v.findViewById(R.id.setting_2), ingredientsList));
-        spinners.add(setSpinner((Spinner) v.findViewById(R.id.setting_3), ingredientsList));
-        spinners.add(setSpinner((Spinner) v.findViewById(R.id.setting_4), ingredientsList));
-        spinners.add(setSpinner((Spinner) v.findViewById(R.id.setting_5), ingredientsList));
-        spinners.add(setSpinner((Spinner) v.findViewById(R.id.setting_6), ingredientsList));
-
-        for (int i = 0; i < NUMBER_OF_INGREDIENTS; i++) {
-            if ((settings.get(i)) != -1) spinners.get(i).setSelection(settings.get(i));
-        }
-
-        Button clearButton, setButton;
-        clearButton = v.findViewById(R.id.clear_motors_btn);
-        setButton = v.findViewById(R.id.set_motors_btn);
-        clearButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.deleteSettings();
-                onDestroy();
-            }
-        });
-        setButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (int i = 0; i < NUMBER_OF_INGREDIENTS; i++) {
-                    Object ing = spinners.get(i).getSelectedItem();
-                    presenter.setSettings(ing.toString(), false, i);
-                }
-            }
-        });
     }
 
 }
