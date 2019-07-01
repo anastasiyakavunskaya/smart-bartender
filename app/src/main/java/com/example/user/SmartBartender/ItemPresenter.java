@@ -1,20 +1,18 @@
 package com.example.user.SmartBartender;
 
 import android.os.Bundle;
-import android.widget.Toast;
-
-import com.example.user.SmartBartender.SettingsFragments.IngredientsFragment;
 
 public class ItemPresenter {
 
     private ItemActivity view;
-    private IngredientsFragment fragment;
     private final ItemModel model;
-    private final boolean isIngredient;
+    boolean layerRecipes;
+    private SmartBartender settings;
 
-    public ItemPresenter(ItemModel model, boolean isIngredient) {
+
+    public ItemPresenter(ItemModel model, boolean layerRecipes) {
         this.model = model;
-        this.isIngredient = isIngredient;
+        this.layerRecipes = layerRecipes;
         model.attach(this);
     }
 
@@ -22,24 +20,45 @@ public class ItemPresenter {
         view = itemActivity;
     }
 
-
-    public void viewIsReady() {
-        //view.showItems(model.loadItemsReadyToCook());
+    public SmartBartender getSettings(){
+        settings = (SmartBartender)view.getApplication();
+        return settings;
     }
 
+    public void viewIsReady() {
+        if(layerRecipes) view.showItems(model.loadLayerRecipes());
+        else view.showItems(model.loadSimpleRecipes());
+    }
 
-    public EditFragment newInstance(boolean isIngredient, String title, String item) {
-        EditFragment fragment = new EditFragment();
+    public boolean listOfRecipesIsEmpty (boolean layerRecipes){
+        return model.listIsEmpty(layerRecipes);
+    }
+
+    public EditSimpleRecipesFragment newSimpleInstance(boolean edit, String item) {
+        EditSimpleRecipesFragment fragment = new EditSimpleRecipesFragment();
         Bundle args = new Bundle();
-        args.putBoolean("isIngredient", isIngredient);
-        args.putString("title", title);
+        args.putBoolean("edit", edit);
         args.putString("item", item);
-        args.putInt("resource", R.layout.recipes_add_layout);
+        args.putInt("resource", R.layout.simple_recipes_layout);
         fragment.setArguments(args);
         return fragment;
     }
 
-    void onCookClick(String item) {
-        //model.onCookClick(item);
+    public EditLayerRecipesFragment newLayerInstance(boolean edit, String item) {
+        EditLayerRecipesFragment fragment = new EditLayerRecipesFragment();
+        Bundle args = new Bundle();
+        args.putBoolean("edit", edit);
+        args.putString("item", item);
+        args.putInt("resource", R.layout.layer_recipes_layout);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    void onCookClick(String item, boolean isLayer) {
+        model.onCookClick(item, isLayer);
+    }
+
+    public void showToast(String text){
+        view.showToast(text);
     }
 }

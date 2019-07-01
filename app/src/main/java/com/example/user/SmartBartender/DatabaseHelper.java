@@ -1,15 +1,23 @@
 package com.example.user.SmartBartender;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
 
+    private Context mContext;
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "recipesDatabase";
+    private static final String DATABASE_PATH = "/data/data/com.example.user.alcorobot/databases/recipesDatabase";
     //Table Names
     public static final String TABLE_INGREDIENTS = "ingredients";
     static final String TABLE_RECIPES = "recipes";
@@ -22,19 +30,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     static final String KEY_INGREDIENTS_ID = "ing_id";
     static final String KEY_RECIPES_ID = "rec_id";
     static final String KEY_VOLUME = "volume";
-
-    //Recipes - column name
     static final String KEY_LAYER = "layer";
 
+    //recipes - column names
+    static final String KEY_TYPE = "type";
 
     //Table Create Statements
     private static final String CREATE_TABLE_INGREDIENTS = "CREATE TABLE " + TABLE_INGREDIENTS + "(" + KEY_ID + " integer primary key," + KEY_NAME + " text" + ")";
-    private static final String CREATE_TABLE_RECIPES = "CREATE TABLE " + TABLE_RECIPES + "(" + KEY_ID + " integer primary key," + KEY_NAME + " text," + KEY_LAYER + " integer" +")";
-    private static final String CREATE_TABLE_ING_REC = "CREATE TABLE " + TABLE_ING_REC + "(" + KEY_ID + " integer primary key," + KEY_INGREDIENTS_ID + " integer," + KEY_RECIPES_ID + " integer," + KEY_VOLUME + " integer" + ")";
+    private static final String CREATE_TABLE_RECIPES = "CREATE TABLE " + TABLE_RECIPES + "(" + KEY_ID + " integer primary key," + KEY_NAME + " text," + KEY_TYPE + " integer" +")";
+    private static final String CREATE_TABLE_ING_REC = "CREATE TABLE " + TABLE_ING_REC + "(" + KEY_ID + " integer primary key," + KEY_INGREDIENTS_ID + " integer," + KEY_RECIPES_ID + " integer," + KEY_VOLUME + " integer," + KEY_LAYER + " integer" +")";
 
 
     public DatabaseHelper(Context context) {
         super(context,DATABASE_NAME, null, DATABASE_VERSION);
+        this.mContext = context;
     }
 
     @Override
@@ -42,12 +51,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_INGREDIENTS);
         db.execSQL(CREATE_TABLE_RECIPES);
         db.execSQL(CREATE_TABLE_ING_REC);
-        ContentValues values = new ContentValues();
-        values.put(KEY_INGREDIENTS_ID,-1);
 
-        values.clear();
-        values.put(KEY_INGREDIENTS_ID,1);
-        values.clear();
     }
 
     @Override
@@ -57,4 +61,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("drop table if exists " + TABLE_ING_REC);
         onCreate(db);
     }
+
 }

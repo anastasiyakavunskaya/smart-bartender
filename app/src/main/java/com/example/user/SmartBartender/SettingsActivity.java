@@ -32,7 +32,7 @@ public class SettingsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_settings);
-        setTitle(getResources().getString(R.string.information));
+        setTitle(getResources().getString(R.string.item_info));
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

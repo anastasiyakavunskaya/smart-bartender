@@ -42,6 +42,7 @@ public class SmartBartender extends Application {
             motors.add(i,0);
         }
     }
+
     public void deleteItemFromSettings(int item){
         int index;
         for(int i=0;i<numberOfMotors;i++) {

@@ -1,8 +1,6 @@
 package com.example.user.SmartBartender.SettingsFragments;
-import android.os.Bundle;
-import com.example.user.SmartBartender.EditFragment;
 import com.example.user.SmartBartender.EditModel;
-import com.example.user.SmartBartender.R;
+
 import java.util.ArrayList;
 
 import static com.example.user.SmartBartender.DatabaseHelper.KEY_NAME;
@@ -26,14 +24,9 @@ class SettingsPresenter {
         if(item.equals("Пусто")) return 0;
         else return model.getID(selectIngId,item);
     }
-
     public String getIngredientById(int id){
         if(id!=0) return model.getItemById(id);
         else return "Пусто";
-    }
-
-    String getCoefficient(){
-        return String.valueOf(model.getCoefficient());
     }
 
     void attachFragment(IngredientsFragment fg) {
@@ -51,9 +44,27 @@ class SettingsPresenter {
         }
     }
     void deleteItemFromList(String item){
-        model.deleteItem(item);
+        model.deleteIngredient(item);
     }
     void saveItemToList(String oldName, String item){
-        model.saveItem(oldName, item);
+        if(!item.isEmpty()){
+            if(isUnique(item)) model.saveIngredient(oldName, item);
+            else fragment.showToast("Ингредиент с таким именем уже существует!");
+        }
+        else fragment.showToast("Введите название!");
+
     }
+  /*  boolean itemCheck(String item){
+        if(model.getListOfIngredients().indexOf(item)!=-1) return false;
+        return true;
+    }*/
+
+    private boolean isUnique(String item){
+        ArrayList<String> list = model.getListOfIngredients();
+        for (int i = 0; i<list.size();i++){
+            if(list.get(i).equals(item)) return false;
+        }
+        return true;
+    }
+
 }

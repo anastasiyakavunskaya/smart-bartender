@@ -1,28 +1,24 @@
 package com.example.user.SmartBartender;
 
-
-
-import android.support.v4.app.Fragment;
-import android.content.Context;
-import android.support.v4.app.FragmentManager;
-
-import com.example.user.SmartBartender.SettingsFragments.IngredientsFragment;
-
 import java.util.ArrayList;
 
 class EditPresenter {
 
     private final EditModel model;
-    private EditFragment fragment;
+    private EditSimpleRecipesFragment simpleFragment;
+    private EditLayerRecipesFragment layerFragment;
 
     EditPresenter(EditModel model) {
         this.model = model;
     }
 
-    void attach(EditFragment editFragment){
-        fragment = editFragment;
+    void attachSimpleFragment(EditSimpleRecipesFragment editFragment){
+        simpleFragment = editFragment;
     }
 
+    void attachLayerFragment(EditLayerRecipesFragment editFragment){
+        layerFragment = editFragment;
+    }
 
     ArrayList<String> getIngredients(){
         return model.getListOfIngredients();
@@ -30,45 +26,25 @@ class EditPresenter {
 
     void onSaveRecipePressed( String recipeName, String oldName, ArrayList<Ingredient> list, boolean isLayer){
         if(recipeName.length()!=0){
-            if(isUnique(recipeName, false))
-                if((!list.isEmpty())) model.onSavePressed(false, recipeName, oldName, list, isLayer);
-                else fragment.showToast("Введите, пожалуйста, ингредменты!");
-            else fragment.showToast("Рецепт с таким именем уже существует!");
-        }else fragment.showToast("Введите название рецепта!");
-
-
-    }
-
-    void onSaveIngredientPressed(String ingredientName, String oldName){
-        if(ingredientName.length()!=0){
-            if(isUnique(ingredientName, false))model.onSavePressed(true,ingredientName, oldName, null, false);
-            else fragment.showToast("Рецепт с таким именем уже существует!");
-        }else fragment.showToast("Введите название рецепта!");
+                model.onSavePressed(isLayer, recipeName, oldName, list);
+        }else
+            if(isLayer)layerFragment.showToast("Введите название рецепта!");
+            else simpleFragment.showToast("Введите название рецепта!");
     }
 
     void onAddRecipePressed(String recipe, ArrayList<Ingredient> ingredients, boolean isLayer){
-        if(recipe.length()!=0){
-            if(isUnique(recipe, false))
-                if((!ingredients.isEmpty())) model.onAddPressed(false, recipe,ingredients, isLayer);
-                else fragment.showToast("Введите, пожалуйста, ингредменты!");
-            else fragment.showToast("Рецепт с таким именем уже существует!");
-        }else fragment.showToast("Введите название рецепта!");
-
+        if(isLayer){
+            if((recipe.length()!=0)&&(isUnique(recipe))) model.onAddPressed(recipe,ingredients,true);
+            else layerFragment.showToast("Невозможно сохранить рецепт с таким именем!");
+        }
+        else{
+            if((recipe.length()!=0)&&(isUnique(recipe))) model.onAddPressed(recipe,ingredients,false);
+            else simpleFragment.showToast("Невозможно сохранить рецепт с таким именем!");
+        }
     }
 
-    void onAddIngredientPressed(String name){
-        if(isUnique(name, true))
-            if(name.length()!=0) model.onAddPressed(true, name,null, false);
-            else fragment.showToast("Введите название ингредиента!");
-        else fragment.showToast("Ингредиент с таким именем уже существует!");
-    }
-
-    void onDeleteIngredientPressed( String name){
-        model.onDeletePressed(true, name);
-    }
-
-    void onDeleteRecipePressed( String oldName){
-        model.onDeletePressed(false, oldName);
+    void onDeleteRecipePressed( String item){
+        model.onDeletePressed(item);
     }
 
     boolean isSpinnersCorrect(ArrayList<Ingredient> list){
@@ -80,14 +56,8 @@ class EditPresenter {
         return true;
     }
 
-    boolean isChecked(String item){
-        return model.isChecked(item);
-    }
-
-    private boolean isUnique(String item, boolean isIngredient){
-        ArrayList<String> list;
-        if(isIngredient) list = model.getListOfIngredients();
-        else list = model.getListOfRecipes();
+    private boolean isUnique(String item){
+        ArrayList<String> list = model.getListOfRecipes();
         for (int i = 0; i<list.size();i++){
             if(list.get(i).equals(item)) return false;
         }

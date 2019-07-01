@@ -6,27 +6,32 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.user.SmartBartender.EditModel;
-import com.example.user.SmartBartender.ItemAdapter;
 import com.example.user.SmartBartender.R;
 import com.example.user.SmartBartender.SmartBartender;
+
 
 import java.util.ArrayList;
 
 
 public class IngredientsFragment extends Fragment {
 
-    private ItemAdapter adapter;
+    private IngredientsAdapter adapter;
     private OnFragmentInteractionListener mListener;
     String editName;
     View view;
+    EditText editText;
+    Button saveButton;
     SmartBartender settings;
     public IngredientsFragment() {}
 
@@ -43,10 +48,11 @@ public class IngredientsFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_ingredients, container, false);
         RecyclerView recycler = view.findViewById(R.id.ing_recycler_view);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        final EditText editText = view.findViewById(R.id.edit_ingredient);
+        saveButton = view.findViewById(R.id.save_btn);
+        editText = view.findViewById(R.id.edit_ingredient);
         final SettingsPresenter presenter = new SettingsPresenter(new EditModel(getContext()));
         settings = (SmartBartender)getActivity().getApplication();
-        adapter = new ItemAdapter(true, new ItemAdapter.OnItemClickListener() {
+        adapter = new IngredientsAdapter(new IngredientsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(String item) {
                 editText.setText(item);
@@ -64,7 +70,7 @@ public class IngredientsFragment extends Fragment {
         recycler.setAdapter(adapter);
         presenter.attachFragment(this);
         presenter.fragmentIsReady();
-        Button saveButton = view.findViewById(R.id.save_btn);
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,6 +89,9 @@ public class IngredientsFragment extends Fragment {
     public void showText(String text){
         TextView textView = view.findViewById(R.id.ingredients_warning_text);
         textView.setText(text);
+    }
+    public void showToast(String text){
+        Toast.makeText(getContext(),text,Toast.LENGTH_LONG).show();
     }
 
     @Override

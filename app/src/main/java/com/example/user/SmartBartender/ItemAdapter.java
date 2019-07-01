@@ -1,7 +1,9 @@
 package com.example.user.SmartBartender;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +16,7 @@ import java.util.List;
 
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
-    private final List<String> data = new ArrayList<>();
+    private final ArrayList<Pair<String,Integer>> data = new ArrayList<>();
     private final OnItemClickListener listener;
 
 
@@ -23,13 +25,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
         void onButtonClick(String item);
     }
 
-    private final boolean isIngredient;
-    public ItemAdapter(boolean isIngredient, OnItemClickListener listener){
+    public ItemAdapter(OnItemClickListener listener){
         this.listener = listener;
-        this.isIngredient = isIngredient;
     }
 
-    public void setData(List<String> items) {
+    public void setData(ArrayList<Pair<String,Integer>> items) {
         data.clear();
         data.addAll(items);
         notifyDataSetChanged();
@@ -45,7 +45,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ItemAdapter.ItemHolder holder, int position) {
-        holder.bind(data.get(position), listener, isIngredient);
+        holder.bind(data.get(position), listener);
     }
 
     @Override
@@ -53,36 +53,46 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
         return data.size();
     }
 
-    static class ItemHolder extends RecyclerView.ViewHolder{
+    static class ItemHolder extends RecyclerView.ViewHolder {
+
+
         private final TextView itemName;
-        final Button b = itemView.findViewById(R.id.cook_btn);
-        final Button d = itemView.findViewById(R.id.delete_btn);
+        final Button cookBtn = itemView.findViewById(R.id.cook_btn);
+        final Button deleteBtn = itemView.findViewById(R.id.delete_btn);
 
         private ItemHolder(View itemView){
             super(itemView);
             itemName = itemView.findViewById(R.id.item_name);
         }
 
-        void bind(final String item, final OnItemClickListener listener, boolean isAll) {
-                itemName.setText(item);
-                if(isAll) b.setVisibility(Button.GONE);
-                else d.setVisibility(Button.GONE);
+        @SuppressLint("ResourceAsColor")
+        void bind(final Pair<String,Integer> item, final OnItemClickListener listener) {
+
+            final String itemString = item.first;
+                itemName.setText(itemString);
+                    deleteBtn.setVisibility(Button.GONE);
+                    if(item.second.equals(0)){
+                        cookBtn.setEnabled(true);
+                        cookBtn.setBackgroundColor(R.color.colorPrimaryDark);
+                    }
                 itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
-                    listener.onItemClick(item);
+                    listener.onItemClick(itemString);
                     }
                 });
-                b.setOnClickListener(new View.OnClickListener(){
+
+                cookBtn.setOnClickListener(new View.OnClickListener(){
                     @Override public void onClick(View v) {
-                        listener.onButtonClick(item);
+                        listener.onButtonClick(itemString);
                     }
                 });
-                d.setOnClickListener(new View.OnClickListener(){
+
+                deleteBtn.setOnClickListener(new View.OnClickListener(){
                 @Override public void onClick(View v) {
-                    listener.onButtonClick(item);
+                    listener.onButtonClick(itemString);
                 }
             });
             }
-        }
 
+    }
 }

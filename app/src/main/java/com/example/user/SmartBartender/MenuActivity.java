@@ -33,32 +33,36 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         Button recipesBtn = findViewById(R.id.recipes_button);
         recipesBtn.setOnClickListener(this);
 
+        Button recipesLayerBtn = findViewById(R.id.layer_recipes_button);
+        recipesLayerBtn.setOnClickListener(this);
+
         Button settingsBtn = findViewById(R.id.settings_button);
         settingsBtn.setOnClickListener(this);
 
-        checkBluetooth();
-        while(ItemModel.mSocket==null){
-            ItemModel.ConnectBluetooth bluetoothConnection = new ItemModel.ConnectBluetooth();
-            bluetoothConnection.execute();
-        }
+       /* checkBluetooth();
+
+        ItemModel.ConnectBluetooth bluetoothConnection = new ItemModel.ConnectBluetooth();
+        bluetoothConnection.execute();*/
+
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.recipes_button:
-              /*  Intent recIntent = new Intent(this, ItemActivity.class);
-                recIntent.putExtra("isIngredient", false);
-                startActivity(recIntent);*/
-
-                //ingredientsFragment.onCreate();
+                Intent recSimpleIntent = new Intent(this, ItemActivity.class);
+                recSimpleIntent.putExtra("layerRecipes", false);
+                startActivity(recSimpleIntent);
+                break;
+            case R.id.layer_recipes_button:
+                Intent recLayerIntent = new Intent(this, ItemActivity.class);
+                recLayerIntent.putExtra("layerRecipes", true);
+                startActivity(recLayerIntent);
                 break;
             case R.id.settings_button:
                 Intent setIntent = new Intent(this, SettingsActivity.class);
-                setIntent.putExtra("isIngredient", false);
                 startActivity(setIntent);
                 break;
-
                 default:
                     break;
         }
@@ -66,15 +70,12 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     }
     void checkBluetooth(){
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        // Check for Bluetooth support and then check to make sure it is turned on
-        // Emulator doesn't support Bluetooth and will return null
         if(mBluetoothAdapter==null) {
             Toast.makeText( this,"Bluetooth не поддерживается",Toast.LENGTH_LONG).show();
         } else {
             if (mBluetoothAdapter.isEnabled()) {
                 Log.d(TAG, "...Bluetooth включен...");
             } else {
-                //Prompt user to turn on Bluetooth
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             }

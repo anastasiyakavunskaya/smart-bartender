@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 
 import com.example.user.SmartBartender.R;
 
@@ -36,8 +37,10 @@ public class InfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.content_settings, container, false);
+        View view = inflater.inflate(R.layout.content_settings, container, false);
+        WebView webView = view.findViewById(R.id.content_web_view);
+        webView.loadUrl("file:///android_asset/info.html");
+        return view;
     }
 
     @Override
