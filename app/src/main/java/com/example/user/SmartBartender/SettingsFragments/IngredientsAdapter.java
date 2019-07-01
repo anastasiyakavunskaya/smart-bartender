@@ -54,7 +54,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
 
     static class ItemHolder extends RecyclerView.ViewHolder{
         private final TextView itemName;
-        final Button с = itemView.findViewById(R.id.cook_btn);
+        final Button c = itemView.findViewById(R.id.cook_btn);
         final Button d = itemView.findViewById(R.id.delete_btn);
 
         private ItemHolder(View itemView){
@@ -64,7 +64,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
 
         void bind(final String item, final OnItemClickListener listener) {
                 itemName.setText(item);
-                с.setVisibility(Button.GONE);
+                c.setVisibility(Button.GONE);
                 itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     listener.onItemClick(item);

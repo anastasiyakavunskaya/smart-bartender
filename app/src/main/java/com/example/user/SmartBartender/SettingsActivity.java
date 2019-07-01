@@ -4,7 +4,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
@@ -14,14 +13,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import com.example.user.SmartBartender.SettingsFragments.AdminFragment;
 import com.example.user.SmartBartender.SettingsFragments.CoefficientFragment;
 import com.example.user.SmartBartender.SettingsFragments.InfoFragment;
 import com.example.user.SmartBartender.SettingsFragments.IngredientsFragment;
 import com.example.user.SmartBartender.SettingsFragments.MotorsSettingsFragment;
 
 public class SettingsActivity extends AppCompatActivity
-        implements  NavigationView.OnNavigationItemSelectedListener, AdminFragment.OnFragmentInteractionListener, IngredientsFragment.OnFragmentInteractionListener, InfoFragment.OnFragmentInteractionListener, CoefficientFragment.OnFragmentInteractionListener {
+        implements  NavigationView.OnNavigationItemSelectedListener, IngredientsFragment.OnFragmentInteractionListener, InfoFragment.OnFragmentInteractionListener, CoefficientFragment.OnFragmentInteractionListener {
 
     Fragment fragment = null;
     Class fragmentClass = InfoFragment.class;
@@ -82,14 +80,6 @@ public class SettingsActivity extends AppCompatActivity
             }
             case R.id.nav_coefficient:{
                 fragmentClass = CoefficientFragment.class;
-                break;
-            }
-            case R.id.nav_contact:{
-                //fragmentClass = ContactFragment.class;
-                break;
-            }
-            case R.id.nav_admin:{
-                fragmentClass = AdminFragment.class;
                 break;
             }
             default:

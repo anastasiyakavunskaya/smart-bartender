@@ -19,9 +19,8 @@ import static android.content.ContentValues.TAG;
 
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener, MotorsSettingsFragment.OnFragmentInteractionListener {
 
-    private BluetoothAdapter mBluetoothAdapter = null;
     private static final int REQUEST_ENABLE_BT = 1;
-
+    Button recipesBtn, recipesLayerBtn, settingsBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,20 +29,18 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_menu);
 
-        Button recipesBtn = findViewById(R.id.recipes_button);
+        recipesBtn = findViewById(R.id.recipes_button);
         recipesBtn.setOnClickListener(this);
 
-        Button recipesLayerBtn = findViewById(R.id.layer_recipes_button);
+        recipesLayerBtn = findViewById(R.id.layer_recipes_button);
         recipesLayerBtn.setOnClickListener(this);
 
-        Button settingsBtn = findViewById(R.id.settings_button);
+        settingsBtn = findViewById(R.id.settings_button);
         settingsBtn.setOnClickListener(this);
 
-       /* checkBluetooth();
-
+        checkBluetooth();
         ItemModel.ConnectBluetooth bluetoothConnection = new ItemModel.ConnectBluetooth();
-        bluetoothConnection.execute();*/
-
+        bluetoothConnection.execute();
     }
 
     @Override
@@ -69,12 +66,12 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
     }
     void checkBluetooth(){
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if(mBluetoothAdapter==null) {
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if(mBluetoothAdapter ==null) {
             Toast.makeText( this,"Bluetooth не поддерживается",Toast.LENGTH_LONG).show();
         } else {
             if (mBluetoothAdapter.isEnabled()) {
-                Log.d(TAG, "...Bluetooth включен...");
+                //Toast.makeText( this,"Bluetooth включен",Toast.LENGTH_SHORT).show();
             } else {
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);

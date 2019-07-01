@@ -6,8 +6,7 @@ public class ItemPresenter {
 
     private ItemActivity view;
     private final ItemModel model;
-    boolean layerRecipes;
-    private SmartBartender settings;
+    private boolean layerRecipes;
 
 
     public ItemPresenter(ItemModel model, boolean layerRecipes) {
@@ -21,8 +20,7 @@ public class ItemPresenter {
     }
 
     public SmartBartender getSettings(){
-        settings = (SmartBartender)view.getApplication();
-        return settings;
+        return (SmartBartender) view.getApplication();
     }
 
     public void viewIsReady() {

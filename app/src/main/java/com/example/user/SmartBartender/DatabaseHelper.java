@@ -1,23 +1,17 @@
 package com.example.user.SmartBartender;
 
-import android.annotation.SuppressLint;
-import android.content.ContentValues;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
 
-    private Context mContext;
+
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "recipesDatabase";
-    private static final String DATABASE_PATH = "/data/data/com.example.user.alcorobot/databases/recipesDatabase";
     //Table Names
     public static final String TABLE_INGREDIENTS = "ingredients";
     static final String TABLE_RECIPES = "recipes";
@@ -43,7 +37,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(Context context) {
         super(context,DATABASE_NAME, null, DATABASE_VERSION);
-        this.mContext = context;
     }
 
     @Override

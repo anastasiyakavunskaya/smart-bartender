@@ -18,7 +18,6 @@ import com.example.user.SmartBartender.SmartBartender;
 
 public class CoefficientFragment extends Fragment implements SeekBar.OnSeekBarChangeListener {
 
-    private OnFragmentInteractionListener mListener;
     SmartBartender settings;
     TextView resultView;
     public CoefficientFragment() {
@@ -73,7 +72,6 @@ public class CoefficientFragment extends Fragment implements SeekBar.OnSeekBarCh
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -83,7 +81,6 @@ public class CoefficientFragment extends Fragment implements SeekBar.OnSeekBarCh
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     @Override

@@ -21,19 +21,7 @@
             android:id="@+id/nav_coefficient"
             android:icon="@drawable/ic_menu_manage"
             android:title="Изменение коэффициента" />
-        <item
-            android:id="@+id/nav_admin"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Ручной ввод команды" />
-    </group>
 
-    <item android:title="Есть проблемы?">
-        <menu>
-            <item
-                android:id="@+id/nav_contact"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Связаться" />
-        </menu>
-    </item>
+    </group>
 
 </menu>

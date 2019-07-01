@@ -24,10 +24,9 @@ public class EditSimpleRecipesFragment extends AppCompatDialogFragment {
     private EditPresenter presenter;
     private String positiveBtn = "Добавить", negativeBtn = "Отмена", title = "Добавить";
     private View view;
-    private EditText editText;
     private EditModel model;
 
-    private boolean layerRecipes, edit;
+    private boolean edit;
 
     @NonNull
     @Override
@@ -38,7 +37,7 @@ public class EditSimpleRecipesFragment extends AppCompatDialogFragment {
 
         setData(inflater);
 
-        editText = view.findViewById(R.id.recipe_name);
+        EditText editText = view.findViewById(R.id.recipe_name);
         final ArrayList<Spinner> spinners;
         if (edit) {
             title = "Изменить";
@@ -72,13 +71,14 @@ public class EditSimpleRecipesFragment extends AppCompatDialogFragment {
     }
     private void setData(LayoutInflater inflater) {
         assert getArguments() != null;
-        layerRecipes = getArguments().getBoolean("layerRecipes");
+        boolean layerRecipes = getArguments().getBoolean("layerRecipes");
         edit = getArguments().getBoolean("edit");
         if(layerRecipes) view = inflater.inflate(R.layout.layer_recipes_layout, null);
         else view = inflater.inflate(R.layout.simple_recipes_layout, null);
         model = new EditModel(getContext());
         presenter = new EditPresenter(model);
         presenter.attachSimpleFragment(this);
+        presenter.attachItemActivity((ItemActivity) getActivity());
     }
 
     private ArrayList<Spinner> spinnersSettings(String item, ArrayList<String> ingredients, View view) {
@@ -128,11 +128,7 @@ public class EditSimpleRecipesFragment extends AppCompatDialogFragment {
         }
         return list;
     }
-    private ArrayList<Integer> getListOfLayers(View view) {
-        ArrayList<Integer> list = new ArrayList<>();
 
-        return list;
-    }
     private ArrayList<Ingredient> getSimpleData(ArrayList<Integer> values, List<Spinner> spinners) {
         int ingID = 0;
         ArrayList<Ingredient> ingredientsList = new ArrayList<>();
@@ -169,6 +165,7 @@ public class EditSimpleRecipesFragment extends AppCompatDialogFragment {
     }
 
     void onPositiveButtonClickSimpleRecipes(ArrayList<Spinner> spinners){
+        while(true){
             ArrayList<Integer> values = getListOfValues(view);
             String recipe = ((EditText) view.findViewById(R.id.recipe_name)).getText().toString();
             ArrayList<Ingredient> ingredients = getSimpleData(values, spinners);
@@ -176,11 +173,19 @@ public class EditSimpleRecipesFragment extends AppCompatDialogFragment {
                 if (edit) {
                     assert getArguments() != null;
                     presenter.onSaveRecipePressed(recipe, getArguments().getString("item"), ingredients, false);
+                    break;
                 }
-                else presenter.onAddRecipePressed(recipe, ingredients, false);
+                else {
+                    presenter.onAddRecipePressed(recipe, ingredients, false);
+                    break;
+                }
             }
             else Toast.makeText(getContext(),"Введены одинаковые ингредиенты! Попробуйте снова!",Toast.LENGTH_LONG).show();
-        onDestroy();
+        }
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
     }
 
 }

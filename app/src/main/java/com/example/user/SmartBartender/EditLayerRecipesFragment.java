@@ -15,7 +15,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 
@@ -25,7 +24,6 @@ public class EditLayerRecipesFragment extends AppCompatDialogFragment {
     private EditPresenter presenter;
     private String positiveBtn = "Добавить", negativeBtn = "Отмена", title = "Добавить";
     private View view;
-    private EditText editText;
     private EditModel model;
 
     private boolean edit;
@@ -39,7 +37,7 @@ public class EditLayerRecipesFragment extends AppCompatDialogFragment {
 
         setData(inflater);
 
-        editText = view.findViewById(R.id.recipe_name);
+        EditText editText = view.findViewById(R.id.recipe_name);
         final ArrayList<Spinner> spinners;
         if (edit) {
             title = "Изменить";
@@ -48,6 +46,7 @@ public class EditLayerRecipesFragment extends AppCompatDialogFragment {
             assert getArguments() != null;
             String item = getArguments().getString("item");
             editText.setText(item);
+            assert item != null;
             spinners = spinnersSettings(item, presenter.getIngredients(), view);
         }
         else spinners = spinnersSettings("Пусто", presenter.getIngredients(), view);
@@ -79,6 +78,7 @@ public class EditLayerRecipesFragment extends AppCompatDialogFragment {
         model = new EditModel(getContext());
         presenter = new EditPresenter(model);
         presenter.attachLayerFragment(this);
+        presenter.attachItemActivity((ItemActivity) getActivity());
     }
 
     private ArrayList<Spinner> spinnersSettings(String item, ArrayList<String> ingredients, View view) {

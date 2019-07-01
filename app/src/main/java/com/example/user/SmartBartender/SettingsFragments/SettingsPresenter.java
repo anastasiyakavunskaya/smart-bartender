@@ -10,7 +10,6 @@ import static com.example.user.SmartBartender.DatabaseHelper.TABLE_INGREDIENTS;
 class SettingsPresenter {
     private final EditModel model;
     private IngredientsFragment fragment;
-    private final String selectIngId = "SELECT  * FROM " + TABLE_INGREDIENTS + " WHERE " + KEY_NAME + " = ";
 
     SettingsPresenter(EditModel model) {
         this.model = model;
@@ -20,11 +19,12 @@ class SettingsPresenter {
         return model.getListOfIngredients();
     }
 
-    public int getIngredientId(String item){
+    int getIngredientId(String item){
+        String selectIngId = "SELECT  * FROM " + TABLE_INGREDIENTS + " WHERE " + KEY_NAME + " = ";
         if(item.equals("Пусто")) return 0;
         else return model.getID(selectIngId,item);
     }
-    public String getIngredientById(int id){
+    String getIngredientById(int id){
         if(id!=0) return model.getItemById(id);
         else return "Пусто";
     }
@@ -54,10 +54,6 @@ class SettingsPresenter {
         else fragment.showToast("Введите название!");
 
     }
-  /*  boolean itemCheck(String item){
-        if(model.getListOfIngredients().indexOf(item)!=-1) return false;
-        return true;
-    }*/
 
     private boolean isUnique(String item){
         ArrayList<String> list = model.getListOfIngredients();

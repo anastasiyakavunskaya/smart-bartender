@@ -28,8 +28,8 @@ public class EditModel {
     }
 
     void onSavePressed(boolean isLayer, String name, String oldName, ArrayList<Ingredient> list){
-            onDeletePressed(oldName);
-            onAddPressed(name, list, isLayer);
+        onDeletePressed(oldName);
+        onAddPressed(name, list, isLayer);
     }
 
     void onAddPressed(String name, ArrayList<Ingredient> list, boolean isLayer) {
