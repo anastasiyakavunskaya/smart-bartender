@@ -235,14 +235,11 @@ public class EditLayerRecipesFragment extends AppCompatDialogFragment {
         String recipe = ((EditText) view.findViewById(R.id.recipe_name)).getText().toString();
         ArrayList<Ingredient> ingredients = getLayerData(values,spinners);
 
-        if(presenter.isSpinnersCorrect(ingredients)){
             if (edit) {
                 assert getArguments() != null;
                 presenter.onSaveRecipePressed(recipe, getArguments().getString("item"), ingredients, true);
             }
             else presenter.onAddRecipePressed(recipe, ingredients, true);
-        }
-        else Toast.makeText(getContext(),"Введены одинаковые ингредиенты! Попробуйте снова!",Toast.LENGTH_LONG).show();
         onDestroy();
     }
 

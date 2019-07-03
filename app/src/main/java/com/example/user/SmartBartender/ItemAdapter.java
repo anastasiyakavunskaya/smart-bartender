@@ -72,7 +72,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
                 itemName.setText(itemString);
                     deleteBtn.setVisibility(Button.GONE);
                     if(item.second.equals(0)){
-                        cookBtn.setEnabled(true);
+                        cookBtn.setEnabled(false);
                         cookBtn.setBackground(itemView.getResources().getDrawable(R.drawable.un_cook_btn_background));
                     }
                 itemView.setOnClickListener(new View.OnClickListener() {

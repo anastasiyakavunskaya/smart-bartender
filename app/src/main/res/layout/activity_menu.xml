@@ -86,13 +86,18 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/cook_btn_background"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
         <ImageView
             android:layout_width="60dp"
@@ -105,9 +110,9 @@
             android:layout_height="match_parent"
             android:layout_margin="@dimen/margin"
             android:background="@android:color/transparent"
-            android:textColor="@color/colorPrimaryDark"
             android:fontFamily="@font/merienda_bold"
             android:text="@string/settings"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/item_text_size" />
     </LinearLayout>
 

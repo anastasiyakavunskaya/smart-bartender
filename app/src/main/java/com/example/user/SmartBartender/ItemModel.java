@@ -30,7 +30,7 @@ import static com.example.user.SmartBartender.DatabaseHelper.TABLE_RECIPES;
 
 class ItemModel {
     private final DatabaseHelper dbHelper;
-    private ItemPresenter presenter;
+    private static ItemPresenter presenter;
     private static ConnectedThread mConnectedThread;
 
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -143,7 +143,6 @@ class ItemModel {
         }
         if(mSocket!=null){
             mConnectedThread.write(output);
-            presenter.showToast("Приготовление напитка началось");
         }
         else  {
             presenter.showToast("Что-то пошло не так!");
@@ -302,6 +301,7 @@ class ItemModel {
             {
                 ConnectSuccess = false;//if the try failed, you can check the exception here
                 Log.d(TAG, "...Не удалось ничего.....  ");
+                presenter.showToast("...Что-то пошло не так...");
             }
 
             mConnectedThread = new ConnectedThread(mSocket);
@@ -323,6 +323,7 @@ class ItemModel {
                 tmpOut = socket.getOutputStream();
             } catch (IOException ignored) {
                 Log.d(TAG, "...Не удалось открыть поток.....  ");
+                presenter.showToast( "...Не удалось открыть поток.....  ");
             }
             mmOutStream = tmpOut;
         }
@@ -334,8 +335,10 @@ class ItemModel {
             byte[] msgBuffer = message.getBytes();
             try {
                 mmOutStream.write(msgBuffer);
+                presenter.showToast("Приготовление напитка началось");
             } catch (IOException e) {
                 Log.d(TAG, "...Ошибка отправки данных: " + e.getMessage() + "  ");
+                presenter.showToast("...Ошибка отправки данных: " + e.getMessage() + "  ");
             }
         }
 
