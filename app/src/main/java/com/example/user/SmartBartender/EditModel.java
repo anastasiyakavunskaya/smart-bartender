@@ -203,6 +203,7 @@ public class EditModel {
 
         dbHelper.close();
     }
+
     public void deleteIngredient(String item){
         dbHelper.getReadableDatabase().delete(TABLE_INGREDIENTS,"name = ?", new String[] {item});
         ContentValues contentValues = new ContentValues();

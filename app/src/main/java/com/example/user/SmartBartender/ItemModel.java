@@ -32,10 +32,12 @@ class ItemModel {
     private final DatabaseHelper dbHelper;
     private static ItemPresenter presenter;
     private static ConnectedThread mConnectedThread;
+    static BluetoothSocket mSocket = null;
+    private static String address = "98:D3:34:90:A2:F1";
+
+    private static BluetoothAdapter mBluetoothAdapter = null;
 
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-
-    private static BluetoothSocket mSocket = null;
 
     ItemModel(Context context) {
         this.dbHelper = new DatabaseHelper(context);
@@ -209,7 +211,7 @@ class ItemModel {
         //Список для последовательноой записи ингредиентов с их объемом
         int[] recipe = new int[6];
         for(int i =0; i<ingredients.size();i++){
-            for (int j=0; j<settings.size()-1;j++){
+            for (int j=0; j<settings.size();j++){
                 if(ingredients.get(i).id == settings.get(j))recipe[j]=ingredients.get(i).value*getCoefficient();
             }
         }
@@ -279,8 +281,7 @@ class ItemModel {
             {
                 if (mSocket == null)
                 {
-                    BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();//get the mobile bluetooth device
-                    String address = "98:D3:34:90:A2:F1";
+                    mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();//get the mobile bluetooth device
                     BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);//connects to the device's address and checks if it's available
                     mSocket = device.createInsecureRfcommSocketToServiceRecord(MY_UUID);//create a RFCOMM (SPP) connection
                     BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
@@ -290,7 +291,7 @@ class ItemModel {
                         Log.d(TAG, "...Соединение установлено и готово к передачи данных...");
                     } catch (IOException e) {
                         try {
-                           mSocket.close();
+                            mSocket.close();
                         } catch (IOException e2) {
                             Log.d(TAG,  "In onResume() and unable to close socket during connection failure" + e2.getMessage() + ".");
                         }
@@ -299,11 +300,9 @@ class ItemModel {
             }
             catch (IOException e)
             {
-                ConnectSuccess = false;//if the try failed, you can check the exception here
+                //ConnectSuccess = false;//if the try failed, you can check the exception here
                 Log.d(TAG, "...Не удалось ничего.....  ");
-                presenter.showToast("...Что-то пошло не так...");
             }
-
             mConnectedThread = new ConnectedThread(mSocket);
             mConnectedThread.start();
             return null;
@@ -323,7 +322,6 @@ class ItemModel {
                 tmpOut = socket.getOutputStream();
             } catch (IOException ignored) {
                 Log.d(TAG, "...Не удалось открыть поток.....  ");
-                presenter.showToast( "...Не удалось открыть поток.....  ");
             }
             mmOutStream = tmpOut;
         }
@@ -335,12 +333,11 @@ class ItemModel {
             byte[] msgBuffer = message.getBytes();
             try {
                 mmOutStream.write(msgBuffer);
-                presenter.showToast("Приготовление напитка началось");
             } catch (IOException e) {
                 Log.d(TAG, "...Ошибка отправки данных: " + e.getMessage() + "  ");
-                presenter.showToast("...Ошибка отправки данных: " + e.getMessage() + "  ");
             }
         }
+
 
         /* Call this from the main activity to shutdown the connection */
         public void cancel() {

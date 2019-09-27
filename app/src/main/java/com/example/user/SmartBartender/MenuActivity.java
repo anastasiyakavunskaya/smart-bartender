@@ -37,11 +37,15 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
         settingsBtn = findViewById(R.id.settings_button);
         settingsBtn.setOnClickListener(this);
-
         checkBluetooth();
-        ItemModel.ConnectBluetooth bluetoothConnection = new ItemModel.ConnectBluetooth();
-        bluetoothConnection.execute();
+        while(ItemModel.mSocket==null) {
+            ItemModel.ConnectBluetooth bluetoothConnection = new ItemModel.ConnectBluetooth();
+            bluetoothConnection.execute();
+        }
     }
+       /* checkBluetooth();
+        ItemModel.ConnectBluetooth bluetoothConnection = new ItemModel.ConnectBluetooth();
+        bluetoothConnection.execute();*/
 
     @Override
     public void onClick(View v) {
