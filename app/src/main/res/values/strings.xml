@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Smart Bartender</string>
+    <string name="app_name">Bartender</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_main">MainActivity</string>
@@ -39,7 +39,10 @@
     <string name="clear_btn">Очистить</string>
     <string name="save_c_btn">Сохранить</string>
     <string name="set_с_btn">По умолчанию</string>
-    <string name="warning_empty_list_of_ingredients">Список ингредиентов пока пуст. Добавьте ингредиенты в вкладке /"Список ингредиентов/"</string>
+    <string name="empty_list_of_ingredients">В базе данных нет ингредиентов, добавьте их с помощью окна ниже</string>
     <string name="coefficient_intro">Коэффициент конвертации необходимо установить для корректного наливания жидкости</string>
-    <string name="cook_btn_text">ПРИГОТОВИТЬ</string>
+    <string name="cook_btn_text">сделать</string>
+    <string name="ingredients_information_text">Ингредиенты и коэффициенты</string>
+    <string name="ingredients_information_recipes"> Список рецептов </string>
+    <string name="empty_list_of_recipes"> В базе данных нет рецептов, добавьте их с помощью кнопки внизу экрана</string>
 </resources>

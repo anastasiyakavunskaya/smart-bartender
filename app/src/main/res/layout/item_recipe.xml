@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Data to make available to the XML via data binding. In this case,
+     the whole ViewModel, so that we can access the LiveData,
+     click handlers, and state variables. -->
+    <data>
+        <variable
+            name="recipe"
+            type="com.example.user.bartender.database.Recipe" />
+        <variable
+            name="clickListener"
+            type="com.example.user.bartender.recipes.simple.RecipeListener" />
+
+    </data>
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/item_layout"
+    android:orientation="vertical"
+    android:padding="8dp"
+        android:onClick="@{()-> clickListener.onClick(recipe)}"
+        android:background="@android:color/darker_gray"
+        >
+
+    <TextView
+        android:id="@+id/item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@{recipe.name}"
+        tools:text="Рецепт 1"
+        android:textSize="@dimen/item_text_size"
+        android:maxLength="25"
+        android:padding="@dimen/padding"
+        android:layout_gravity="left"
+        />
+
+    <Button
+        android:id="@+id/cook_btn"
+        android:layout_width="100dp"
+        android:layout_height="48dp"
+        android:background="@drawable/cook_btn_background"
+        android:ellipsize="middle"
+        android:text="@string/cook_btn_text"
+        android:layout_gravity="end"
+        />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider" />
+    </LinearLayout>
+
+</layout>
