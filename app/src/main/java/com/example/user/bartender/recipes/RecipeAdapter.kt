@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.user.bartender.R
 import com.example.user.bartender.database.Recipe
 import com.example.user.bartender.databinding.ItemRecipeBinding
 
@@ -24,6 +25,8 @@ class RecipeAdapter(private val clickListener: RecipeListener): ListAdapter<Reci
     class ViewHolder private constructor(val binding: ItemRecipeBinding): RecyclerView.ViewHolder(binding.root){
         fun bind (item: Recipe, clickListener: RecipeListener){
             binding.recipe = item
+            if(item.type=="simple") binding.recipeIcon.setImageResource(R.drawable.simple)
+            else binding.recipeIcon.setImageResource(R.drawable.layer)
             binding.clickListener = clickListener
             binding.executePendingBindings()
 

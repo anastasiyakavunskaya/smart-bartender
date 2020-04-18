@@ -11,5 +11,5 @@ data class Recipe(
         @ColumnInfo(name = "recipe_name")
         var name: String,
         @ColumnInfo(name = "recipe_type")
-        var type:String
+        var type: String
 )

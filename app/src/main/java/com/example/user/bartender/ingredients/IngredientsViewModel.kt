@@ -44,15 +44,16 @@ class IngredientsViewModel(
         _editItem.value = ingredient
     }
 
-    fun onEditClick(name: String, c: Double) {
+    fun onEditClick(oldIngredient: Ingredient, name: String, c: Double) {
         uiScope.launch {
             withContext(Dispatchers.IO){
-                database.updateIngredient(Ingredient(name,c))
+                val n = database.updateIngredient(Ingredient (name, c))
+                if(n!=1) {
+                    database.deleteIngredient(oldIngredient)
+                    database.insertIngredient(Ingredient(name, c))
+                }
             }
         }
-    }
-
-    fun onEditFinished() {
         _editItem.value = null
     }
 

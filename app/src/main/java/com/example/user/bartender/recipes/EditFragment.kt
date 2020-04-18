@@ -31,8 +31,8 @@ class EditFragment : Fragment() {
         val viewModelFactory = RecipesViewModelFactory(dataSource, application)
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(RecipesViewModel::class.java)
 
-        val spinnerArray = arrayOf(binding.ing1,binding.ing2,binding.ing3,binding.ing4,binding.ing5,binding.ing6)
-        val volumeArray = arrayOf(binding.value1,binding.value2,binding.value3,binding.value4,binding.value5,binding.value6)
+        val spinnerArray = arrayOf(binding.ingredient1,binding.ingredient2,binding.ingredient3,binding.ingredient4,binding.ingredient5,binding.ingredient6)
+        val volumeArray = arrayOf(binding.volume1,binding.volume2,binding.volume3,binding.volume4,binding.volume5,binding.volume6)
         val layerArray = arrayOf(binding.layer1,binding.layer2,binding.layer3,binding.layer4,binding.layer5,binding.layer6)
 
         val args = EditFragmentArgs.fromBundle(arguments!!)

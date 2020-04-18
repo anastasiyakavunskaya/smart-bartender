@@ -48,13 +48,12 @@ class RecipesViewModel(val database: BartenderDatabaseDao,
 
     fun onSaveButtonClickToEdit(recipeID: Long, name: String, ingredients: ArrayList<Triple<String, Double, Int>>) {
         val type = getRecipeType(ingredients)
-        val newRecipe = Recipe(name = name,type = type)
+        val newRecipe = Recipe(recipeId = recipeID,name = name,type = type)
         uiScope.launch {
             withContext(Dispatchers.IO){
                 database.deleteConnection(recipeID.toString())
                 database.updateRecipeName(newRecipe)
                 for (i in ingredients.indices) {
-
                     val connection = Connection(recID = recipeID, ingName = ingredients[i].first, volume = ingredients[i].second, layer = ingredients[i].third)
                     database.insertConnection(connection)
                 }
@@ -123,5 +122,4 @@ class RecipesViewModel(val database: BartenderDatabaseDao,
         _layerFilter.value = !_layerFilter.value!!
         recipes = filter(simpleFilter.value!!, layerFilter.value!!)
     }
-
 }

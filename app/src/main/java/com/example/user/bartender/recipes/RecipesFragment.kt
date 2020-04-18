@@ -50,7 +50,6 @@ class RecipesFragment : Fragment() {
             }
         })
 
-
         binding.addRecipeButton.setOnClickListener {
             this.findNavController().navigate(RecipesFragmentDirections.actionSimpleRecipesFragmentToEditFragment(-1,""))
         }
@@ -104,4 +103,6 @@ class RecipesFragment : Fragment() {
                 view!!.findNavController())
                 || super.onOptionsItemSelected(item)
     }
+
+
 }

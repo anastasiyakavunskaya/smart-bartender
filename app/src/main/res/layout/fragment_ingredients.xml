@@ -49,14 +49,15 @@
             android:orientation="horizontal"
             android:padding="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="PrivateResource">
 
             <EditText
                 android:id="@+id/ingredientName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:hint="Название ингредиента"
+                android:hint="@string/ingredient_input_text"
                 android:inputType="textShortMessage|text"
                 android:maxLines="1"
                 app:layout_constraintStart_toStartOf="parent"
@@ -69,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="10dp"
-                android:text="Коэффициент: "
+                android:text="@string/coefficient_input"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ingredientName" />
@@ -86,7 +87,8 @@
                 android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@+id/textView5"
                 app:layout_constraintTop_toBottomOf="@+id/ingredientName"
-                android:autofillHints="@string/coefficient_1500" />
+                android:autofillHints="@string/coefficient_1500"
+                tools:ignore="LabelFor" />
 
             <Button
                 android:id="@+id/add_btn"

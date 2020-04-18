@@ -1,10 +1,8 @@
 <resources>
     <string name="app_name">Bartender</string>
     <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
-    <string name="title_activity_main">MainActivity</string>
     <string name="title_add_ingredient_fragment">Добавить ингредиент</string>
-    <string name="item_title">Название</string>
+    <string name="item_title">Название рецепта</string>
     <string name="item_info">Информация</string>
     <string name="app_title">Smart Bartender</string>
 
@@ -25,19 +23,19 @@
 
     <string name="information_text">Это приложение позволяет быстро и удобно готовить разные коктейли!</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ingredient_input_text">Название ингредиента</string>
     <string name="save_button">Сохранить</string>
-    <string name="motor2">Мотор 2</string>
-    <string name="motor1">Мотор 1</string>
-    <string name="motor3">Мотор 3</string>
-    <string name="motor4">Мотор 4</string>
-    <string name="motor5">Мотор 5</string>
-    <string name="motor6">Мотор 6</string>
+    <string name="clear_button">Очистить</string>
+    <string name="cancel_button">Отменить</string>
+
+    <string name="motor_1">Мотор 1</string>
+    <string name="motor_2">Мотор 2</string>
+    <string name="motor_3">Мотор 3</string>
+    <string name="motor_4">Мотор 4</string>
+    <string name="motor_5">Мотор 5</string>
+    <string name="motor_6">Мотор 6</string>
     <string name="motor_settings_intro">Установите название жидкостей так, как вы поставили их в систему</string>
-    <string name="clear_btn">Очистить</string>
-    <string name="save_c_btn">Сохранить</string>
     <string name="set_с_btn">По умолчанию</string>
     <string name="empty_list_of_ingredients">В базе данных нет ингредиентов, добавьте их с помощью окна ниже</string>
     <string name="empty_ingredient_list_for_motors">"В базе данных нет ингредиентов, добавьте их в пункте меню \"Ингредиенты\""</string>
@@ -52,5 +50,11 @@
     <string name="coefficient_1500">1500</string>
     <string name="filter_simple">Простые коктейли</string>
     <string name="filter_layer">Слоёные коктейли</string>
+    <string name="layer_1">1</string>
+    <string name="ml_title">мл</string>
+    <string name="ingredient">Ингредиенты</string>
+    <string name="layer_title">Слой</string>
+    <string name="coefficient_input">Коэффициент:</string>
+    <string name="type">type</string>
 
 </resources>

@@ -14,7 +14,7 @@ interface BartenderDatabaseDao{
     fun insertConnection(connection: Connection)
 
     @Update
-    fun updateIngredient (ingredient: Ingredient)
+    fun updateIngredient (ingredient: Ingredient): Int
     @Update
     fun updateRecipeName (recipe: Recipe)
     @Update

@@ -38,14 +38,13 @@ class IngredientsFragment : Fragment() {
         binding.ingRecyclerView.layoutManager = manager
         binding.lifecycleOwner = this
 
-        viewModel.editItem.observe(viewLifecycleOwner, Observer {
-            if(it!=null){
-                binding.ingredientName.text = Editable.Factory.getInstance().newEditable(it.name)
-                binding.ingredientC.text = Editable.Factory.getInstance().newEditable(it.c.toString())
+        viewModel.editItem.observe(viewLifecycleOwner, Observer { oldIngredient ->
+            if(oldIngredient!=null){
+                binding.ingredientName.text = Editable.Factory.getInstance().newEditable(oldIngredient.name)
+                binding.ingredientC.text = Editable.Factory.getInstance().newEditable(oldIngredient.c.toString())
                 binding.addBtn.text = "Изменить"
                 binding.addBtn.setOnClickListener {
-                    viewModel.onEditClick(requireNotNull(binding.ingredientName.text.toString()), binding.ingredientC.text.toString().toDouble())
-                    viewModel.onEditFinished()
+                    viewModel.onEditClick(oldIngredient, requireNotNull(binding.ingredientName.text.toString()), binding.ingredientC.text.toString().toDouble())
                 }
             }
             else {
