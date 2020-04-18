@@ -1,14 +1,14 @@
 package com.example.user.bartender.recipes.simple
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,31 +28,45 @@ class RecipesFragment : Fragment() {
 
         val viewModelFactory = RecipesViewModelFactory(dataSource, application)
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(RecipesViewModel::class.java)
+        setHasOptionsMenu(true)
 
-        val adapter = SimpleRecipeAdapter(RecipeListener {
-            recipe -> viewModel.onItemClick(recipe)
+        binding.filterSimple.isChecked = true
+        binding.filterLayer.isChecked = true
+
+        val adapter = SimpleRecipeAdapter(RecipeListener { recipe ->
+            this.findNavController().navigate(RecipesFragmentDirections.actionSimpleRecipesFragmentToEditFragment(recipe.recipeId, recipe.name))
         })
+
 
         binding.recRecyclerView.adapter = adapter
         val manager = LinearLayoutManager(activity)
         binding.recRecyclerView.layoutManager = manager
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
+        /*viewModel.simpleFilter.observe(viewLifecycleOwner, Observer { simple->
+            viewModel.layerFilter.observe(viewLifecycleOwner, Observer{ layer->
 
+            })
+        })*/
         viewModel.recipes.observe(viewLifecycleOwner, Observer {
             if(it!=null){
-                if (it.isEmpty()) binding.recipeInformationText.text = getString(R.string.empty_list_of_recipes)
-                else binding.recipeInformationText.text = getString(R.string.ingredients_information_recipes)
+                if (it.isNotEmpty()) {
+                    binding.recipeInformationText.visibility = View.GONE
+                }
+                else binding.recipeInformationText.visibility = View.VISIBLE
                 adapter.submitList(it)
             }
-        })
-        viewModel.editRecipe.observe(viewLifecycleOwner, Observer {
-            if(it!=null) this.findNavController().navigate(RecipesFragmentDirections.actionSimpleRecipesFragmentToEditFragment(it.recipeId, it.name))
+
         })
 
         binding.addRecipeButton.setOnClickListener {
             this.findNavController().navigate(RecipesFragmentDirections.actionSimpleRecipesFragmentToEditFragment(-1,""))
         }
-
+        binding.filterSimple.setOnClickListener {
+           viewModel.filterSimple()
+        }
+        binding.filterLayer.setOnClickListener {
+            viewModel.filterLayer()
+        }
 
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(
@@ -71,5 +85,16 @@ class RecipesFragment : Fragment() {
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
         itemTouchHelper.attachToRecyclerView(binding.recRecyclerView)
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.overflow_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return NavigationUI.onNavDestinationSelected(item!!,
+                view!!.findNavController())
+                || super.onOptionsItemSelected(item)
     }
 }

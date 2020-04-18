@@ -36,16 +36,15 @@ class IngredientsFragment : Fragment() {
         binding.ingRecyclerView.adapter = adapter
         val manager = LinearLayoutManager(activity)
         binding.ingRecyclerView.layoutManager = manager
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
 
         viewModel.editItem.observe(viewLifecycleOwner, Observer {
             if(it!=null){
                 binding.ingredientName.text = Editable.Factory.getInstance().newEditable(it.name)
                 binding.ingredientC.text = Editable.Factory.getInstance().newEditable(it.c.toString())
-                val id = it.ingredientId
                 binding.addBtn.text = "Изменить"
                 binding.addBtn.setOnClickListener {
-                    viewModel.onEditClick(id,requireNotNull(binding.ingredientName.text.toString()), binding.ingredientC.text.toString().toDouble())
+                    viewModel.onEditClick(requireNotNull(binding.ingredientName.text.toString()), binding.ingredientC.text.toString().toDouble())
                     viewModel.onEditFinished()
                 }
             }
@@ -61,8 +60,7 @@ class IngredientsFragment : Fragment() {
 
         viewModel.ingredients.observe(viewLifecycleOwner, Observer {
             if(it!=null){
-                if (it.isEmpty()) binding.ingredientsInformationText.text = getString(R.string.empty_list_of_ingredients)
-                else binding.ingredientsInformationText.text = getString(R.string.ingredients_information_text)
+                if (it.isNotEmpty()) binding.ingredientsInformationText.visibility = View.GONE
                 adapter.submitList(it)
             }
         })

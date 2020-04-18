@@ -16,43 +16,61 @@
 
     </data>
 
-    <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/item_layout"
-    android:orientation="vertical"
-    android:padding="8dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/item_layout"
+        android:orientation="vertical"
+        android:padding="8dp"
         android:onClick="@{()-> clickListener.onClick(recipe)}"
-        android:background="@android:color/darker_gray"
         >
 
-    <TextView
-        android:id="@+id/item_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@{recipe.name}"
-        tools:text="Рецепт 1"
-        android:textSize="@dimen/item_text_size"
-        android:maxLength="25"
-        android:padding="@dimen/padding"
-        android:layout_gravity="left"
-        />
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_launcher_foreground"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-    <Button
-        android:id="@+id/cook_btn"
-        android:layout_width="100dp"
-        android:layout_height="48dp"
-        android:background="@drawable/cook_btn_background"
-        android:ellipsize="middle"
-        android:text="@string/cook_btn_text"
-        android:layout_gravity="end"
-        />
+        <TextView
+            android:id="@+id/item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:gravity="start"
+            android:maxLength="25"
+            android:padding="@dimen/padding"
+            android:text="@{recipe.name}"
+            android:textSize="@dimen/item_text_size"
+            app:layout_constraintStart_toEndOf="@+id/imageView2"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Рецепт 1" />
+
+        <Button
+            android:id="@+id/cook_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_gravity="end"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/cook_btn_background"
+            android:ellipsize="middle"
+            android:text="@string/cook_btn_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="?android:attr/listDivider" />
-    </LinearLayout>
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/item_name" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

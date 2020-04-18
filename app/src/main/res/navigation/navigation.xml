@@ -3,37 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/menuFragment">
-    <fragment
-        android:id="@+id/menuFragment"
-        android:name="com.example.user.bartender.menu.MenuFragment"
-        android:label="Меню"
-        tools:layout="@layout/fragment_menu">
-        <action
-            android:id="@+id/action_menuFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
-        <action
-            android:id="@+id/action_menuFragment_to_simpleRecipesFragment"
-            app:destination="@id/simpleRecipesFragment" />
-        <action
-            android:id="@+id/action_menuFragment_to_infoFragment"
-            app:destination="@id/infoFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.example.user.bartender.settings.SettingsFragment"
-        android:label="Настройки"
-        tools:layout="@layout/fragment_settings">
-        <action
-            android:id="@+id/action_settingsFragment_to_ingredientsFragment"
-            app:destination="@id/ingredientsFragment" />
-        <action
-            android:id="@+id/action_settingsFragment_to_infoFragment"
-            app:destination="@id/infoFragment" />
-        <action
-            android:id="@+id/action_settingsFragment_to_motorsFragment"
-            app:destination="@id/motorsFragment" />
-    </fragment>
+    app:startDestination="@id/simpleRecipesFragment">
     <fragment
         android:id="@+id/ingredientsFragment"
         android:name="com.example.user.bartender.ingredients.IngredientsFragment"
@@ -41,7 +11,7 @@
     <fragment
         android:id="@+id/simpleRecipesFragment"
         android:name="com.example.user.bartender.recipes.simple.RecipesFragment"
-        android:label="Рецепты">
+        android:label="Список рецептов">
         <action
             android:id="@+id/action_simpleRecipesFragment_to_editFragment"
             app:destination="@id/editFragment" />
@@ -49,19 +19,22 @@
     <fragment
         android:id="@+id/infoFragment"
         android:name="com.example.user.bartender.settings.InfoFragment"
-        android:label="Информация" />
+        android:label="@string/info_fragment_label" />
     <fragment
         android:id="@+id/motorsFragment"
         android:name="com.example.user.bartender.settings.MotorsFragment"
-        android:label="Настройка моторов" />
+        android:label="Настройка моторов" >
+        <action
+            android:id="@+id/action_motorsFragment_to_simpleRecipesFragment"
+            app:destination="@id/simpleRecipesFragment" />
+    </fragment>
     <fragment
         android:id="@+id/editFragment"
         android:name="com.example.user.bartender.recipes.simple.EditFragment"
         android:label="Изменить список рецептов">
         <action
             android:id="@+id/action_editFragment_to_simpleRecipesFragment"
-            app:destination="@id/simpleRecipesFragment"
-            app:popUpTo="@id/menuFragment" />
+            app:destination="@id/simpleRecipesFragment" />
         <argument
             android:name="oldRecipeID"
             app:argType="long" />

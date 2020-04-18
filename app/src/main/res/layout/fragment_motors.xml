@@ -105,12 +105,12 @@
                 android:layout_height="@dimen/spinner_height"
                 android:layout_margin="@dimen/margin"/>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/clear_motors_btn"
                 android:text="@string/clear_btn"
                 android:padding="@dimen/padding"/>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/set_motors_btn"
                 android:padding="@dimen/padding"
                 android:text="@string/save_c_btn" />

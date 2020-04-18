@@ -6,9 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "ingredient_table")
 data class Ingredient(
-        @PrimaryKey(autoGenerate = true)
-        var ingredientId: Long = 0L,
-        @ColumnInfo(name = "ingredient_name")
+        @PrimaryKey@ColumnInfo(name = "ingredient_name")
         val name: String,
         @ColumnInfo(name = "converter_coefficient")
         var c: Double

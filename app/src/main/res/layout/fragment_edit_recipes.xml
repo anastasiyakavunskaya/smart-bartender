@@ -363,7 +363,7 @@
         app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/layer5" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/recipe_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -373,7 +373,7 @@
         app:layout_constraintEnd_toStartOf="@+id/recipe_save"
         app:layout_constraintTop_toBottomOf="@+id/ing6" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/recipe_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

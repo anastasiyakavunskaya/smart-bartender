@@ -18,7 +18,7 @@ override fun onCreateViewHolder(parent: ViewGroup, position: Int):ViewHolder {
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        //holder.bind(getItem(position), clickListener)
+        holder.bind(getItem(position), clickListener)
     }
 
     fun getIngredient(position: Int): Ingredient = getItem(position)
@@ -42,7 +42,7 @@ override fun onCreateViewHolder(parent: ViewGroup, position: Int):ViewHolder {
 }
 class IngredientDiffCallback: DiffUtil.ItemCallback<Ingredient>(){
     override fun areItemsTheSame(oldIngedient: Ingredient, newIngredient: Ingredient): Boolean {
-        return oldIngedient.ingredientId == newIngredient.ingredientId
+        return oldIngedient.name == newIngredient.name
     }
 
     override fun areContentsTheSame(oldIngredient: Ingredient, newIngredient: Ingredient): Boolean {

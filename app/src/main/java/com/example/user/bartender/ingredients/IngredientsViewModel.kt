@@ -44,10 +44,10 @@ class IngredientsViewModel(
         _editItem.value = ingredient
     }
 
-    fun onEditClick(id: Long, name: String, c: Double) {
+    fun onEditClick(name: String, c: Double) {
         uiScope.launch {
             withContext(Dispatchers.IO){
-                database.updateIngredient(Ingredient(id,name,c))
+                database.updateIngredient(Ingredient(name,c))
             }
         }
     }

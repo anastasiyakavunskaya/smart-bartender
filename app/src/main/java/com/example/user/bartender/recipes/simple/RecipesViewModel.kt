@@ -1,6 +1,7 @@
 package com.example.user.bartender.recipes.simple
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,21 +14,26 @@ import kotlinx.coroutines.*
 class RecipesViewModel(val database: BartenderDatabaseDao,
                        application: Application): AndroidViewModel(application){
     private var viewModelJob = Job()
-
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
     }
-
     private val uiScope = CoroutineScope(Dispatchers.Main+viewModelJob)
 
     val ingredients = database.getAllIngredients()
-    val recipes = database.getRecipes("simple")
+    private val _recipes = MutableLiveData<List<Recipe>>()
+    val recipes: LiveData<List<Recipe>> = _recipes
+    val connections = database.getConnections()
 
-    private val  _editRecipe = MutableLiveData<Recipe>()
-            val editRecipe: LiveData<Recipe> = _editRecipe
+    private val _simpleFilter = MutableLiveData<Boolean>()
+    val simpleFilter: LiveData<Boolean> = _simpleFilter
+
+    private val _layerFilter = MutableLiveData<Boolean>()
+    val layerFilter: LiveData<Boolean> = _layerFilter
     init {
-        _editRecipe.value = null
+        //TODO: recipe init as all recipes
+        _simpleFilter.value = true
+        _layerFilter.value = true
     }
 
     fun getNames(list: List<Ingredient>?): Array<kotlin.String?> {
@@ -38,58 +44,43 @@ class RecipesViewModel(val database: BartenderDatabaseDao,
         return array
     }
 
-    fun onItemClick(recipe: Recipe) {
-        _editRecipe.value = recipe
-    }
+    fun onSaveButtonClickToEdit(recipeID: Long, name: String, ingredients: ArrayList<Triple<String, Double, Int>>) {
+        val type = getRecipeType(ingredients)
+        val newRecipe = Recipe(name = name,type = type)
+        uiScope.launch {
+            withContext(Dispatchers.IO){
+                database.deleteConnection(recipeID.toString())
+                database.updateRecipeName(newRecipe)
+                for (i in ingredients.indices) {
 
-    fun onSaveButtonClick(recipe:Recipe) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    fun onSaveButtonClickToEdit(recipeID: Long, toString: String, newIngredients: Array<Triple<String, Double, Int>>) {
-
+                    val connection = Connection(recID = recipeID, ingName = ingredients[i].first, volume = ingredients[i].second, layer = ingredients[i].third)
+                    database.insertConnection(connection)
+                }
+            }
+        }
     }
 
     fun onSaveButtonClickToAdd(name: String, ingredients: ArrayList<Triple<String, Double, Int>>) {
-        val type = "simple"
+        val type = getRecipeType(ingredients)
+        val newRecipe = Recipe(name = name,type = type)
         uiScope.launch {
-            val newRecipe = Recipe(name = name,type = type)
-            insertName(newRecipe)
-            insert(newRecipe.recipeId, ingredients)
-        }
-    }
-
-    private suspend fun insertName(recipe: Recipe){
-        withContext(Dispatchers.IO){
-            database.insertRecipeName(recipe)
-        }
-    }
-
-    private suspend fun insert(id: Long ,ingredients: ArrayList<Triple<String, Double, Int>>){
-        val list = ArrayList<Connection>()
-        withContext(Dispatchers.IO){
-            for (i in ingredients.indices) {
-                    val connection = Connection(recID = id, ingID = getIngredient(ingredients[i].first), volume = ingredients[i].second, layer = ingredients[i].third)
-                    list.add(connection)
-            }
-            database.insertRecipe(connections = list)
-        }
-    }
-
-
-    private fun getIngredient(first: String): Long {
-        var id:Long = 0
-        uiScope.launch {
-            id = withContext(Dispatchers.IO){
-                val ingredientId = database.getIngredientId(first).ingredientId
-                ingredientId
+            withContext(Dispatchers.IO){
+                val id = database.insertRecipeName(newRecipe)
+                for (i in ingredients.indices) {
+                    val connection = Connection(recID = id, ingName = ingredients[i].first, volume = ingredients[i].second, layer = ingredients[i].third)
+                    database.insertConnection(connection)
+                }
             }
         }
-        return id
     }
 
     private fun getRecipeType(ingredients: ArrayList<Triple<String, Double, Int>>): String {
-        return "simple"
+        val layers = ArrayList<Int>()
+        for (i in ingredients.indices)
+            layers.add(ingredients[i].third)
+        val unique = layers.distinct()
+        return if(unique.size==1) "simple"
+        else "layer"
     }
 
     fun delete(recipe: Recipe) {
@@ -99,44 +90,32 @@ class RecipesViewModel(val database: BartenderDatabaseDao,
                 database.deleteConnection(recipe.recipeId.toString())
             }
         }
-
     }
 
-    fun getIngredients(id: Long): ArrayList<Triple<String, Double, Int>> {
-        val ingredients = ArrayList<String>()
-        val volumes = ArrayList<Double>()
-        val layers = ArrayList<Int>()
+    fun getIngredients(id: Long, connections: List<Connection>): ArrayList<Triple<String, Double, Int>> {
         val array = ArrayList<Triple<String, Double, Int>>()
-        /*val connections = getConnections(id)
         for(i in connections.indices){
-            array.add(Triple(getIngredientByID(connections[i].ingID),connections[i].volume,connections[i].layer))
-        }*/
+            Log.d("DATABASE", "Connections not null")
+            if(connections[i].recID==id) array.add(Triple(connections[i].ingName,connections[i].volume,connections[i].layer))
+        }
         return array
     }
 
-/*
-    private fun getConnections(id: Long): List<Connection>{
-        var connections = List<Connection>()
-         uiScope.launch {
-             connections  = withContext(Dispatchers.IO){
-                val list = database.getConnections(id)
-                list.value
-            }
-        }
-        return connections
-    }
-*/
-
-    private fun getIngredientByID(id:Long): String {
-        var name:String = ""
-        uiScope.launch {
-            name = withContext(Dispatchers.IO){
-               val name = database.getIngredient(id).name
-                name
-            }
-        }
-        return name
+    fun filter(simple: Boolean, layer: Boolean):  LiveData<List<Recipe>> {
+        return if (simple&&layer) database.getRecipes()
+        else if(simple && !layer) database.filterRecipes("simple")
+        else if(!simple && layer) database.filterRecipes("layer")
+        else MutableLiveData<List<Recipe>>()
     }
 
+    fun filterSimple() {
+       _simpleFilter.value = !_simpleFilter.value!!
+        _recipes.value = filter(simpleFilter.value!!,layerFilter.value!!).value
+    }
+
+    fun filterLayer() {
+        _layerFilter.value = !_layerFilter.value!!
+        _recipes.value = filter(simpleFilter.value!!, layerFilter.value!!).value
+    }
 
 }
