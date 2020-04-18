@@ -1,4 +1,4 @@
-package com.example.user.bartender.recipes.simple
+package com.example.user.bartender.recipes
 
 import android.os.Bundle
 import android.view.*
@@ -33,7 +33,7 @@ class RecipesFragment : Fragment() {
         binding.filterSimple.isChecked = true
         binding.filterLayer.isChecked = true
 
-        val adapter = SimpleRecipeAdapter(RecipeListener { recipe ->
+        val adapter = RecipeAdapter(RecipeListener { recipe ->
             this.findNavController().navigate(RecipesFragmentDirections.actionSimpleRecipesFragmentToEditFragment(recipe.recipeId, recipe.name))
         })
 
@@ -42,30 +42,37 @@ class RecipesFragment : Fragment() {
         val manager = LinearLayoutManager(activity)
         binding.recRecyclerView.layoutManager = manager
         binding.lifecycleOwner = this
-        /*viewModel.simpleFilter.observe(viewLifecycleOwner, Observer { simple->
-            viewModel.layerFilter.observe(viewLifecycleOwner, Observer{ layer->
-
-            })
-        })*/
         viewModel.recipes.observe(viewLifecycleOwner, Observer {
             if(it!=null){
-                if (it.isNotEmpty()) {
-                    binding.recipeInformationText.visibility = View.GONE
-                }
+                if (it.isNotEmpty())binding.recipeInformationText.visibility = View.GONE
                 else binding.recipeInformationText.visibility = View.VISIBLE
                 adapter.submitList(it)
             }
-
         })
+
 
         binding.addRecipeButton.setOnClickListener {
             this.findNavController().navigate(RecipesFragmentDirections.actionSimpleRecipesFragmentToEditFragment(-1,""))
         }
         binding.filterSimple.setOnClickListener {
            viewModel.filterSimple()
+           viewModel.recipes.observe(viewLifecycleOwner, Observer {
+                if(it!=null){
+                    if (it.isNotEmpty())binding.recipeInformationText.visibility = View.GONE
+                    else binding.recipeInformationText.visibility = View.VISIBLE
+                    adapter.submitList(it)
+                }
+            })
         }
         binding.filterLayer.setOnClickListener {
             viewModel.filterLayer()
+            viewModel.recipes.observe(viewLifecycleOwner, Observer {
+                if(it!=null){
+                    if (it.isNotEmpty())binding.recipeInformationText.visibility = View.GONE
+                    else binding.recipeInformationText.visibility = View.VISIBLE
+                    adapter.submitList(it)
+                }
+            })
         }
 
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {

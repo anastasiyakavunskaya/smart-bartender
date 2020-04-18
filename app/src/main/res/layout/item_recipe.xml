@@ -12,7 +12,7 @@
             type="com.example.user.bartender.database.Recipe" />
         <variable
             name="clickListener"
-            type="com.example.user.bartender.recipes.simple.RecipeListener" />
+            type="com.example.user.bartender.recipes.RecipeListener" />
 
     </data>
 

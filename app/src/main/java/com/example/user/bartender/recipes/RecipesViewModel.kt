@@ -1,4 +1,4 @@
-package com.example.user.bartender.recipes.simple
+package com.example.user.bartender.recipes
 
 import android.app.Application
 import android.util.Log
@@ -21,8 +21,10 @@ class RecipesViewModel(val database: BartenderDatabaseDao,
     private val uiScope = CoroutineScope(Dispatchers.Main+viewModelJob)
 
     val ingredients = database.getAllIngredients()
-    private val _recipes = MutableLiveData<List<Recipe>>()
-    val recipes: LiveData<List<Recipe>> = _recipes
+    //private val _recipes = MutableLiveData<List<Recipe>>()
+    //val recipes: LiveData<List<Recipe>> = _recipes
+    var recipes= database.getRecipes()
+
     val connections = database.getConnections()
 
     private val _simpleFilter = MutableLiveData<Boolean>()
@@ -31,13 +33,13 @@ class RecipesViewModel(val database: BartenderDatabaseDao,
     private val _layerFilter = MutableLiveData<Boolean>()
     val layerFilter: LiveData<Boolean> = _layerFilter
     init {
-        //TODO: recipe init as all recipes
+        //_recipes.value = database.getRecipes().value!!
         _simpleFilter.value = true
         _layerFilter.value = true
     }
 
-    fun getNames(list: List<Ingredient>?): Array<kotlin.String?> {
-        val array = arrayOfNulls<kotlin.String>(list!!.size+1)
+    fun getNames(list: List<Ingredient>?): Array<String?> {
+        val array = arrayOfNulls<String>(list!!.size+1)
         array[0] = "Пусто"
         for (i in 1 until list.size+1)
             array[i] = list[i-1].name
@@ -101,21 +103,25 @@ class RecipesViewModel(val database: BartenderDatabaseDao,
         return array
     }
 
-    fun filter(simple: Boolean, layer: Boolean):  LiveData<List<Recipe>> {
+    private fun filter(simple: Boolean, layer: Boolean):  LiveData<List<Recipe>> {
         return if (simple&&layer) database.getRecipes()
         else if(simple && !layer) database.filterRecipes("simple")
         else if(!simple && layer) database.filterRecipes("layer")
-        else MutableLiveData<List<Recipe>>()
+        else {
+            val ld = MutableLiveData<List<Recipe>>()
+            ld.value = emptyList()
+            ld
+        }
     }
 
     fun filterSimple() {
        _simpleFilter.value = !_simpleFilter.value!!
-        _recipes.value = filter(simpleFilter.value!!,layerFilter.value!!).value
+        recipes = filter(simpleFilter.value!!,layerFilter.value!!)
     }
 
     fun filterLayer() {
         _layerFilter.value = !_layerFilter.value!!
-        _recipes.value = filter(simpleFilter.value!!, layerFilter.value!!).value
+        recipes = filter(simpleFilter.value!!, layerFilter.value!!)
     }
 
 }

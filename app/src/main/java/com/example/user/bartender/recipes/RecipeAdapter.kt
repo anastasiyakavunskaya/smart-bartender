@@ -1,4 +1,4 @@
-package com.example.user.bartender.recipes.simple
+package com.example.user.bartender.recipes
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,7 +9,7 @@ import com.example.user.bartender.database.Recipe
 import com.example.user.bartender.databinding.ItemRecipeBinding
 
 
-class SimpleRecipeAdapter(val clickListener: RecipeListener): ListAdapter<Recipe, SimpleRecipeAdapter.ViewHolder>(RecipeDiffCallback()) {
+class RecipeAdapter(private val clickListener: RecipeListener): ListAdapter<Recipe, RecipeAdapter.ViewHolder>(RecipeDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int):ViewHolder {
         return ViewHolder.from(parent)
@@ -19,7 +19,7 @@ class SimpleRecipeAdapter(val clickListener: RecipeListener): ListAdapter<Recipe
         holder.bind(getItem(position), clickListener)
     }
 
-    fun getRecipe(position: Int) = getItem(position)
+    fun getRecipe(position: Int): Recipe = getItem(position)
 
     class ViewHolder private constructor(val binding: ItemRecipeBinding): RecyclerView.ViewHolder(binding.root){
         fun bind (item: Recipe, clickListener: RecipeListener){

@@ -1,4 +1,5 @@
-package com.example.user.bartender.recipes.simple
+
+package com.example.user.bartender.recipes
 
 import android.os.Bundle
 import android.text.Editable
@@ -14,6 +15,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.user.bartender.R
 import com.example.user.bartender.database.BartenderDatabase
 import com.example.user.bartender.databinding.FragmentEditRecipesBinding
+
+
 
 class EditFragment : Fragment() {
 
@@ -37,7 +40,7 @@ class EditFragment : Fragment() {
         viewModel.ingredients.observe(viewLifecycleOwner, Observer {allIngredients ->
             for (i in spinnerArray.indices){
                     spinnerArray[i].onItemSelectedListener
-                    val aa = ArrayAdapter(this.context, android.R.layout.simple_spinner_item, viewModel.getNames(allIngredients))
+                    val aa = ArrayAdapter(this.context!!, android.R.layout.simple_spinner_item, viewModel.getNames(allIngredients))
                     aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     spinnerArray[i].adapter = aa
                 }

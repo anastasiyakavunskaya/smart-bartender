@@ -10,7 +10,7 @@
         android:label="Ингредиенты" />
     <fragment
         android:id="@+id/simpleRecipesFragment"
-        android:name="com.example.user.bartender.recipes.simple.RecipesFragment"
+        android:name="com.example.user.bartender.recipes.RecipesFragment"
         android:label="Список рецептов">
         <action
             android:id="@+id/action_simpleRecipesFragment_to_editFragment"
@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/editFragment"
-        android:name="com.example.user.bartender.recipes.simple.EditFragment"
+        android:name="com.example.user.bartender.recipes.EditFragment"
         android:label="Изменить список рецептов">
         <action
             android:id="@+id/action_editFragment_to_simpleRecipesFragment"

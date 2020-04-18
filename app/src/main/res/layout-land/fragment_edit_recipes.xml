@@ -9,7 +9,7 @@
     <data>
         <variable
             name="fragment"
-            type="com.example.user.bartender.recipes.simple.EditFragment"
+            type="com.example.user.bartender.recipes.EditFragment"
             />
     </data>
 

@@ -35,7 +35,7 @@ class MotorsFragment : Fragment() {
                 if(allIngredients.isNotEmpty()){
                     for (i in spinnerArray.indices){
                         spinnerArray[i].onItemSelectedListener
-                        val aa = ArrayAdapter(this.context, android.R.layout.simple_spinner_item, viewModel.getNames(allIngredients))
+                        val aa = ArrayAdapter(this.context!!, android.R.layout.simple_spinner_item, viewModel.getNames(allIngredients))
                         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                         spinnerArray[i].adapter = aa
                     }

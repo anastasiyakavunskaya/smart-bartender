@@ -1,4 +1,4 @@
-package com.example.user.bartender.recipes.simple
+package com.example.user.bartender.recipes
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
