@@ -4,6 +4,7 @@
     package="com.example.user.bartender">
 
 
+    <uses-permission android:name="android.permission.BLUETOOTH" />
     <application
         android:name=".SmartBartender"
         android:allowBackup="true"

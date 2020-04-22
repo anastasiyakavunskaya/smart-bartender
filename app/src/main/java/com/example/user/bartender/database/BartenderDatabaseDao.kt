@@ -40,4 +40,7 @@ interface BartenderDatabaseDao{
 
     @Query ("SELECT * FROM connection_table")
     fun getConnections(): LiveData<List<Connection>>
+
+    @Query ("SELECT * FROM connection_table WHERE recipe_id = :id")
+    fun getConnectionsByRecipeID(id: Long): LiveData<List<Connection>>
 }

@@ -19,6 +19,7 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:$version_gradle"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$version_kotlin"
+        classpath "com.android.databinding:dataBinder:1.0-rc1"
         classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:$version_navigation"
         
 

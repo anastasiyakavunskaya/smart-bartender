@@ -5,32 +5,30 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.user.bartender.R
 import com.example.user.bartender.database.Recipe
 import com.example.user.bartender.databinding.ItemRecipeBinding
 
 
-class RecipeAdapter(private val clickListener: RecipeListener): ListAdapter<Recipe, RecipeAdapter.ViewHolder>(RecipeDiffCallback()) {
+class RecipeAdapter(private val clickListener: RecipeListener, val model: RecipesViewModel): ListAdapter<Recipe, RecipeAdapter.ViewHolder>(RecipeDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int):ViewHolder {
         return ViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), clickListener)
+        holder.bind(getItem(position), clickListener, model)
     }
 
     fun getRecipe(position: Int): Recipe = getItem(position)
-
     class ViewHolder private constructor(val binding: ItemRecipeBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind (item: Recipe, clickListener: RecipeListener){
+        fun bind (item: Recipe, clickListener: RecipeListener, model: RecipesViewModel){
             binding.recipe = item
-            if(item.type=="simple") binding.recipeIcon.setImageResource(R.drawable.simple)
-            else binding.recipeIcon.setImageResource(R.drawable.layer)
             binding.clickListener = clickListener
             binding.executePendingBindings()
+            binding.model = model
 
         }
+
         companion object{
             fun from(parent: ViewGroup):ViewHolder{
                 val layoutInflater = LayoutInflater.from(parent.context)
