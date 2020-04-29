@@ -138,8 +138,10 @@ class RecipesViewModel(val database: BartenderDatabaseDao,
     fun getIngredientArrayList(id: Long, connections: List<Connection>): ArrayList<Triple<Ingredient, Double, Int>> {
         val array = ArrayList<Triple<Ingredient, Double, Int>>()
         for (i in connections.indices) {
-            val ingredient = getIngredient(connections[i].ingName)!!
-            if (connections[i].recID == id) array.add(Triple(ingredient, connections[i].volume, connections[i].layer))
+            val ingredient = getIngredient(connections[i].ingName)
+            if(ingredient!=null) {
+                if (connections[i].recID == id) array.add(Triple(ingredient, connections[i].volume, connections[i].layer))
+            }
         }
         return array
     }
