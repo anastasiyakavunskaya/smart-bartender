@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
     app:startDestination="@id/simpleRecipesFragment">
     <fragment
         android:id="@+id/ingredientsFragment"
         android:name="com.example.user.bartender.ingredients.IngredientsFragment"
-        android:label="Ингредиенты" />
+        android:label="Ингредиенты" >
+        <action
+            android:id="@+id/action_ingredientsFragment_to_editIngredientFragment"
+            app:destination="@id/editIngredientFragment" />
+    </fragment>
     <fragment
         android:id="@+id/simpleRecipesFragment"
         android:name="com.example.user.bartender.recipes.RecipesFragment"
@@ -41,5 +44,20 @@
         <argument
             android:name="oldRecipeName"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/editIngredientFragment"
+        android:name="com.example.user.bartender.ingredients.EditIngredientFragment"
+        android:label="Изменение ингредиентов">
+        <argument
+            android:name="IngredientName"
+            app:argType="string" />
+        <argument
+            android:name="ingredientCoefficient"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_editIngredientFragment_to_ingredientsFragment"
+            app:destination="@id/ingredientsFragment"
+            app:popUpTo="@id/simpleRecipesFragment" />
     </fragment>
 </navigation>

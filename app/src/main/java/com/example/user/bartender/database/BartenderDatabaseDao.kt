@@ -7,9 +7,9 @@ import androidx.room.*
 interface BartenderDatabaseDao{
 
     @Insert
-    fun insertIngredient(ingredient:Ingredient)
+    fun insertIngredient(ingredient:Ingredient): Long
     @Insert
-    fun insertRecipeName(recipe: Recipe): Long
+    fun insertRecipe(recipe: Recipe): Long
     @Insert
     fun insertConnection(connection: Connection)
 
@@ -28,14 +28,15 @@ interface BartenderDatabaseDao{
     fun deleteConnection(key: String)
 
 
-
     @Query("SELECT * FROM ingredient_table ORDER BY ingredient_name ")
     fun getAllIngredients(): LiveData<List<Ingredient>>
+    @Query("SELECT * FROM ingredient_table WHERE ingredient_name = :name ")
+    fun getIngredient(name: String): LiveData<List<Ingredient>>
 
-    @Query("SELECT * FROM recipe_table")
+    @Query("SELECT * FROM recipe_table ORDER BY recipe_name")
     fun getRecipes(): LiveData<List<Recipe>>
 
-    @Query("SELECT * FROM recipe_table WHERE recipe_type = :key")
+    @Query("SELECT * FROM recipe_table WHERE recipe_type = :key ORDER BY recipe_name")
     fun filterRecipes(key: String): LiveData<List<Recipe>>
 
     @Query ("SELECT * FROM connection_table")

@@ -15,8 +15,6 @@ class IngredientsAdapter (private val clickListener: IngredientListener) : ListA
 override fun onCreateViewHolder(parent: ViewGroup, position: Int):ViewHolder {
         return ViewHolder.from(parent)
     }
-
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position), clickListener)
     }
@@ -24,11 +22,10 @@ override fun onCreateViewHolder(parent: ViewGroup, position: Int):ViewHolder {
     fun getIngredient(position: Int): Ingredient = getItem(position)
 
     class ViewHolder private constructor(val binding: ItemIngredientBinding): RecyclerView.ViewHolder(binding.root){
- fun bind (item: Ingredient, clickListener: IngredientListener){
+        fun bind (item: Ingredient, clickListener: IngredientListener){
             binding.ingredient = item
             binding.clickListener = clickListener
             binding.executePendingBindings()
-
         }
         companion object{
             fun from(parent:ViewGroup):ViewHolder{

@@ -2,30 +2,25 @@ package com.example.user.bartender.bluetooth
 
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothSocket
-import com.example.user.bartender.MainActivity
 import java.io.IOException
 import java.util.*
 
 private val uuid: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
 private const val address = "98:D3:34:90:A2:F1"
 
-class BluetoothController(private val activity: MainActivity): Thread() {
+class BluetoothController(adapter: BluetoothAdapter, private val outputString: String): Thread() {
 
-    private var cancelled: Boolean
-    private val socket: BluetoothSocket?
+    private var cancelled: Boolean = false
+    var socket: BluetoothSocket? = null
 
 
     init {
-        val btAdapter = BluetoothAdapter.getDefaultAdapter()
-        if (btAdapter != null) {
-            val btDevice = btAdapter.getRemoteDevice(address)
+        try {
+            val btDevice = adapter.getRemoteDevice(address)
             //создание сервер сокета uuid
             this.socket = btDevice.createInsecureRfcommSocketToServiceRecord(uuid)
             this.cancelled = false
-        } else {
-            this.socket = null
-            this.cancelled = true
-        }
+        }catch (e: IllegalArgumentException){}
 
     }
 
@@ -36,15 +31,12 @@ class BluetoothController(private val activity: MainActivity): Thread() {
             }
             try {
                 socket!!.connect()
-                BluetoothClient(socket).start()
+                BluetoothClient(socket!!, outputString).start()
+
+
             } catch(e: IOException) {
                 break
             }
         }
-    }
-
-    fun cancel() {
-        this.cancelled = true
-        this.socket!!.close()
     }
 }

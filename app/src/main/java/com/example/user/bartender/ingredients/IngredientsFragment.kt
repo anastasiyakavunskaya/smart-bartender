@@ -1,7 +1,6 @@
 package com.example.user.bartender.ingredients
 
 import android.os.Bundle
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,12 +8,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.user.bartender.R
 import com.example.user.bartender.database.BartenderDatabase
 import com.example.user.bartender.databinding.FragmentIngredientsBinding
+import com.google.android.material.snackbar.Snackbar
 
 class IngredientsFragment : Fragment() {
 
@@ -30,7 +31,7 @@ class IngredientsFragment : Fragment() {
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(IngredientsViewModel::class.java)
 
         val adapter = IngredientsAdapter(IngredientListener {
-            ingredient -> viewModel.onItemClick(ingredient)
+            this.findNavController().navigate(IngredientsFragmentDirections.actionIngredientsFragmentToEditIngredientFragment(it.name, it.c))
         })
 
         binding.ingRecyclerView.adapter = adapter
@@ -38,24 +39,9 @@ class IngredientsFragment : Fragment() {
         binding.ingRecyclerView.layoutManager = manager
         binding.lifecycleOwner = this
 
-        viewModel.editItem.observe(viewLifecycleOwner, Observer { oldIngredient ->
-            if(oldIngredient!=null){
-                binding.ingredientName.text = Editable.Factory.getInstance().newEditable(oldIngredient.name)
-                binding.ingredientC.text = Editable.Factory.getInstance().newEditable(oldIngredient.c.toString())
-                binding.addBtn.text = "Изменить"
-                binding.addBtn.setOnClickListener {
-                    viewModel.onEditClick(oldIngredient, requireNotNull(binding.ingredientName.text.toString()), binding.ingredientC.text.toString().toDouble())
-                }
-            }
-            else {
-                binding.ingredientName.text = null
-                binding.ingredientC.text = null
-                binding.addBtn.text = "Сохранить"
-                binding.addBtn.setOnClickListener {
-                    viewModel.onAddClick(requireNotNull(binding.ingredientName.text.toString()), binding.ingredientC.text.toString().toDouble())
-                }
-            }
-        })
+        binding.addIngredientButton.setOnClickListener{
+            this.findNavController().navigate(IngredientsFragmentDirections.actionIngredientsFragmentToEditIngredientFragment("", 1500))
+        }
 
         viewModel.ingredients.observe(viewLifecycleOwner, Observer {
             if(it!=null){
@@ -65,20 +51,26 @@ class IngredientsFragment : Fragment() {
         })
 
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-                    override fun onMove(
-                            recyclerView: RecyclerView,
-                            viewHolder: RecyclerView.ViewHolder,
-                            target: RecyclerView.ViewHolder
-                    ): Boolean {
-
-                        return false
-                    }
-                    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                        viewModel.delete(adapter.getIngredient(viewHolder.adapterPosition))
-                    }
-
+            override fun onMove(recyclerView: RecyclerView,
+                                viewHolder: RecyclerView.ViewHolder,
+                                target: RecyclerView.ViewHolder): Boolean {
+                return false
+            }
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val item = adapter.getIngredient(position)
+                val snackBar = Snackbar.make(view!!,
+                        "Вы точно хотите удалить ${item.name}?",
+                        Snackbar.LENGTH_LONG)
+                snackBar.setAction("Да") {
+                    viewModel.delete(item)
+                    snackBar.dismiss()
                 }
-
+                snackBar.setActionTextColor(resources.getColor(R.color.accent))
+                snackBar.show()
+                adapter.notifyDataSetChanged()
+            }
+        }
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
         itemTouchHelper.attachToRecyclerView(binding.ingRecyclerView)
         return binding.root

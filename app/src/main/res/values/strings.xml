@@ -1,6 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Bartender</string>
-    <string name="action_settings">Settings</string>
     <string name="title_add_ingredient_fragment">Добавить ингредиент</string>
     <string name="item_title">Название рецепта</string>
     <string name="item_info">Информация</string>
@@ -14,16 +14,9 @@
     <string name="title_coefficient">Коэффициент для конвертации:</string>
     <string name="const_100">100</string>
     <string name="info"> Это приложение позволяет готовить коктейли!</string>
-    <string name="title_activity_settings">SettingsActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-
     <string name="information_text">Это приложение позволяет быстро и удобно готовить разные коктейли!</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="ingredient_input_text">Название ингредиента</string>
     <string name="save_button">Сохранить</string>
     <string name="clear_button">Очистить</string>
@@ -52,9 +45,32 @@
     <string name="filter_layer">Слоёные коктейли</string>
     <string name="layer_1">1</string>
     <string name="ml_title">мл</string>
-    <string name="ingredient">Ингредиенты</string>
-    <string name="layer_title">Слой</string>
+    <string name="ingredient">ингредиенты</string>
+    <string name="layer_title">слой</string>
     <string name="coefficient_input">Коэффициент:</string>
     <string name="type">type</string>
+    <string name="bluetoothWarning">Приложение может работать только с включеным Bluetooth</string>
+    <string name="coefficient_information_text">
+        Этот коэффициент показывает сколько тактов двигателя
+        необходимо для наливания 1 мл ингредиента. По умолчанию он равен 1500 и при таком показателе
+        гарантирует погрешность не более 0,05 мл. Но для более точной настройки его можно изменить, при этом
+        стоить помнить, что точность дозировки зависит от вязкости жидкости.
+    </string>
+    <string name="app_information_text">
+        Этот робот позволяет делать <b>коктейли</b> двух типов: <b>простые</b> и <b>слоёные</b> !\n\n
+        Для приготовления коктейля необходимо нажать на кнопку <i>СДЕЛАТЬ</i>*.
+        Но перед этим следует настроить систему следующим образом:\n\n
+        <i>1. Составить список ингредиентов \n
+        2. Установить ингредиенты в меню \"Настройка моторов\"\n
+        3. Создать рецепты коктелей</i>\n\n
+        <i>Теперь можно начинать!</i>\n\n
+        <b>Немного о настройке моторов</b>\n
+        Необходимо установить жидкости в систему и настроить их соответствующим образом.
+        Например, если под мотор номер 1 вы установили \"Апельсиновый сок\", то в выпадающем меню
+        напротив надписи \"Мотор 1\" необходимо выбрать \"Апельсиновый сок\".\n\n
+        <i>Дождитесь окончания приготовления коктейля во избежание некорректной работы системы!</i>\n\n
+        *Если кнопка <i>СДЕЛАТЬ</i> серого цвета, то данный рецепт недоступен для приготовления,
+        так как входящие в него ингредиенты не установлены в систему.\n\n
+  </string>
 
 </resources>

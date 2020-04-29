@@ -4,22 +4,21 @@ import android.bluetooth.BluetoothSocket
 import android.util.Log
 
 
-class BluetoothClient(private val socket: BluetoothSocket): Thread() {
-    //private val socket = device.createRfcommSocketToServiceRecord(uuid)
+class BluetoothClient(private val socket: BluetoothSocket, private val outputString: String): Thread() {
 
     override fun run() {
-        Log.i("client", "Connecting")
+        Log.i("bluetooth", "Connecting")
         this.socket.connect()
 
-        Log.i("client", "Sending")
+        Log.i("bluetooth", "Sending")
         val outputStream = this.socket.outputStream
         val inputStream = this.socket.inputStream
         try {
-            outputStream.write("362813783289832".toByteArray())
+            outputStream.write(outputString.toByteArray())
             outputStream.flush()
-            Log.i("client", "Sent")
+            Log.i("bluetooth", "Sent")
         } catch(e: Exception) {
-            Log.e("client", "Cannot send", e)
+            Log.e("bluetooth", "Cannot send", e)
         } finally {
             outputStream.close()
             inputStream.close()

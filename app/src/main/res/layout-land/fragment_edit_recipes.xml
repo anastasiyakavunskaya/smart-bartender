@@ -28,9 +28,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:autofillHints="name"
+            android:maxLength="20"
             android:hint="@string/item_title"
             android:inputType="text"
-            android:maxLength="20"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -48,14 +48,37 @@
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/spinner_wight"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="@dimen/large_size_margin"
             android:gravity="center"
             android:text="@string/ingredient"
             android:textSize="@dimen/normal_text_size"
-            app:layout_constraintEnd_toStartOf="@+id/volume_1"
-            app:layout_constraintStart_toStartOf="@+id/ingredient_1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recipe_name" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/layer_title"
+            android:textSize="@dimen/normal_text_size"
+            app:layout_constraintEnd_toEndOf="@+id/layer_4"
+            app:layout_constraintStart_toStartOf="@+id/layer_4"
+            app:layout_constraintTop_toBottomOf="@+id/recipe_name" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="@dimen/spinner_wight"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="@string/ingredient"
+            android:textSize="@dimen/normal_text_size"
+            app:layout_constraintStart_toEndOf="@+id/textView"
             app:layout_constraintTop_toBottomOf="@+id/recipe_name" />
 
         <Spinner
@@ -73,8 +96,8 @@
             android:layout_height="match_parent"
             android:layout_marginEnd="@dimen/large_size_margin"
             android:autofillHints="volume"
-            android:maxLength="5"
             android:hint="@string/const_100"
+            android:maxLength="5"
             android:inputType="numberDecimal"
             android:textSize="@dimen/large_text_size"
             app:layout_constraintEnd_toStartOf="@+id/layer_1"
@@ -85,11 +108,22 @@
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/large_size_margin"
+            android:layout_marginTop="16dp"
             android:text="@string/ml_title"
             android:textSize="@dimen/normal_text_size"
             app:layout_constraintEnd_toEndOf="@+id/volume_1"
-            app:layout_constraintStart_toStartOf="@+id/volume_1"
+            app:layout_constraintStart_toEndOf="@+id/ingredient_1"
+            app:layout_constraintTop_toBottomOf="@+id/recipe_name" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/ml_title"
+            android:textSize="@dimen/normal_text_size"
+            app:layout_constraintEnd_toEndOf="@+id/volume_4"
+            app:layout_constraintStart_toStartOf="@+id/volume_4"
             app:layout_constraintTop_toBottomOf="@+id/recipe_name" />
 
         <EditText
@@ -98,11 +132,11 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:autofillHints="layer"
-            android:inputType="number"
             android:maxLength="1"
+            android:inputType="number"
             android:hint="@string/layer_1"
             android:textSize="@dimen/large_text_size"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ingredient_4"
             app:layout_constraintTop_toBottomOf="@+id/textView"
             tools:ignore="LabelFor" />
 
@@ -121,8 +155,8 @@
             android:layout_height="match_parent"
             android:layout_marginEnd="@dimen/large_size_margin"
             android:autofillHints="volume"
-            android:maxLength="5"
             android:hint="@string/const_100"
+            android:maxLength="5"
             android:inputType="number"
             android:textSize="@dimen/large_text_size"
             app:layout_constraintEnd_toStartOf="@+id/layer_2"
@@ -136,10 +170,10 @@
             android:layout_marginEnd="16dp"
             android:autofillHints="layer"
             android:inputType="number"
-            android:hint="@string/layer_1"
             android:maxLength="1"
+            android:hint="@string/layer_1"
             android:textSize="@dimen/large_text_size"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ingredient_5"
             app:layout_constraintTop_toBottomOf="@+id/layer_1"
             tools:ignore="LabelFor" />
 
@@ -176,7 +210,7 @@
             android:maxLength="1"
             android:hint="@string/layer_1"
             android:textSize="@dimen/large_text_size"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ingredient_6"
             app:layout_constraintTop_toBottomOf="@+id/layer_2"
             tools:ignore="LabelFor" />
 
@@ -184,10 +218,10 @@
             android:id="@+id/ingredient_4"
             android:layout_width="@dimen/spinner_wight"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ingredient_3" />
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/volume_4"
+            app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
         <EditText
             android:id="@+id/volume_4"
@@ -195,13 +229,12 @@
             android:layout_height="match_parent"
             android:layout_marginEnd="16dp"
             android:autofillHints="volume"
-            android:hint="@string/const_100"
             android:maxLength="5"
+            android:hint="@string/const_100"
             android:inputType="number"
             android:textSize="@dimen/large_text_size"
             app:layout_constraintEnd_toStartOf="@+id/layer_4"
-            app:layout_constraintStart_toEndOf="@+id/ingredient_4"
-            app:layout_constraintTop_toBottomOf="@+id/volume_3" />
+            app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
         <EditText
             android:id="@+id/layer_4"
@@ -214,30 +247,28 @@
             android:hint="@string/layer_1"
             android:textSize="@dimen/large_text_size"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layer_3"
+            app:layout_constraintTop_toBottomOf="@+id/textView6"
             tools:ignore="LabelFor" />
 
         <Spinner
             android:id="@+id/ingredient_5"
             android:layout_width="@dimen/spinner_wight"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/volume_5"
             app:layout_constraintTop_toBottomOf="@+id/ingredient_4" />
 
         <EditText
             android:id="@+id/volume_5"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/large_size_margin"
+            android:layout_marginEnd="16dp"
             android:autofillHints="volume"
             android:maxLength="5"
             android:hint="@string/const_100"
             android:inputType="number"
             android:textSize="@dimen/large_text_size"
             app:layout_constraintEnd_toStartOf="@+id/layer_5"
-            app:layout_constraintStart_toEndOf="@+id/ingredient_5"
             app:layout_constraintTop_toBottomOf="@+id/volume_4" />
 
         <EditText
@@ -246,8 +277,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:autofillHints="layer"
-            android:maxLength="1"
             android:inputType="number"
+            android:maxLength="1"
             android:hint="@string/layer_1"
             android:textSize="@dimen/large_text_size"
             app:layout_constraintEnd_toEndOf="parent"
@@ -258,9 +289,8 @@
             android:id="@+id/ingredient_6"
             android:layout_width="@dimen/spinner_wight"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/volume_6"
             app:layout_constraintTop_toBottomOf="@+id/ingredient_5" />
 
         <EditText
@@ -274,7 +304,6 @@
             android:inputType="number"
             android:textSize="@dimen/large_text_size"
             app:layout_constraintEnd_toStartOf="@+id/layer_6"
-            app:layout_constraintStart_toEndOf="@+id/ingredient_6"
             app:layout_constraintTop_toBottomOf="@+id/volume_5" />
 
         <EditText
@@ -295,8 +324,8 @@
             android:id="@+id/recipe_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/xlarge_size_margin"
-            android:layout_marginEnd="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="@dimen/normal_size_margin"
             android:text="@string/cancel_button"
             android:textSize="@dimen/normal_text_size"
             app:layout_constraintEnd_toStartOf="@+id/recipe_save"
@@ -306,7 +335,7 @@
             android:id="@+id/recipe_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/xlarge_size_margin"
+            android:layout_marginTop="16dp"
             android:text="@string/save_button"
             android:textSize="@dimen/normal_text_size"
             app:layout_constraintEnd_toEndOf="@+id/layer_6"

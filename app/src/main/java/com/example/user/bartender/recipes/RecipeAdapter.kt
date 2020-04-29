@@ -11,6 +11,7 @@ import com.example.user.bartender.databinding.ItemRecipeBinding
 
 class RecipeAdapter(private val clickListener: RecipeListener, val model: RecipesViewModel): ListAdapter<Recipe, RecipeAdapter.ViewHolder>(RecipeDiffCallback()) {
 
+
     override fun onCreateViewHolder(parent: ViewGroup, position: Int):ViewHolder {
         return ViewHolder.from(parent)
     }
@@ -20,6 +21,8 @@ class RecipeAdapter(private val clickListener: RecipeListener, val model: Recipe
     }
 
     fun getRecipe(position: Int): Recipe = getItem(position)
+
+
     class ViewHolder private constructor(val binding: ItemRecipeBinding): RecyclerView.ViewHolder(binding.root){
         fun bind (item: Recipe, clickListener: RecipeListener, model: RecipesViewModel){
             binding.recipe = item

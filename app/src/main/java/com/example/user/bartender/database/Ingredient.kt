@@ -9,5 +9,5 @@ data class Ingredient(
         @PrimaryKey@ColumnInfo(name = "ingredient_name")
         val name: String,
         @ColumnInfo(name = "converter_coefficient")
-        var c: Double
+        var c: Int
 )

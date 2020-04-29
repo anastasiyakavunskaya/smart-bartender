@@ -21,74 +21,25 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ing_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="48dp"
             android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+            android:paddingBottom="46dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="match_parent"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_ingredient_button"
+            style="@style/Widget.MaterialComponents.FloatingActionButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/cardview_light_background"
-            android:orientation="horizontal"
-            android:padding="8dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:ignore="PrivateResource">
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <EditText
-                android:id="@+id/ingredientName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:hint="@string/ingredient_input_text"
-                android:inputType="textShortMessage|text"
-                android:maxLines="1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="Autofill" />
-
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="10dp"
-                android:text="@string/coefficient_input"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ingredientName" />
-
-            <EditText
-                android:id="@+id/ingredientC"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:hint ="@string/coefficient_1500"
-                android:inputType="numberSigned"
-                android:labelFor="@id/ingredientC"
-                android:text="@string/coefficient_1500"
-                android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@+id/textView5"
-                app:layout_constraintTop_toBottomOf="@+id/ingredientName"
-                android:autofillHints="@string/coefficient_1500"
-                tools:ignore="LabelFor" />
-
-            <Button
-                android:id="@+id/add_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:background="@color/primary_dark"
-                android:text="@string/save_button"
-                android:textColor="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

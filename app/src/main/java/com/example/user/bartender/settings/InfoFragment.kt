@@ -15,7 +15,6 @@ class InfoFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val binding: FragmentInfoBinding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_info, container, false)
-        binding.infoWebView.loadUrl("file:///android_asset/info.html")
         return binding.root
     }
 }

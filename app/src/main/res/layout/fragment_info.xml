@@ -1,27 +1,16 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <!-- Data to make available to the XML via data binding. In this case,
-     the whole ViewModel, so that we can access the LiveData,
-     click handlers, and state variables. -->
-
-    <data>
-        <variable
-            name="infoFragment"
-            type="com.example.user.bartender.settings.InfoFragment"
-            />
-    </data>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <WebView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/info_web_view"/>
-
+    <TextView
+        android:id="@+id/information_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_information_text"
+        android:textSize="@dimen/large_text_size"
+        android:padding="8dp"
+        android:layout_margin="8dp"/>
 
 </ScrollView>
 </layout>
