@@ -34,13 +34,31 @@ class EditFragment : Fragment() {
         val viewModelFactory = RecipesViewModelFactory(dataSource, application)
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(RecipesViewModel::class.java)
 
-        val spinnerArray = arrayOf(binding.ingredient1,binding.ingredient2,binding.ingredient3,binding.ingredient4,binding.ingredient5,binding.ingredient6)
-        val volumeArray = arrayOf(binding.volume1,binding.volume2,binding.volume3,binding.volume4,binding.volume5,binding.volume6)
-        val layerArray = arrayOf(binding.layer1,binding.layer2,binding.layer3,binding.layer4,binding.layer5,binding.layer6)
+        val spinnerArray = arrayOf(
+                binding.ingredient1,
+                binding.ingredient2,
+                binding.ingredient3,
+                binding.ingredient4,
+                binding.ingredient5,
+                binding.ingredient6)
+        val volumeArray = arrayOf(
+                binding.volume1,
+                binding.volume2,
+                binding.volume3,
+                binding.volume4,
+                binding.volume5,
+                binding.volume6)
+        val layerArray = arrayOf(
+                binding.layer1,
+                binding.layer2,
+                binding.layer3,
+                binding.layer4,
+                binding.layer5,
+                binding.layer6)
 
         val args = EditFragmentArgs.fromBundle(arguments!!)
 
-        viewModel.ingredients.observe(viewLifecycleOwner, Observer {allIngredients ->
+        viewModel.ingredientsLiveData.observe(viewLifecycleOwner, Observer { allIngredients ->
             //установка списка ингредиентов в Spinner'ы
             for (i in spinnerArray.indices){
                     spinnerArray[i].onItemSelectedListener
@@ -51,7 +69,7 @@ class EditFragment : Fragment() {
             //установка данных о изменяемом/добавляемом рецепте
             if(args.oldRecipeID>-1){
                     binding.recipeName.text = Editable.Factory.getInstance().newEditable(args.oldRecipeName)
-                    viewModel.connections.observe(viewLifecycleOwner, Observer {currentConnections ->
+                    viewModel.connectionsLiveData.observe(viewLifecycleOwner, Observer { currentConnections ->
                         if (currentConnections.isNotEmpty()) {
                             val ingredientsList = viewModel.getIngredientArrayList(args.oldRecipeID, currentConnections)
                             for(i in ingredientsList.indices){

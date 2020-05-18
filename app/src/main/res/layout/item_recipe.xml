@@ -9,7 +9,7 @@
     <data>
         <variable
             name="recipe"
-            type="com.example.user.bartender.database.Recipe" />
+            type="com.example.user.bartender.recipes.ExtendedRecipe" />
         <variable
             name="clickListener"
             type="com.example.user.bartender.recipes.RecipeListener" />
@@ -35,7 +35,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:contentDescription="@string/type"
-            app:recipeIcon="@{recipe}"/>
+            app:recipeIcon="@{recipe.recipe}"/>
 
         <TextView
             android:id="@+id/item_name"
@@ -44,7 +44,7 @@
             android:layout_margin="3dp"
             android:gravity="start"
             android:padding="@dimen/normal_size_margin"
-            android:text="@{recipe.name}"
+            android:text="@{recipe.recipe.name}"
             android:textSize="@dimen/normal_text_size"
             app:layout_constraintStart_toEndOf="@+id/recipe_icon"
             app:layout_constraintTop_toTopOf="parent"
@@ -59,7 +59,7 @@
             android:layout_marginEnd="8dp"
             android:background="@drawable/cook_btn_background"
             android:ellipsize="middle"
-            android:enabled="@{model.getButtonState(recipe.recipeId)}"
+            android:enabled="@{recipe.component2()}"
             android:onClick="@{() -> model.onCookButtonClick(recipe)}"
             android:text="@string/cook_btn_text"
             app:layout_constraintEnd_toEndOf="parent"

@@ -9,7 +9,7 @@ import kotlinx.coroutines.*
 class IngredientsViewModel(
         val database: BartenderDatabaseDao,
         application: Application):AndroidViewModel(application){
-    private var viewModelJob = Job()
+    private var viewModelJob = SupervisorJob()
 
     override fun onCleared() {
         super.onCleared()

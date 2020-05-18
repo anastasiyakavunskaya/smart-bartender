@@ -30,6 +30,7 @@ interface BartenderDatabaseDao{
 
     @Query("SELECT * FROM ingredient_table ORDER BY ingredient_name ")
     fun getAllIngredients(): LiveData<List<Ingredient>>
+
     @Query("SELECT * FROM ingredient_table WHERE ingredient_name = :name ")
     fun getIngredient(name: String): LiveData<List<Ingredient>>
 

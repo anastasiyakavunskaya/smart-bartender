@@ -20,10 +20,10 @@ import com.google.android.material.snackbar.Snackbar
 
 
 class RecipesFragment : Fragment() {
-    //val btAdapter = BluetoothAdapter.getDefaultAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+
 
         val binding: FragmentRecipesBinding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_recipes, container, false)
@@ -32,36 +32,38 @@ class RecipesFragment : Fragment() {
         val viewModelFactory = RecipesViewModelFactory(dataSource, application)
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(RecipesViewModel::class.java)
         setHasOptionsMenu(true)
+
         val adapter = RecipeAdapter(RecipeListener { recipe ->
-            this.findNavController().navigate(RecipesFragmentDirections.actionSimpleRecipesFragmentToEditFragment(recipe.recipeId, recipe.name))
-        }, viewModel)
+            this.findNavController().navigate(RecipesFragmentDirections.actionSimpleRecipesFragmentToEditFragment(recipe.recipe.recipeId, recipe.recipe.name))
+        }, viewModel, application)
+
+        var isSimpleChecked = true
+        var isLayerChecked = true
         //установка начальных состояний фильтров
-        binding.simpleFilter.isChecked = true
-        binding.layerFilter.isChecked = true
+        binding.simpleFilter.isChecked = isSimpleChecked
+        binding.layerFilter.isChecked = isLayerChecked
 
-        viewModel.recipes.observe(viewLifecycleOwner, Observer {
-            if(it!=null){
-                if (it.isNotEmpty()) binding.recipeInformationText.visibility = View.GONE
-                else binding.recipeInformationText.visibility = View.VISIBLE
-                adapter.submitList(it)
-            }
+
+        viewModel.recipes.observe(viewLifecycleOwner, Observer{ list->
+            if (list.isNotEmpty()) binding.recipeInformationText.visibility = View.GONE
+            else binding.recipeInformationText.visibility = View.VISIBLE
+            adapter.submitList(list)
         })
+        binding.simpleFilter.setOnClickListener {
+            isSimpleChecked = !isSimpleChecked
+            viewModel.filter(isSimpleChecked, isLayerChecked)
+            adapter.notifyDataSetChanged()
+        }
+        binding.layerFilter.setOnClickListener {
+            isLayerChecked = !isLayerChecked
+            viewModel.filter(isSimpleChecked, isLayerChecked)
+            adapter.notifyDataSetChanged()
+        }
 
-        viewModel.connectionStatus.observe(viewLifecycleOwner, Observer {
+       viewModel.connectionStatus.observe(viewLifecycleOwner, Observer {
             if(it!=""){
-                Toast.makeText(context!!,it,Toast.LENGTH_SHORT).show()
+                Toast.makeText(context!!, it, Toast.LENGTH_SHORT).show()
             }
-        })
-
-        viewModel.ingredients.observe(viewLifecycleOwner, Observer {
-            viewModel.connections.observe(viewLifecycleOwner, Observer{ connections ->
-                viewModel.buttonID.observe(viewLifecycleOwner, Observer {id->
-                    if(id>-1){
-                        val ingredients = viewModel.getIngredientArrayList(id, connections)
-                        viewModel.isReadyToCook(ingredients)
-                    }
-                })
-            })
         })
 
         binding.model = viewModel
@@ -74,28 +76,6 @@ class RecipesFragment : Fragment() {
             this.findNavController().navigate(RecipesFragmentDirections.actionSimpleRecipesFragmentToEditFragment(-1,""))
         }
 
-        binding.simpleFilter.setOnClickListener {
-           viewModel.changeFilterState(0)
-            viewModel.filter()
-           viewModel.recipes.observe(viewLifecycleOwner, Observer {
-                if(it!=null){
-                    if (it.isNotEmpty()) binding.recipeInformationText.visibility = View.GONE
-                    else binding.recipeInformationText.visibility = View.VISIBLE
-                    adapter.submitList(it)
-                }
-            })
-        }
-        binding.layerFilter.setOnClickListener {
-            viewModel.changeFilterState(1)
-            viewModel.filter()
-            viewModel.recipes.observe(viewLifecycleOwner, Observer {
-                if(it!=null){
-                    if (it.isNotEmpty())binding.recipeInformationText.visibility = View.GONE
-                    else binding.recipeInformationText.visibility = View.VISIBLE
-                    adapter.submitList(it)
-                }
-            })
-        }
         //удаление элемента при свайпе
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             override fun onMove(
@@ -111,10 +91,10 @@ class RecipesFragment : Fragment() {
                 val item = adapter.getRecipe(position)
                 adapter.notifyDataSetChanged()
                 val snackbar = Snackbar.make(view!!,
-                        "Вы точно хотите удалить ${item.name}?",
+                        "Вы точно хотите удалить ${item.recipe.name}?",
                         Snackbar.LENGTH_LONG)
                 snackbar.setAction("Да") {
-                        viewModel.delete(item)
+                        viewModel.delete(item.recipe)
                     }
                 snackbar.setActionTextColor(resources.getColor(R.color.accent))
                 snackbar.show()
@@ -136,5 +116,4 @@ class RecipesFragment : Fragment() {
                 view!!.findNavController())
                 || super.onOptionsItemSelected(item)
     }
-
 }

@@ -16,70 +16,112 @@ import kotlinx.coroutines.*
 class RecipesViewModel(val database: BartenderDatabaseDao,
                        application: Application): AndroidViewModel(application) {
 
-    private var viewModelJob = Job()
+    private var viewModelJob = SupervisorJob()
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
     }
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-
     //список всех ингредиентов в системе
-    val ingredients = database.getAllIngredients()
+    val ingredientsLiveData = database.getAllIngredients()
     //список всех рецептов
-    var recipes = database.getRecipes()
-    val connections = database.getConnections()
+    var recipesLiveData = database.getRecipes()
+    val connectionsLiveData = database.getConnections()
 
-    //фильтры для отображения рецептов разых типов
-    private var showSimpleRecipe: Boolean = true
-    private var showLayerRecipe: Boolean = true
-    //ID кнопки для определения возможности приготовления рецепта
-    private val _buttonID = MutableLiveData<Long>()
-    val buttonID: LiveData<Long> = _buttonID
+    val _recipes = MutableLiveData<List<ExtendedRecipe>>()
+    val recipes: LiveData<List<ExtendedRecipe>> = _recipes
+
+    private val smartBartender:SmartBartender = application as SmartBartender
+    val settings = smartBartender.getMotors()
+    var ingredientsList = listOf<Ingredient>()
+    var recipesList = listOf<Recipe>()
+    var connectionsList = listOf<Connection>()
+
     //статус подключения у роботу и процесса приготовления рецепта
     private val _connectionStatus = MutableLiveData<String>()
     val connectionStatus: LiveData<String> = _connectionStatus
-    //состояние кнопки - автивна или нет
-    var buttonState = false
-
-    private val smartBartender:SmartBartender = application as SmartBartender
 
     init {
-        _buttonID.value = -1
-        _connectionStatus.value = ""
+        ingredientsLiveData.observeForever { ingredients ->
+            ingredientsList = ingredients
+            recipesLiveData.observeForever { recipes ->
+                recipesList = recipes
+                updateExtendedRecipes(recipesList, connectionsList)
+            }
+            connectionsLiveData.observeForever { connections ->
+                connectionsList = connections
+                updateExtendedRecipes(recipesList, connectionsList)
+            }
+        }
     }
 
-    fun onCookButtonClick(recipe: Recipe) {
-        val adapter = smartBartender.btAdapter
-        adapter.enable()
-        if(adapter.isEnabled){
-            val recipeIngredients = getIngredientArrayList(recipe.recipeId, connections.value!!)
-            val settings = smartBartender.getMotors()
-            val output = generateRecipeString(recipeIngredients, settings)
-            val controller = BluetoothController(adapter, output)
-            if (controller.socket!= null) {
-                //TODO: поправить проверку на подключение
-                _connectionStatus.value = "Приготовление напитка началось"
-            } else _connectionStatus.value = "Что-то пошло не так! Проверьте подключение"
-        } else _connectionStatus.value = "Для приготовления необходимо включить Bluetooth"
-        _connectionStatus.value = ""
+   private fun updateExtendedRecipes(recipesList: List<Recipe>, connectionsList: List<Connection>): List<ExtendedRecipe> {
+        val extendedRecipesList = mutableListOf<ExtendedRecipe>()
+        for(i in recipesList.indices){
+            val recipeID = recipesList[i].recipeId
+            val ingredientList = mutableListOf<Connection>()
+            if(connectionsList.isNotEmpty())
+                for(j in connectionsList.indices){
+                    val ingredient = connectionsList[j]
+                    if(ingredient.recID==recipeID) ingredientList.add(ingredient)
+                }
+            var isReadyToCook= true
+            if(ingredientList.isNotEmpty()) isReadyToCook = isReadyToCook(ingredientList)
+            val extendedRecipe = ExtendedRecipe(recipesList[i], isReadyToCook, ingredientList)
+            extendedRecipesList.add(extendedRecipe)
+        }
+        _recipes.value = extendedRecipesList
+       return extendedRecipesList
+   }
+    //проверка можно ли приготовить коктейль
+    private fun isReadyToCook(ingredients: List<Connection>): Boolean {
+        for (i in ingredients.indices) {
+            val ingredient = getIngredient(ingredients[i].ingName)
+            if (settings.indexOf(ingredient) == -1) return false
+        }
+       return true
+    }
+    //получение ингредиента по его имени
+    private fun getIngredient(ingredientName: String): Ingredient? {
+        for (i in ingredientsList.indices) {
+            if (ingredientsList[i].name == ingredientName) return ingredientsList[i]
+        }
+        return null
+    }
+
+    fun onCookButtonClick(recipe: ExtendedRecipe) {
+          val adapter = smartBartender.btAdapter
+          adapter.enable()
+          if(adapter.isEnabled){
+              val settings = smartBartender.getMotors()
+              val output = generateRecipeString(recipe, settings)
+              val controller = BluetoothController(adapter, output)
+              if (controller.socket!= null) {
+                  //TODO: поправить проверку на подключение
+                  _connectionStatus.value = "Приготовление напитка началось. К роботу отправлена строка: $output"
+              } else _connectionStatus.value = "Что-то пошло не так! Проверьте подключение"
+          } else _connectionStatus.value = "Для приготовления необходимо включить Bluetooth"
+          _connectionStatus.value = ""
     }
     //генерация строки рецепта, которая передаётся роботу
-    private fun generateRecipeString(recipeIngredients: ArrayList<Triple<Ingredient, Double, Int>>,
+    private fun generateRecipeString(recipe: ExtendedRecipe,
                                      motors: ArrayList<Ingredient>): String {
         var output = ""
-        recipeIngredients.sortBy { it.third }
-        for (i in recipeIngredients.indices) {
-            val index = motors.indexOf(recipeIngredients[i].first)
-            val engineTicks = (motors[index].c * recipeIngredients[i].second).toInt()
+        val ingredients = recipe.ingredients as ArrayList
+        ingredients.sortBy { it.layer }
+        for (i in ingredients.indices) {
+            val ingredient = ingredients[i]
+            val index = motors.indexOf(getIngredient(ingredient.ingName))
+            val engineTicks = (motors[index].c * ingredient.volume).toInt()
             if (engineTicks != 0) {
                 output += "$index,$engineTicks"
             }
-            output += if (i + 1 < recipeIngredients.size) {
-                if (recipeIngredients[i].third == recipeIngredients[i + 1].third) ":" else ";"
+            output += if (i + 1 < ingredients.size) {
+                if (ingredients[i].layer == ingredients[i + 1].layer) ":" else ";"
             } else "."
         }
-            return output
-        }
+        return output
+    }
     //приведение списка ингредиентов к виду массива строк с названиями ингредиентов для Spinner'ов
     fun convertIngredientListToStringArray(list: List<Ingredient>?): Array<String?> {
         val array = arrayOfNulls<String>(list!!.size + 1)
@@ -146,44 +188,17 @@ class RecipesViewModel(val database: BartenderDatabaseDao,
         return array
     }
 
-    //фильтр рецептов для отображения
-    fun filter(){
-        return if (showSimpleRecipe && showLayerRecipe) recipes = database.getRecipes()
-        else if (showSimpleRecipe && !showLayerRecipe) recipes = database.filterRecipes("simple")
-        else if (!showSimpleRecipe && showLayerRecipe) recipes = database.filterRecipes("layer")
-        else {
-            val ld = MutableLiveData<List<Recipe>>()
-            ld.value = emptyList()
-            recipes = ld
-        }
-    }
-    //изменение значений флагов для фильтрации рецептов
-    fun changeFilterState(i:Int) {
-        if(i==0) showSimpleRecipe = !showSimpleRecipe
-        else showLayerRecipe = !showLayerRecipe
-    }
-    //получение состояния кнопки для рецепта по ID
-    fun getButtonState(id: Long): Boolean{
-        _buttonID.value = id
-        return buttonState
-    }
-    fun isReadyToCook(ingredients: ArrayList<Triple<Ingredient, Double, Int>>) {
-            val setting = smartBartender.getMotors()
-            for (i in ingredients.indices) {
-                if (setting.indexOf(ingredients[i].first) == -1) {
-                    buttonState = false
-                    return
-                }
-            }
-            buttonState = true
-    }
-    //получение ингредиента по его имени
-    private fun getIngredient(ingredientName: String): Ingredient? {
-        val ingredientsList = ingredients.value!!
-        for(i in ingredientsList.indices){
-            if(ingredientsList[i].name==ingredientName) return ingredientsList[i]
-        }
-        return null
-    }
+   //фильтр рецептов для отображения
+    fun filter(filterSimple: Boolean, filterLayer: Boolean) {
+      val recipeList = updateExtendedRecipes(recipesList,connectionsList)
+      val extendedRecipesList = mutableListOf<ExtendedRecipe>()
+      for(i in recipeList.indices){
+          val recipe = recipeList[i]
+          val recipeType = recipe.recipe.type
+          if(filterSimple&&recipeType=="simple") extendedRecipesList.add(recipe)
+          if(filterLayer&&recipeType=="layer") extendedRecipesList.add(recipe)
+      }
+      _recipes.value = extendedRecipesList
+  }
 }
 

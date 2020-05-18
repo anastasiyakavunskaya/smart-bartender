@@ -29,7 +29,8 @@
         android:label="Настройка моторов" >
         <action
             android:id="@+id/action_motorsFragment_to_simpleRecipesFragment"
-            app:destination="@id/simpleRecipesFragment" />
+            app:destination="@id/simpleRecipesFragment"
+            app:popUpTo="@id/navigation" />
     </fragment>
     <fragment
         android:id="@+id/editFragment"
